@@ -1,33 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-<<<<<<< HEAD
-
-import { HeaderComponent } from './core/components/header/header.component';
-import { FooterComponent } from './core/components/footer/footer.component';
-=======
-<<<<<<< HEAD
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { FooterComponent } from './common-ui/footer/footer.component';
 import { HeaderComponent } from './common-ui/header/header.component';
 
-=======
-import { HeaderComponent } from './core/components/header/header.component';
-import { FooterComponent } from './core/components/footer/footer.component';
->>>>>>> 2320c6fa6be4a0894d2a834067025cafe2e8d22d
->>>>>>> origin/main
-
 @Component({
   selector: 'app-root',
   standalone: true,
-<<<<<<< HEAD
-  imports: [RouterOutlet, HeaderComponent, FooterComponent],
-=======
-<<<<<<< HEAD
-  imports: [RouterOutlet,FooterComponent, HeaderComponent],
-=======
-  imports: [RouterOutlet, HeaderComponent, FooterComponent],
->>>>>>> 2320c6fa6be4a0894d2a834067025cafe2e8d22d
->>>>>>> origin/main
+  imports: [RouterOutlet, FooterComponent, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
