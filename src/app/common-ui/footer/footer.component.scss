@@ -1,6 +1,15 @@
-p {
-    font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
+:host {
+  display: flex;
+  height: 148px;
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: var(--light-color);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.2px;
+  background-color: var(--dark-blue-color);
+
 }

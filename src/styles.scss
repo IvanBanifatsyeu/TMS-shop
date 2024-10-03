@@ -1,3 +1,22 @@
 :root {
   --light-color: #ffffff;
+  --medium-grey-color: #737373;
+  --dark-blue-color: #252b42; 
+}
+
+*, 
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.2px;
+  background-color: gray;
 }

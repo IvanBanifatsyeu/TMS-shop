@@ -1,0 +1,16 @@
+
+
+.nav-list {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    list-style-type: none;
+    
+  }
+  
+  .nav-item {
+    padding: 10px;
+    &:not(:last-child) {
+      margin-right: 21px;
+    }
+  }
