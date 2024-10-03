@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { CategoryItem } from '../../data/interfaces/categoryItem.interface';
 
 @Component({
   selector: 'app-category-card',
@@ -9,7 +10,7 @@ import { Component, HostBinding, Input, OnInit } from '@angular/core';
   styleUrl: './category-card.component.scss',
 })
 export class CategoryCardComponent implements OnInit {
-  @Input() categoryItem: any;
+  @Input() categoryItem!: CategoryItem;
   @HostBinding('style.backgroundImage') backgroundImage = '';
 
   ngOnInit() {
