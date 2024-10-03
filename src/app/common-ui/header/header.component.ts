@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({
@@ -9,5 +9,5 @@ import { NavigationComponent } from '../navigation/navigation.component';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-
+  @HostBinding('class.position-absolute') isAbsolute = true;
 }

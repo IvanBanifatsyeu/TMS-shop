@@ -12,5 +12,5 @@ import { HeaderComponent } from './common-ui/header/header.component';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'TMS-shop';
+
 }

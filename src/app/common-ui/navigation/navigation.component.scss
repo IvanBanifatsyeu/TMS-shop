@@ -1,16 +1,13 @@
-
-
-.nav-list {
+.list {
     display: flex;
-    justify-content: space-between;
     flex-direction: row;
+    justify-content: space-between;
     list-style-type: none;
-    
-  }
-  
-  .nav-item {
+}
+
+.list__item {
     padding: 10px;
-    &:not(:last-child) {
+  &:not(:last-child) {
       margin-right: 21px;
-    }
   }
+}
