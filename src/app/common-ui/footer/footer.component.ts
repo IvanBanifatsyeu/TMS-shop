@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NavigationComponent } from '../navigation/navigation.component';
+import { ProductFirebaseService } from '../../data/services/product-firebase.service';
 
 @Component({
   selector: 'app-footer',
@@ -8,6 +9,14 @@ import { NavigationComponent } from '../navigation/navigation.component';
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss'
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit {
+   productsFirebaseService = inject(ProductFirebaseService)
 
+   ngOnInit(): void {
+   this.productsFirebaseService.getProducts().subscribe((res) => {
+      console.log(res)
+   })
+
+      //  console.log(this.productsFirebaseService.getProducts())
+   }
 }

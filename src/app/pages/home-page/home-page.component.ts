@@ -14,5 +14,5 @@ export class HomePageComponent {
   categoryService: CategoryService = inject(CategoryService);
   categoryList = this.categoryService.categoryList;
 
-  log(val:any) { console.log(val); }
+  // log(val:any) { console.log(val); }
 }
