@@ -7,18 +7,12 @@
   </section>
   <section class="home-page__product product">
     <div class="product__category">
-      @for (categoryItem of categoryList; track categoryItem.name) { @if ($index
-      === 2) {
+      @for (categoryItem of categoryList; track categoryItem.name) {
       <app-category-card
-        class="big-card"
-        
+        [class.big-card]="$index === 2"
         [categoryItem]="categoryItem"
       ></app-category-card>
-
-      } @else {<app-category-card
-        [categoryItem]="categoryItem"
-      ></app-category-card
-      >} }
+      }
     </div>
     <div class="product__featured"></div>
     <div class="product__latest"></div>
