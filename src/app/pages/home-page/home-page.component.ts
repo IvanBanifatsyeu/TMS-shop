@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CategoryCardComponent } from '../../common-ui/category-card/category-card.component';
 import { CommonModule } from '@angular/common';
 import { CategoryService } from '../../data/services/category.service';
@@ -9,6 +9,7 @@ import { CategoryService } from '../../data/services/category.service';
   imports: [CategoryCardComponent, CommonModule],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomePageComponent {
   categoryService: CategoryService = inject(CategoryService);

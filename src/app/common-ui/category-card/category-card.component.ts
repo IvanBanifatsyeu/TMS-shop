@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import {  ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
 import { CategoryItem } from '../../data/interfaces/categoryItem.interface';
 
 @Component({
@@ -8,6 +8,7 @@ import { CategoryItem } from '../../data/interfaces/categoryItem.interface';
   imports: [CommonModule],
   templateUrl: './category-card.component.html',
   styleUrl: './category-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryCardComponent implements OnInit {
   @Input() categoryItem!: CategoryItem;

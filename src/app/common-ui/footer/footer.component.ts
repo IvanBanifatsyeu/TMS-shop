@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { ProductFirebaseService } from '../../data/services/product-firebase.service';
 
@@ -7,7 +7,8 @@ import { ProductFirebaseService } from '../../data/services/product-firebase.ser
   standalone: true,
   imports: [NavigationComponent],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.scss'
+  styleUrl: './footer.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FooterComponent implements OnInit {
    productsFirebaseService = inject(ProductFirebaseService)
