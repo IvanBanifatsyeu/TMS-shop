@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { CategoryCardComponent } from '../../common-ui/category-card/category-card.component';
+import { CategoryCardComponent } from '../../shared/components/category-card/category-card.component';
 import { CommonModule } from '@angular/common';
 import { CategoryService } from '../../core/services/category.service';
 
