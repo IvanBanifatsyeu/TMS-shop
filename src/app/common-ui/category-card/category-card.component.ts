@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {  ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
-import { CategoryItem } from '../../data/interfaces/categoryItem.interface';
+import { CategoryItem } from '../../core/interfaces/categoryItem.interface';
 
 @Component({
   selector: 'app-category-card',
