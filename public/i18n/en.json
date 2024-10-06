@@ -1,0 +1,15 @@
+{
+  "NAVIGATION": {
+    "HOME": "Home"
+  },
+
+  "HEADER": {
+    "MY_ACCOUNT": "My Account"
+  },
+
+  "ACCOUNT-POPUP": {
+   "ACCOUNT_SETTINGS": "Account Settings",
+   "SWITCH_LANGUAGES": "Switch languages"
+  }
+
+}

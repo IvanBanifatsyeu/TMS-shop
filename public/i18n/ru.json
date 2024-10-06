@@ -1,0 +1,12 @@
+{
+  "NAVIGATION": {
+  "HOME": "Домашняя страница"
+}, 
+"HEADER": {
+    "MY_ACCOUNT": "Мой аккаунт"
+  },
+  "ACCOUNT-POPUP": {
+    "ACCOUNT_SETTINGS": "Настройки аккаунта",
+    "SWITCH_LANGUAGES": "Переключить язык"
+   }
+}
