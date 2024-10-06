@@ -1,15 +1,27 @@
 {
   "NAVIGATION": {
-    "HOME": "Home"
+    "HOME": "Home",
+    "SHOP": "Shop"
   },
-
   "HEADER": {
     "MY_ACCOUNT": "My Account"
   },
-
   "ACCOUNT-POPUP": {
    "ACCOUNT_SETTINGS": "Account Settings",
    "SWITCH_LANGUAGES": "Switch languages"
+  },
+  "CATEGORY_CARD": {
+    "HAT": "HAT",
+    "BAGS": "BAGS",
+    "DRESSES": "DRESSES",
+    "SHOES": "SHOES",
+    "CLOTHES": "CLOTHES"
+  },
+  "HOME_PAGE": {
+    "INTRO_SUBTITLE": "SUMMER 2020",
+    "INTRO_TITLE": "New Collection",
+    "INTRO_DESCRIPTION": "Find The Perfect style for you",
+    "INTRO_SHOW_BUTTON": "Show Now"
   }
 
 }

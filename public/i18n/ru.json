@@ -1,12 +1,26 @@
 {
   "NAVIGATION": {
-  "HOME": "Домашняя страница"
-}, 
-"HEADER": {
+  "HOME": "Главная",
+  "SHOP": "Магазин"
+  }, 
+  "HEADER": {
     "MY_ACCOUNT": "Мой аккаунт"
   },
   "ACCOUNT-POPUP": {
     "ACCOUNT_SETTINGS": "Настройки аккаунта",
     "SWITCH_LANGUAGES": "Переключить язык"
-   }
+  },
+  "CATEGORY_CARD":{
+    "HAT": "ШАПКИ",
+    "BAGS": "СУМКИ",
+    "DRESSES": "ПЛАТЬЯ",
+    "SHOES": "ОБУВЬ",
+    "CLOTHES": "ОДЕЖДА"
+  },
+  "HOME_PAGE": {
+    "INTRO_SUBTITLE": "ЛЕТО 2020",
+    "INTRO_TITLE": "Новая коллекция",
+    "INTRO_DESCRIPTION": "Найдите идеальный стиль",
+    "INTRO_SHOW_BUTTON": "Показать"
+  }
 }

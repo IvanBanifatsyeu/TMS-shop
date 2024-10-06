@@ -1,13 +1,12 @@
-
 <app-navigation></app-navigation>
 <div class="actions">
   <a
     class="actions__my-account my-account"
-    (mouseenter)="showPopup($event)"
+    (mouseenter)="showPopup()"
     (mouseleave)="hidePopup()"
   >
     <img src="/assets/svg/avatar.svg" alt="" class="my-account__icon" />
-    <span class="my-account__text">{{'HEADER.MY_ACCOUNT' | translate}}</span>
+    <span class="my-account__text">{{ "HEADER.MY_ACCOUNT" | translate }}</span>
     @if(isPopupVisible) {
     <app-account-popup></app-account-popup>
     }

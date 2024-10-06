@@ -27,7 +27,7 @@ export class HeaderComponent {
   isPopupVisible = false;
   translate = inject(TranslateService);
 
-  showPopup(event: MouseEvent) {
+  showPopup() {
     this.isPopupVisible = true;
   }
 
