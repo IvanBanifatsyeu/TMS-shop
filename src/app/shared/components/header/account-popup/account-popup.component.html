@@ -1,0 +1,24 @@
+<div class="popup-content">
+  <h1 class="popup-content__title">
+    {{ "ACCOUNT-POPUP.ACCOUNT_SETTINGS" | translate }}
+  </h1>
+  <span class="popup-content__text"
+    >{{ "ACCOUNT-POPUP.SWITCH_LANGUAGES" | translate }}
+  </span>
+  <div class="popup-content__btns">
+    <button
+      class="btns__button"
+      (click)="useLanguage('en')"
+      [class.isDisabled]="translate.currentLang === 'en'"
+    >
+      en
+    </button>
+    <button
+      class="btns__button"
+      (click)="useLanguage('ru')"
+      [class.isDisabled]="translate.currentLang === 'ru'"
+    >
+      ru
+    </button>
+  </div>
+</div>

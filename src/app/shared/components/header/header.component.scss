@@ -24,15 +24,19 @@
     align-items: center;
     justify-content: space-between;
     gap: 36px;
+    
 }
 
 .my-account {
     display: flex;
     align-items: center;
+    position: relative;
+    
 }
 
 .my-account__text {
     padding: 14px 12px;
+    width: 135px;
 }
 
 .favorite-icon {
