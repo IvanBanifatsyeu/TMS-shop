@@ -6,6 +6,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDDn_kO_3PhEIRjdgtkrmHlW7e3rFrM12c',
@@ -32,6 +33,7 @@ export const appConfig: ApplicationConfig = {
         useFactory: httpLoaderFactory,
         deps: [HttpClient],
       },
-    })])
+    })]),
+    provideAnimationsAsync()
   ],
 };

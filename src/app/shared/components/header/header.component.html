@@ -8,7 +8,7 @@
     <img src="/assets/svg/avatar.svg" alt="" class="my-account__icon" />
     <span class="my-account__text">{{ "HEADER.MY_ACCOUNT" | translate }}</span>
     @if(isPopupVisible) {
-    <app-account-popup></app-account-popup>
+    <app-account-popup @fadeInOut></app-account-popup>
     }
   </a>
   <a class="actions__favorite-icon favorite-icon">
