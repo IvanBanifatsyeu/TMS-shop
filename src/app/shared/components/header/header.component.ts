@@ -38,6 +38,7 @@ export class HeaderComponent {
   @HostBinding('class.position-absolute') isAbsolute = true;
   isPopupVisible = false;
   translate = inject(TranslateService);
+  
 
   showPopup() {
     this.isPopupVisible = true;

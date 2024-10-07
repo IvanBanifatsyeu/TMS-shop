@@ -5,8 +5,8 @@
     <p class="intro__description">{{"HOME_PAGE.INTRO_DESCRIPTION" | translate}}</p>
     <button class="intro__show-button">{{"HOME_PAGE.INTRO_SHOW_BUTTON" | translate}}</button>
   </section>
-  <section class="home-page__product product">
-    <div class="product__category">
+  <section class="home-page__products products">
+    <div class="products__category">
       @for (categoryItem of categoryList; track categoryItem.name) {
       <app-category-card
         [class.big-card]="$index === 2"
@@ -14,7 +14,11 @@
       ></app-category-card>
       }
     </div>
-    <div class="product__featured"></div>
-    <div class="product__latest"></div>
+    <div class="products__featured featured">
+      <h3 class="featured__title">{{"HOME_PAGE.FEATURED_PRODUCTS" | translate}}</h3>
+      <div class="featured__wrapper-cards wrapper-cards"></div>
+    </div>
+
+    <div class="products__latest"></div>
   </section>
 </main>

@@ -10,12 +10,10 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   imports: [CategoryCardComponent, CommonModule, TranslateModule],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent {
   categoryService: CategoryService = inject(CategoryService);
   categoryList = this.categoryService.categoryList;
   translate = inject(TranslateService);
-
- 
 }

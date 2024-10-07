@@ -51,7 +51,7 @@
   letter-spacing: 0.1px;
 }
 
-.product__category {
+.products__category {
     height: 567px;
     width: 100%;
     padding: 3% 10%;
@@ -60,6 +60,33 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 10px; 
+    border: 1px solid #7f1c1c;
 
 }
 
+.featured {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    background-color: var(--light-color);
+    padding: 3% 10%; 
+}
+
+.featured__title {
+font-family: Montserrat;
+font-size: 24px;
+font-weight: 700;
+line-height: 36px;
+letter-spacing: 0.1px;
+color: var(--dark-blue-color);
+margin-bottom: 50px;
+
+}
+
+.wrapper-cards {
+  background-color: #04f143;
+  width: 100%;
+  height: 300px;
+}

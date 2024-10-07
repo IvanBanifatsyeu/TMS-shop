@@ -7,4 +7,5 @@ export interface Product {
     color: string[];
     idField?: string;
     imgUrl: string;
+    addedAt:string;
 }
