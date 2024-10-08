@@ -12,9 +12,9 @@ import { RouterModule } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationComponent {
-  navItems: { text: string, path: string }[] = [
-    { text: 'NAVIGATION.HOME',path : '' },
-    { text: 'NAVIGATION.SHOP',path : 'shop' },
+  navItems: { text: string; path: string }[] = [
+    { text: 'NAVIGATION.HOME', path: '' },
+    { text: 'NAVIGATION.SHOP', path: 'shop' },
   ];
   translate = inject(TranslateService);
 }
