@@ -5,16 +5,16 @@
     (mouseenter)="showPopup()"
     (mouseleave)="hidePopup()"
   >
-    <img src="/assets/svg/avatar.svg" alt="" class="my-account__icon" />
+    <svg icon="avatar" class="my-account__icon"></svg>
     <span class="my-account__text">{{ "HEADER.MY_ACCOUNT" | translate }}</span>
     @if(isPopupVisible) {
     <app-account-popup @fadeInOut></app-account-popup>
     }
   </a>
   <a class="actions__favorite-icon favorite-icon">
-    <img src="/assets/svg/fav.svg" alt="" class="favorite-icon__img" />
+    <svg icon="fav" class="favorite-icon__img"></svg>
   </a>
   <a class="actions__cart-icon cart-icon">
-    <img src="/assets/svg/cart.svg" alt="" class="cart-icon__img" />
+    <svg icon="cart" class="cart-icon__img"></svg>
   </a>
 </div>
