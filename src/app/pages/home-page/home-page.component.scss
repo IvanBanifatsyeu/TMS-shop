@@ -50,6 +50,16 @@
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.1px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--vivid-blue-color);
+    color: var(--light-color);
+  }
+
+  &:active {
+   transform: scale(0.95);
+  }
 }
 
 .products__category {
