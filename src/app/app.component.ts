@@ -18,4 +18,6 @@ export class AppComponent {
     this.translate.setDefaultLang('en');
     this.translate.use('en');
   }
+
+  
 }

@@ -15,7 +15,7 @@
     &.position-absolute {
         position: absolute;
         top: 0;
-        left: 0;
+        max-width: 1440px;
     }
 }
 
@@ -24,14 +24,14 @@
     align-items: center;
     justify-content: space-between;
     gap: 36px;
-    
+
 }
 
 .my-account {
     display: flex;
     position: relative;
     align-items: center;
-    
+
 }
 
 .my-account__text {

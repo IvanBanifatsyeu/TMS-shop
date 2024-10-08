@@ -18,20 +18,24 @@ import { Product } from '../../../core/interfaces/product.interface';
 })
 export class FooterComponent implements OnInit {
   productsFirebaseService = inject(ProductFirebaseService);
-  
-  
+  featuredProducts: Product[] | null = null;
+
 
   ngOnInit(): void {
-    this.productsFirebaseService.getProducts().subscribe((res) => {
-      res.map((product) => {
-        console.log(product.addedAt);
-      })
-    });
-    // console.log(this.date.toLocaleDateString() )
+    // this.productsFirebaseService.getProducts().subscribe((res) => {
+    //   const sortedByDate = res.sort((a, b) => {
+    //     const dateA: Date = new Date(a.addedAt.split('.').reverse().join('-'));
+    //     const dateB: Date = new Date(b.addedAt.split('.').reverse().join('-'));
+    //     return dateB.getTime() - dateA.getTime();
+    //   });
+
+    //   this.featuredProducts = sortedByDate.slice(0, 4);
+    //   console.log(this.featuredProducts);
+    // });
   }
-  // addToServer() {console.log('add to server');
-  //   this.products.map((product) => {
-  //     this.productsFirebaseService.addItem(product);
-  //   })
-  // }
 }
+// addToServer() {console.log('add to server');
+//   this.products.map((product) => {
+//     this.productsFirebaseService.addItem(product);
+//   })
+// }

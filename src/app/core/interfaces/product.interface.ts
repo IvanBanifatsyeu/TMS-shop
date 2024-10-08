@@ -5,7 +5,9 @@ export interface Product {
     description: string;
     rating: number;
     color: string[];
-    idField?: string;
+    id: string;
     imgUrl: string;
     addedAt:string;
+    sizes: string[];
+    curColor: string;
 }

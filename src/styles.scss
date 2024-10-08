@@ -1,9 +1,21 @@
 :root {
   --light-color: #ffffff;
   --medium-grey-color: #737373;
+  --light-grey-color: #BDBDBD;
   --dark-blue-color: #252b42;
   --vivid-blue-color: #2091f9;
   --light-blue-color: #2090f9c2;
+
+  --svg-blue: #1975cc;
+  --svg-green: #2DC071;
+  --svg-red: #d32929;
+  --svg-grey: #737373;
+  --svg-yellow: #FFC700;
+  --svg-black: #141414;
+  --svg-brown: #6A4029;
+  --svg-white: #ffffff;
+
+
 }
 
 *,
@@ -20,7 +32,7 @@ body {
   font-weight: 600;
   line-height: 28px;
   letter-spacing: 0.2px;
-  background-color: gray;
+  background-color: #e6e6e6;
 }
 
 
