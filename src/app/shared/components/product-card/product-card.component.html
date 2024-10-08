@@ -1,4 +1,8 @@
-<img class="product-card__image" [src]="product?.imgUrl" alt="image-product" />
+<div class="product-card__img-conteiner img-conteiner">
+  <img class="img-conteiner__image" [src]="product?.imgUrl" alt="image-product" />
+
+  <svg icon="favorit-icon" class="img-conteiner__favorit-icon"></svg>
+</div>
 <h4 class="product-card__title">{{ product?.model }}</h4>
 <p class="product-card__curColor">({{ product?.curColor }})</p>
 <p class="product-card__price">{{ product?.price | currency }}</p>
