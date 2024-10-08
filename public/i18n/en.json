@@ -24,6 +24,10 @@
     "INTRO_SHOW_BUTTON": "Show Now",
     "FEATURED_PRODUCTS": "Featured Products",
     "LATEST_PRODUCTS": "Latest Products"
-  }
-
+  },
+"PRODUCTS_LIST_PAGE": {
+"INTRO_SUBTITLE": "SUMMER 2020",
+"INTRO_TITLE": "Fashion",
+"INTRO_DESCRIPTION": "Find The Perfect style for you"
+}
 }

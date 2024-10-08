@@ -24,5 +24,10 @@
     "INTRO_SHOW_BUTTON": "Показать",
     "FEATURED_PRODUCTS": "Популярные товары",
     "LATEST_PRODUCTS": "Последние товары"
-  }
+  },
+  "PRODUCTS_LIST_PAGE": {
+    "INTRO_SUBTITLE": "ЛЕТО 2020",
+    "INTRO_TITLE": "Мода",
+    "INTRO_DESCRIPTION": "Найдите идеальный стиль"
+}
 }
