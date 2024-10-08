@@ -7,10 +7,15 @@
 
 .list__item {
     padding: 10px;
-    
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
 
+    &:hover {
+        color: var(--dark-blue-color);
+    }
 
-  &:not(:last-child) {
-      margin-right: 21px;
-  }
+    &:not(:last-child) {
+        margin-right: 21px;
+    }
 }

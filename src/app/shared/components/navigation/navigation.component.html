@@ -1,7 +1,7 @@
 <nav class="nav">
   <ul class="nav__list list">
     @for (item of navItems; track item){
-    <li class="list__item">{{ item | translate }}</li>
+    <li ><a [routerLink]="[item.path]" class="list__item">{{ item.text | translate }}</a></li>
     }
   </ul>
 </nav>
