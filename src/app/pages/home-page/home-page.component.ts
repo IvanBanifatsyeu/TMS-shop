@@ -26,18 +26,28 @@ export class HomePageComponent {
 
   productsFirebaseService = inject(ProductFirebaseService);
   featuredProducts: Product[] | null = null;
+  latestProducts: Product[] | null = null;
 
   constructor() {
     this.productsFirebaseService.getProducts().subscribe((res) => {
       res.map((item) => {
         console.log(item.sizes);
       });
-
       const sortedByRate = res.sort((a, b) => {
         return b.rating - a.rating;
       });
-
       this.featuredProducts = sortedByRate.slice(0, 4);
+
+      const sortedByDate = res.sort((a, b) => {
+        const [dayA, monthA, yearA] = a.addedAt.split('.');
+        const [dayB, monthB, yearB] = b.addedAt.split('.');
+
+        const dateA = new Date(`${yearA}-${monthA}-${dayA}`);
+        const dateB = new Date(`${yearB}-${monthB}-${dayB}`);
+
+        return dateB.getTime() - dateA.getTime();
+      });
+      this.latestProducts = sortedByDate.slice(0, 8);
     });
   }
 

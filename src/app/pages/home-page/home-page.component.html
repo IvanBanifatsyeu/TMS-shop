@@ -31,6 +31,15 @@
       </div>
     </div>
 
-    <div class="products__latest"></div>
+    <div class="products__latest latest">
+      <h3 class="featured__title">
+        {{ "HOME_PAGE.LATEST_PRODUCTS" | translate }}
+      </h3>
+      <div class="featured__wrapper-cards wrapper-cards">
+        @for( item of latestProducts; track item.id) {
+        <app-product-card [product]="item"></app-product-card>
+        }
+      </div>
+    </div>
   </section>
 </main>
