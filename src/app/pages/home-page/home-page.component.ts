@@ -30,9 +30,7 @@ export class HomePageComponent {
 
   constructor() {
     this.productsFirebaseService.getProducts().subscribe((res) => {
-      res.map((item) => {
-        console.log(item.sizes);
-      });
+      
       const sortedByRate = res.sort((a, b) => {
         return b.rating - a.rating;
       });
@@ -50,8 +48,4 @@ export class HomePageComponent {
       this.latestProducts = sortedByDate.slice(0, 8);
     });
   }
-
-  // logData(value: any) {
-  //   console.log('Введено значение:', value);
-  // }
 }
