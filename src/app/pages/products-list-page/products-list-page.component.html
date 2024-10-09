@@ -14,18 +14,36 @@
     <aside class="product-wrapper__sidebar sidebar">eweeweew</aside>
     <section class="product-wrapper__products-container products-container">
       <div class="products-container__layout-switcher layout-switcher">
-        <a ><svg icon="column-icon" class="layout-switcher__view-icon view-icon"></svg> </a>
-        <a ><svg icon="row-icon" class="layout-switcher__view-icon view-icon "></svg></a>
+        <a
+          ><svg
+            icon="column-icon"
+            class="layout-switcher__view-icon view-icon "
+            (click)="toggleLayoutToColumn()"
+            [ngClass]="{'active': isColumnLayout()}"
+          ></svg>
+        </a>
+        <a
+          ><svg
+            icon="row-icon"
+            class="layout-switcher__view-icon view-icon"
+            (click)="toggleLayoutToRow()"
+            [ngClass]="{'active': !isColumnLayout()}"
+          ></svg
+        ></a>
       </div>
-      <div class="products-container__product-gallery product-gallery column">
-        
+      <div
+        class="products-container__product-gallery product-gallery"
+        [ngClass]="isColumnLayout() ? 'column-layout' : 'row-layout'"
+      >
         @for (item of productsList;track item.id) {
 
-          <app-product-card [product]="item" class="product-card--mini"></app-product-card>
+        <app-product-card
+          [product]="item"
+          [ngClass]="
+            isColumnLayout() ? 'product-card--mini' : 'product-card--row'
+          "
+        ></app-product-card>
         }
-        
-      
-      
       </div>
     </section>
   </div>

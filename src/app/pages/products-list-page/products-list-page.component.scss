@@ -59,20 +59,37 @@
     justify-content: end;
  }
 
+
  .view-icon {
     margin-left: 7px;
     width: 53px;
     height: 51px;
-    color: var(--grey-active-icon-color);
+    color: var(--light-color);
+    cursor: pointer;
+
+    &.active {
+        color: var(--grey-active-icon-color);
+    }
+
+    &:hover {
+        filter: invert(20%);
+    }
  }
 
  .product-gallery {
     display: grid;
     
-    &.column {
+    &.column-layout {
        grid-template-columns: repeat(4, 1fr);
+       grid-template-rows: repeat(6, 276px);
        column-gap: 40px;
        row-gap: 45px;
+    }
+
+    &.row-layout {
+       grid-template-columns: 1fr;
+       grid-template-rows: repeat(8, 237px);
+       row-gap: 10px;
     }
 
  }

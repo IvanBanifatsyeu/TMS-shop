@@ -1,24 +1,32 @@
 <div class="product-card__img-conteiner img-conteiner">
-  <img class="img-conteiner__image" [src]="product?.imgUrl" alt="image-product" />
+  <img
+    class="img-conteiner__image"
+    [src]="product?.imgUrl"
+    alt="image-product"
+  />
 
   <svg icon="favorit-icon" class="img-conteiner__favorit-icon"></svg>
 </div>
-<h4 class="product-card__title">{{ product?.model }}</h4>
-<p class="product-card__curColor">({{ product?.curColor }})</p>
-<p class="product-card__price">{{ product?.price | currency }}</p>
-<div class="product-card__colors-list colors-list">
-  @for(color of product?.color; track $index) {
+<div class="product-card__info">
+  <div class="product-card__info__wrapper-title wrapper-title">
+    <h4 class="product-card__title">{{ product?.model }}</h4>
+    <p class="product-card__curColor">({{ product?.curColor }})</p>
+  </div>
+  <p class="product-card__price">{{ product?.price | currency }}</p>
+  <div class="product-card__colors-list colors-list">
+    @for(color of product?.color; track $index) {
 
-  <svg
-    icon="color"
-    class="colors-list__icon"
-    [style.color]="'var(--svg-' + color + ')'"
-  ></svg>
-  }
-</div>
-<div class="product-card__sizes-list sizes-list">
-  @for(size of product?.sizes; track $index) {
- <div class="sizes-list__size">{{ size }}</div>
-    
+    <svg
+      icon="color"
+      class="colors-list__icon"
+      [style.color]="'var(--svg-' + color + ')'"
+    ></svg>
     }
+  </div>
+  <div class="product-card__sizes-list sizes-list">
+    @for(size of product?.sizes; track $index) {
+    <div class="sizes-list__size">{{ size }}</div>
+
+    }
+  </div>
 </div>

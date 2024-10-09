@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
 import { CommonModule } from '@angular/common';
@@ -18,6 +18,7 @@ export class ProductsListPageComponent implements OnInit {
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   productsList: Product[] | null = null;
+  layoutColumn = signal(true)
   
   ngOnInit(): void {
     this.productsFirebaseService.getProducts().subscribe((res) => {
@@ -25,7 +26,16 @@ export class ProductsListPageComponent implements OnInit {
     })
   }
 
+  toggleLayoutToColumn() {
+    this.layoutColumn.set(true); // Переключение значения сигнала
+  }
 
+  toggleLayoutToRow() {
+    this.layoutColumn.set(false); // Переключение значения сигнала
+  }
 
+  isColumnLayout() {
+    return this.layoutColumn(); // Возвращает текущее значение сигнала
+  }
 
 }
