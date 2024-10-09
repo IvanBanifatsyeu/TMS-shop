@@ -35,7 +35,7 @@
         class="products-container__product-gallery product-gallery"
         [ngClass]="isColumnLayout() ? 'column-layout' : 'row-layout'"
       >
-        @for (item of paginatedItems(); track item.id) {
+        @for (item of displayedItems(); track item.id) {
 
         <app-product-card
           [product]="item"
@@ -46,20 +46,7 @@
         }
       </div>
 
-      <div class="products-container__pagination pagination">
-        <button class="pagination__button-arrow pagination__button" (click)="prevPage()" [disabled]="currentPage() === 1">
-          <svg icon="left-arrow" class="arrow-icon"></svg>
-        </button>
-        @for(page of pagesArray() ; track page) {
-
-        <button [ngClass]="{ active: page === currentPage() }" class="pagination__button-page pagination__button" (click)="goToPage(page)">
-          {{ page }}
-        </button>
-        }
-        <button class="pagination__button-arrow pagination__button" (click)="nextPage()" [disabled]="currentPage() === totalPages()">
-          <svg icon="right-arrow" class="arrow-icon"></svg>
-        </button>
-      </div>
+      <app-pagination [totalItems]="productsList().length" [itemsPerPage]="itemsPerPage()" (currentPageChange)="onPageChange($event)" ></app-pagination>
 
     </section>
   </div>

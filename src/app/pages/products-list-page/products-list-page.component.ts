@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { ProductFirebaseService } from '../../core/services/product-firebase.service';
 import { Product } from '../../core/interfaces/product.interface';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
+import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-products-list-page',
@@ -21,70 +22,55 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
     SvgIconComponent,
     CommonModule,
     ProductCardComponent,
+    PaginationComponent,
   ],
   templateUrl: './products-list-page.component.html',
   styleUrl: './products-list-page.component.scss',
-  // changeDetection: ChangeDetectionStrategy.OnPush
+   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class ProductsListPageComponent implements OnInit {
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
 
-  productsListAll = signal<Product[]>([]); // Список всех продуктов
+  productsList = signal<Product[]>([]); // Список товаров на сервере
   layoutColumn = signal(true); // Строки или колонки layout
-  currentPage = signal(1);
-  itemsPerPage = computed(() => (this.layoutColumn() ? 20 : 8));
+  currentPage = signal(1); // Текущая страница
+  itemsPerPage = computed(() => (this.layoutColumn() ? 20 : 8)); // Количество элементов на странице
 
+  // получаем список товаров с сервера Firebase
   ngOnInit(): void {
     this.productsFirebaseService.getProducts().subscribe((res) => {
-      this.productsListAll.set(res);
+      this.productsList.set(res);  
     });
-    console.log('productsListAll', this.productsListAll());
   }
 
-  toggleLayoutToColumn() {
-    this.layoutColumn.set(true); // Переключение layout на кололнки
-  }
-
-  toggleLayoutToRow() {
-    this.layoutColumn.set(false); // Переключение layout на строки
-  }
-
-  isColumnLayout() {
-    return this.layoutColumn(); // Возвращает текущее значение layout (строки или колонки)
-  }
-
-  totalPages = () => {
-    return Math.ceil(this.productsListAll().length / this.itemsPerPage());
-  };
-
-  pagesArray = () => Array.from({ length: this.totalPages() }, (_, i) => i + 1);
-
-  // Функция для получения элементов для текущей страницы
-  paginatedItems = () => {
+  // Вычисляем элементы для отображения в зависимости от текущей страницы
+  displayedItems = computed(() => {
     const startIndex = (this.currentPage() - 1) * this.itemsPerPage();
-    return this.productsListAll().slice(
+    return this.productsList().slice(
       startIndex,
       startIndex + this.itemsPerPage()
-    );
-  };
+    ); 
+  }); 
 
-  // Переход к следующей странице
-  nextPage() {
-    if (this.currentPage() < this.totalPages()) {
-      this.currentPage.update((page) => page + 1);
-    }
+  // слушаем событие от пагинации и обновляем текущую страницу
+  onPageChange(page: number) {
+    this.currentPage.update(() => page); 
   }
 
-  // Переход к предыдущей странице
-  prevPage() {
-    if (this.currentPage() > 1) {
-      this.currentPage.update((page) => page - 1);
-    }
+// Переключение layout на кололнки
+  toggleLayoutToColumn() {
+    this.layoutColumn.set(true); 
   }
 
-   // Переход к конкретной странице
-   goToPage(page: number) {
-    this.currentPage.set(page);
+  // Переключение layout на строки
+  toggleLayoutToRow() {
+    this.layoutColumn.set(false); 
+  }
+
+  // Возвращает текущее значение layout (строки или колонки)
+  isColumnLayout() {
+    return this.layoutColumn(); 
   }
 }
