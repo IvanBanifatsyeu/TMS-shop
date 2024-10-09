@@ -1,15 +1,32 @@
 <main class="products-list-page">
-    <section class="products-list-page__intro intro">
-        <h1 class="intro__subtitle">
-            {{ "PRODUCTS_LIST_PAGE.INTRO_SUBTITLE" | translate }}
-          </h1>
-          <h2 class="intro__title">{{ "PRODUCTS_LIST_PAGE.INTRO_TITLE" | translate }}</h2>
-          <p class="intro__description">
-            {{ "PRODUCTS_LIST_PAGE.INTRO_DESCRIPTION" | translate }}
-          </p>
+  <section class="products-list-page__intro intro">
+    <h1 class="intro__subtitle">
+      {{ "PRODUCTS_LIST_PAGE.INTRO_SUBTITLE" | translate }}
+    </h1>
+    <h2 class="intro__title">
+      {{ "PRODUCTS_LIST_PAGE.INTRO_TITLE" | translate }}
+    </h2>
+    <p class="intro__description">
+      {{ "PRODUCTS_LIST_PAGE.INTRO_DESCRIPTION" | translate }}
+    </p>
+  </section>
+  <div class="products-list-page__product-wrapper product-wrapper">
+    <aside class="product-wrapper__sidebar sidebar">eweeweew</aside>
+    <section class="product-wrapper__products-container products-container">
+      <div class="products-container__layout-switcher layout-switcher">
+        <a ><svg icon="column-icon" class="layout-switcher__view-icon view-icon"></svg> </a>
+        <a ><svg icon="row-icon" class="layout-switcher__view-icon view-icon "></svg></a>
+      </div>
+      <div class="products-container__product-gallery product-gallery column">
+        
+        @for (item of productsList;track item.id) {
+
+          <app-product-card [product]="item" class="product-card--mini"></app-product-card>
+        }
+        
+      
+      
+      </div>
     </section>
-    <div class="wrapper">
-        <aside></aside>
-        <section></section>
-    </div>
+  </div>
 </main>

@@ -38,3 +38,50 @@
     letter-spacing: 0.25px;
 }
 
+.product-wrapper {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    padding: 30px 26px 30px 30px;
+    column-gap: 40px;
+ } 
+
+ .products-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 40px;
+ }
+
+ .layout-switcher {
+    height: 53px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+ }
+
+ .view-icon {
+    margin-left: 7px;
+    width: 53px;
+    height: 51px;
+    color: var(--grey-active-icon-color);
+ }
+
+ .product-gallery {
+    display: grid;
+    
+    &.column {
+       grid-template-columns: repeat(4, 1fr);
+       column-gap: 40px;
+       row-gap: 45px;
+    }
+
+ }
+
+
+ .sidebar {
+    border: 1px solid green;
+    background-color: grey;
+ }
+ .xxx {
+    border: 1px solid red;
+ }

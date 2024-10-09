@@ -45,6 +45,10 @@
         letter-spacing: 0.1px;
     }
 
+    .product-card__curColor {
+        font-size: 16px;
+    }
+
     .product-card__price {
         font-size: 16px;
         font-weight: 500;
@@ -56,10 +60,48 @@
     .colors-list {
         display: none;
     }
-
-
-
 }
+
+:host.product-card--mini {
+    row-gap: 10px;
+
+    .img-conteiner {
+        height: 180px;
+        width: 210px;
+    }
+
+    .img-conteiner__image {
+        height: 180px;
+        object-position: center center;
+        width: 210px;
+    }
+
+    .product-card__title {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 24px;
+        letter-spacing: 0.1px;
+    }
+
+    .product-card__curColor {
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .product-card__price {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 28px;
+        letter-spacing: 0.2px;
+
+    }
+
+    .colors-list,
+    .sizes-list {
+        display: none;
+    }
+}
+
 
 .img-conteiner__favorit-icon {
     width: 38px;
