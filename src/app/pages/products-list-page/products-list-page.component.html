@@ -17,9 +17,9 @@
         <a
           ><svg
             icon="column-icon"
-            class="layout-switcher__view-icon view-icon "
+            class="layout-switcher__view-icon view-icon"
             (click)="toggleLayoutToColumn()"
-            [ngClass]="{'active': isColumnLayout()}"
+            [ngClass]="{ active: isColumnLayout() }"
           ></svg>
         </a>
         <a
@@ -27,7 +27,7 @@
             icon="row-icon"
             class="layout-switcher__view-icon view-icon"
             (click)="toggleLayoutToRow()"
-            [ngClass]="{'active': !isColumnLayout()}"
+            [ngClass]="{ active: !isColumnLayout() }"
           ></svg
         ></a>
       </div>
@@ -35,7 +35,7 @@
         class="products-container__product-gallery product-gallery"
         [ngClass]="isColumnLayout() ? 'column-layout' : 'row-layout'"
       >
-        @for (item of productsList;track item.id) {
+        @for (item of paginatedItems(); track item.id) {
 
         <app-product-card
           [product]="item"
@@ -45,6 +45,22 @@
         ></app-product-card>
         }
       </div>
+
+      <div class="products-container__pagination pagination">
+        <button class="pagination__button-arrow pagination__button" (click)="prevPage()" [disabled]="currentPage() === 1">
+          <svg icon="left-arrow" class="arrow-icon"></svg>
+        </button>
+        @for(page of pagesArray() ; track page) {
+
+        <button [ngClass]="{ active: page === currentPage() }" class="pagination__button-page pagination__button" (click)="goToPage(page)">
+          {{ page }}
+        </button>
+        }
+        <button class="pagination__button-arrow pagination__button" (click)="nextPage()" [disabled]="currentPage() === totalPages()">
+          <svg icon="right-arrow" class="arrow-icon"></svg>
+        </button>
+      </div>
+
     </section>
   </div>
 </main>

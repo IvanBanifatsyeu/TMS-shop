@@ -43,24 +43,24 @@
     grid-template-columns: 380px 1fr;
     padding: 30px 26px 30px 30px;
     column-gap: 40px;
- } 
+}
 
- .products-container {
+.products-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     row-gap: 40px;
- }
+}
 
- .layout-switcher {
+.layout-switcher {
     height: 53px;
     display: flex;
     align-items: center;
     justify-content: end;
- }
+}
 
 
- .view-icon {
+.view-icon {
     margin-left: 7px;
     width: 53px;
     height: 51px;
@@ -74,31 +74,95 @@
     &:hover {
         filter: invert(20%);
     }
- }
+}
 
- .product-gallery {
+.product-gallery {
     display: grid;
-    
+
     &.column-layout {
-       grid-template-columns: repeat(4, 1fr);
-       grid-template-rows: repeat(6, 276px);
-       column-gap: 40px;
-       row-gap: 45px;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(5, 276px);
+        column-gap: 40px;
+        row-gap: 45px;
     }
 
     &.row-layout {
-       grid-template-columns: 1fr;
-       grid-template-rows: repeat(8, 237px);
-       row-gap: 10px;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(8, 237px);
+        row-gap: 10px;
     }
 
- }
+}
+
+//  ----- pagination
+.pagination {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    column-gap: 17px;
+    margin: 0 auto;
+}
+
+.pagination__button {
+    border: 1px solid var(--blue-not-active-color);
+    border-radius: 5px;
+    background-color: var(--light-color);
+    color: var(--blue-not-active-color);
+    cursor: pointer;
 
 
- .sidebar {
+    &:not(:disabled):hover {
+        filter: brightness(1.2);
+    }
+
+    &.active {
+        color: var(--light-color);
+        background-color: var(--blue-active-color);
+    }
+
+    &:disabled {
+        cursor:inherit;
+        background-color: #e0e0e0;
+        color: #e0e0e0;
+        border-color: #e0e0e0;;
+    }
+}
+
+.pagination__button-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 40px;
+    
+
+    .arrow-icon {
+        width: 9px;
+        height: 14px; 
+        border: none;
+    }
+}
+
+
+
+.pagination__button-page {
+    width: 40px;
+    height: 40px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0.2px;
+
+}
+
+//  -----------------------------------------
+
+.sidebar {
     border: 1px solid green;
     background-color: grey;
- }
- .xxx {
+}
+
+.xxx {
     border: 1px solid red;
- }
+}
