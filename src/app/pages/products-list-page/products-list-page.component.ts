@@ -57,7 +57,7 @@ export class ProductsListPageComponent implements OnInit {
 
   // istening to pagination event and updating current page
   onPageChange(page: number) {
-    this.currentPage.update(() => page); 
+     this.currentPage.set(page) 
   }
 
 // Switching layout to column

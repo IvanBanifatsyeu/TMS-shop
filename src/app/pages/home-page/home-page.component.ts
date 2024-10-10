@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CategoryCardComponent } from '../../shared/components/category-card/category-card.component';
 import { CommonModule } from '@angular/common';
 import { CategoryService } from '../../core/services/category.service';
@@ -19,7 +19,7 @@ import { Product } from '../../core/interfaces/product.interface';
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit {
   categoryService: CategoryService = inject(CategoryService);
   categoryList = this.categoryService.categoryList;
   translate = inject(TranslateService);
@@ -28,9 +28,8 @@ export class HomePageComponent {
   featuredProducts: Product[] | null = null;
   latestProducts: Product[] | null = null;
 
-  constructor() {
+  ngOnInit(): void {
     this.productsFirebaseService.getProducts().subscribe((res) => {
-      
       const sortedByRate = res.sort((a, b) => {
         return b.rating - a.rating;
       });

@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // добавляем/удаляем класс в зависимости от текущего роута
     if (url === '/') {
       this.isAbsolute = true;
-    } else if (url === '/shop') {
+    } else if (url === '/shop' || url.startsWith("/shop/")) {
       this.isAbsolute = false;
     }
   }

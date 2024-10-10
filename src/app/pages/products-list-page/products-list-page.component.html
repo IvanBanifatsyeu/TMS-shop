@@ -45,9 +45,7 @@
         ></app-product-card>
         }
       </div>
-
-      <app-pagination [totalItems]="productsList().length" [itemsPerPage]="itemsPerPage()" (currentPageChange)="onPageChange($event)" ></app-pagination>
-
+      <app-pagination [totalItems]="productsList().length" [itemsPerPage]="itemsPerPage()"  [(currentPage)]="currentPage"  ></app-pagination>
     </section>
   </div>
 </main>
