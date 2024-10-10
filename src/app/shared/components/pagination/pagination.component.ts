@@ -21,20 +21,20 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent implements OnChanges {
-  @Input() totalItems: number = 0; // Общее количество элементов
-  @Input() itemsPerPage: number = 8; // Элементы на странице
+  @Input() totalItems: number = 0; 
+  @Input() itemsPerPage: number = 0; 
   @Output() currentPageChange: EventEmitter<number> =
-    new EventEmitter<number>(); // Событие для изменения страницы
-  currentPage = signal(1); // Текущая страница
-  totalPages = signal(0); // всего страниц
+    new EventEmitter<number>(); // Event for parent's signal about page change
+  currentPage = signal(1); 
+  totalPages = signal(0); 
 
-  // Генерация массива страниц
+  // generating an array of pages
   pagesArray = computed(() => {
     const total = this.totalPages();
     return Array.from({ length: total }, (_, i) => i + 1);
   });
 
-  // Пересчитываем количество страниц и массив страниц при изменении входных данных
+  // Recalculating the number of pages and the array of pages when changing the input data
   ngOnChanges(changes: SimpleChanges) {
     if (changes['totalItems'] || changes['itemsPerPage']) {
       this.updatePagination(); 
@@ -42,32 +42,29 @@ export class PaginationComponent implements OnChanges {
   }
 
   updatePagination() {
-    // Пересчитываем количество страниц
     this.totalPages.update(() =>
       Math.ceil(this.totalItems / this.itemsPerPage)
     );
-
-    // Сбрасываем на первую страницу, если данные изменились
     this.currentPage.update(() => 1);
-    this.currentPageChange.emit(this.currentPage()); // Эмитируем событие изменения страницы
+    this.currentPageChange.emit(this.currentPage()); 
   }
 
   nextPage() {
     if (this.currentPage() < this.totalPages()) {
       this.currentPage.update((prev) => prev + 1);
-      this.currentPageChange.emit(this.currentPage()); // Эмитируем событие
+      this.currentPageChange.emit(this.currentPage()); 
     }
   }
 
   previousPage() {
     if (this.currentPage() > 1) {
       this.currentPage.update((prev) => prev - 1);
-      this.currentPageChange.emit(this.currentPage()); // Эмитируем событие
+      this.currentPageChange.emit(this.currentPage()); 
     }
   }
 
   goToPage(page: number) {
-    this.currentPage.update(() => page); // Переход на конкретную страницу
-    this.currentPageChange.emit(this.currentPage()); // Эмитируем событие
+    this.currentPage.update(() => page); 
+    this.currentPageChange.emit(this.currentPage()); 
   }
 }
