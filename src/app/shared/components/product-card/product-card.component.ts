@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Product } from '../../../core/interfaces/product.interface';
 import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-card',
@@ -11,7 +12,20 @@ import { SvgIconComponent } from '../svg-icon/svg-icon.component';
   styleUrl: './product-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProductCardComponent {
+export class ProductCardComponent implements OnInit {
   @Input() product: Product | null = null;
+  productId : string | undefined = ''
+  constructor(private router: Router) {} 
+
+
+  ngOnInit(): void {
+    console.log(this.product);
+    
+    this.productId = this.product?.id
+  }
   
+  goToProduct(productId: string | undefined) {
+    this.router.navigate(['/shop', productId]);
+  }
+
 }
