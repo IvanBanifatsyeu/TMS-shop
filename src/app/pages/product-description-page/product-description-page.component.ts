@@ -10,11 +10,12 @@ import { Product } from '../../core/interfaces/product.interface';
 import { ActivatedRoute } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
+import { StarsGeneratorComponent } from '../../shared/components/stars-generator/stars-generator.component';
 
 @Component({
   selector: 'app-product-description-page',
   standalone: true,
-  imports: [CurrencyPipe, SvgIconComponent],
+  imports: [CurrencyPipe, SvgIconComponent, StarsGeneratorComponent],
   templateUrl: './product-description-page.component.html',
   styleUrl: './product-description-page.component.scss',
   // changeDetection: ChangeDetectionStrategy.OnPush,
@@ -36,7 +37,6 @@ export class ProductDescriptionPageComponen implements OnInit {
         return product.id === this.id;
       });
       this.imgUrl = this.product?.imgUrl;
-      console.log(' ngOnInit',this.product?.imgUrl);
     });
 
     

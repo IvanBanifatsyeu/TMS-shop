@@ -1,0 +1,13 @@
+.stars-generator {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    column-gap: 2px;
+}
+
+.star {
+    color: var(--gold-color);
+    width: 15px;
+    height: 15px;
+}

@@ -4,8 +4,16 @@
       <img [src]="imgUrl" alt="img of product" class="img-conteiner__image" />
     </div>
     <div class="product__info info">
-      <h1 class="info__model">{{ product?.model }}</h1>
-      <p class="info__rating">{{ product?.rating }} - rating</p>
+      <div class="info__model-curColor model-curColor">
+        <h1 class="model-curColor__model">{{ product?.model }}</h1>
+        <p class="model-curColor__curColor">({{ product?.curColor }})</p>
+      </div>
+      <div class="info__rating-wrapper rating-wrapper">
+        <p class="rating-wrapper__rating">{{ product?.rating }}</p>
+        <app-stars-generator [rating]="product?.rating ">
+          class="rating-wrapper__stars"
+        ></app-stars-generator>
+      </div>
       <p class="info__price">{{ product?.price | currency }}</p>
       <div class="info__colors colors">
         <p class="colors__title">color</p>
