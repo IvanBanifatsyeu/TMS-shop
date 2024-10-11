@@ -45,8 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   translate = inject(TranslateService);
   currentRoute = signal<string>(''); 
   subscription!: Subscription;
-
-  constructor(private router: Router) {}
+  router= inject(Router);
 
   ngOnInit(): void {
     this.subscription = this.router.events

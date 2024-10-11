@@ -34,8 +34,7 @@ export class ProductDescriptionPageComponen implements OnInit {
   imgUrl: string | undefined = '';
   id: string | null = '';
   destroyRef = inject(DestroyRef);
-
-  constructor(private route: ActivatedRoute) {}
+  route = inject(ActivatedRoute);
 
   ngOnInit(): void {
     this.productsFirebaseService

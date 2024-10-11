@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core';
 import { Product } from '../../../core/interfaces/product.interface';
 import { CommonModule } from '@angular/common';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
@@ -15,8 +15,7 @@ import { Router } from '@angular/router';
 export class ProductCardComponent implements OnInit {
   @Input() product: Product | null = null;
   productId : string | undefined = ''
-  constructor(private router: Router) {} 
-
+  router = inject(Router)
 
   ngOnInit(): void {
     this.productId = this.product?.id
