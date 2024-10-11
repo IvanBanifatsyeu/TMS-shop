@@ -1,1 +1,42 @@
-<p>product-description-page works!</p>
+<main class="product-description-page">
+  <section class="product-description-page__product product">
+    <div class="product__img-conteiner img-conteiner">
+      <img [src]="imgUrl" alt="img of product" class="img-conteiner__image" />
+    </div>
+    <div class="product__info info">
+      <h1 class="info__model">{{ product?.model }}</h1>
+      <p class="info__rating">{{ product?.rating }} - rating</p>
+      <p class="info__price">{{ product?.price | currency }}</p>
+      <div class="info__colors colors">
+        <p class="colors__title">color</p>
+        <div class="colors__colors-list">
+          @for(color of product?.color; track $index) {
+
+          <svg
+            icon="color"
+            class="colors-list__icon"
+            [style.color]="'var(--svg-' + color + ')'"
+          ></svg>
+          }
+        </div>
+      </div>
+      <div class="info__sizes sizes">
+        <p class="sizes__title">sizes</p>
+        <div class="sizes__sizes-list sizes-list">
+          @for(size of product?.sizes; track $index) {
+          <div class="sizes-list__size">{{ size }}</div>
+
+          }
+        </div>
+      </div>
+      <div class="info__buttons buttons">
+        <button class="buttons__button">Add To Cart</button>
+        <button class="buttons__button">Add To Wishlist</button>
+      </div>
+      <div class="info__description description">
+        <h2 class="description__title">Product Description</h2>
+        <p class="description__text">{{ product?.description }}</p>
+      </div>
+    </div>
+  </section>
+</main>
