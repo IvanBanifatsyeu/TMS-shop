@@ -27,15 +27,13 @@ export class StarsGeneratorComponent implements OnChanges {
     for (let i = 1; i <= 5; i++) {
      if(num >=0.9) {
        this.arrStars.push('star_fill');
-     } else if (num >= 0.5) {
+     } else if (num >= 0.4) {
       this.arrStars.push('star_half');
      } else {
       this.arrStars.push('star-empty');
      }
      num--;
     }
-    console.log(this.arrStars);
-    
     }
   }
 }

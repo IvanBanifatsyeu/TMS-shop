@@ -68,19 +68,15 @@
         align-items: center;
         justify-content: start;
         flex-wrap: wrap;
-        column-gap: 5px;
+        column-gap: 6px;
         margin-bottom: 20px;
 
         .rating-wrapper__rating {
             color: var(--gold-color);
-            font-size: 14px;
-            font-weight: 600;
-            line-height: 28px;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 32px;
             letter-spacing: 0.2px;
-        }
-
-        .rating-wrapper__stars {
-            border: 1px solid red;
         }
     }
 

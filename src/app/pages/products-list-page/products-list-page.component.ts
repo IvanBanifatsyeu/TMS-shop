@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   inject,
   OnInit,
   signal,
@@ -13,8 +14,13 @@ import { ProductFirebaseService } from '../../core/services/product-firebase.ser
 import { Product } from '../../core/interfaces/product.interface';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
-import { ITEM_FOR_PAGE_COLUMN_LAYOUT, ITEM_FOR_PAGE_ROW_LAYOUT } from '../../core/constants/ui-constants';
-import { LogPipe } from "../../shared/pipes/log.pipe";
+import {
+  ITEM_FOR_PAGE_COLUMN_LAYOUT,
+  ITEM_FOR_PAGE_ROW_LAYOUT,
+} from '../../core/constants/ui-constants';
+import { LogPipe } from '../../shared/pipes/log.pipe';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-products-list-page',
@@ -25,55 +31,59 @@ import { LogPipe } from "../../shared/pipes/log.pipe";
     CommonModule,
     ProductCardComponent,
     PaginationComponent,
-    LogPipe
-],
+    LogPipe,
+  ],
   templateUrl: './products-list-page.component.html',
   styleUrl: './products-list-page.component.scss',
-   changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class ProductsListPageComponent implements OnInit {
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
-
   productsList = signal<Product[]>([]); // List of products on server
   layoutColumn = signal(true); // selected layout (rows or columns)
-  currentPage = signal(1); 
-  itemsPerPage = computed(() => (this.layoutColumn() ? ITEM_FOR_PAGE_COLUMN_LAYOUT : ITEM_FOR_PAGE_ROW_LAYOUT)); 
+  currentPage = signal(1);
+  itemsPerPage = computed(() =>
+    this.layoutColumn() ? ITEM_FOR_PAGE_COLUMN_LAYOUT : ITEM_FOR_PAGE_ROW_LAYOUT
+  );
+  destroyRef = inject(DestroyRef);
 
   // getting a list of products from Firebase
   ngOnInit(): void {
-    this.productsFirebaseService.getProducts().subscribe((res) => {
-      this.productsList.set(res);  
+    this.productsFirebaseService
+    .getProducts()
+    .pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe((res) => {
+      this.productsList.set(res);
     });
   }
-
+  
   // calculate the elements to display depending on selected page number
   displayedItems = computed(() => {
     const startIndex = (this.currentPage() - 1) * this.itemsPerPage();
     return this.productsList().slice(
       startIndex,
       startIndex + this.itemsPerPage()
-    ); 
-  }); 
+    );
+  });
 
   // istening to pagination event and updating current page
   onPageChange(page: number) {
-     this.currentPage.set(page) 
+    this.currentPage.set(page);
   }
 
-// Switching layout to column
+  // Switching layout to column
   toggleLayoutToColumn() {
-    this.layoutColumn.set(true); 
+    this.layoutColumn.set(true);
   }
 
   // Switching layout to row
   toggleLayoutToRow() {
-    this.layoutColumn.set(false); 
+    this.layoutColumn.set(false);
   }
 
   // Returns true if layout is column
   isColumnLayout() {
-    return this.layoutColumn(); 
+    return this.layoutColumn();
   }
 }
