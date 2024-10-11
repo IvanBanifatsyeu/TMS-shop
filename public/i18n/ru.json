@@ -26,8 +26,15 @@
     "LATEST_PRODUCTS": "Последние товары"
   },
   "PRODUCTS_LIST_PAGE": {
-    "INTRO_SUBTITLE": "ЛЕТО 2020",
-    "INTRO_TITLE": "Мода",
-    "INTRO_DESCRIPTION": "Найдите идеальный стиль"
-}
+  "INTRO_SUBTITLE": "ЛЕТО 2020",
+  "INTRO_TITLE": "Мода",
+  "INTRO_DESCRIPTION": "Найдите идеальный стиль"
+  },
+  "PRODUCT_DESCRIPTION_PAGE": {
+  "COLOR": "Цвет",
+  "SIZE": "Размер",
+  "ADD_TO_CART": "Добавить в корзину",
+  "ADD_TO_WISHLIST": "Добавить в избранное",
+  "PRODUCT_DESCRIPTION": "Описание Товара"
+  }
 }

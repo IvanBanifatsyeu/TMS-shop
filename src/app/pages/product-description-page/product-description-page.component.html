@@ -16,7 +16,7 @@
       </div>
       <p class="info__price">{{ product?.price | currency }}</p>
       <div class="info__colors colors">
-        <p class="colors__title">Color</p>
+        <p class="colors__title">{{"PRODUCT_DESCRIPTION_PAGE.COLOR" | translate}}</p>
         <div class="colors__colors-list">
           @for(color of product?.color; track $index) {
 
@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="info__sizes sizes">
-        <p class="sizes__title">Sizes</p>
+        <p class="sizes__title">{{"PRODUCT_DESCRIPTION_PAGE.SIZE" | translate}}</p>
         <div class="sizes__sizes-list sizes-list">
           @for(size of product?.sizes; track $index) {
           <div class="sizes-list__size">{{ size }}</div>
@@ -38,11 +38,11 @@
         </div>
       </div>
       <div class="info__buttons buttons">
-        <button class="buttons__button">Add To Cart</button>
-        <button class="buttons__button">Add To Wishlist</button>
+        <button class="buttons__button">{{"PRODUCT_DESCRIPTION_PAGE.ADD_TO_WISHLIST" | translate}}</button>
+        <button class="buttons__button">{{"PRODUCT_DESCRIPTION_PAGE.ADD_TO_CART" | translate}}</button>
       </div>
       <div class="info__description description">
-        <h2 class="description__title">Product Description</h2>
+        <h2 class="description__title">{{"PRODUCT_DESCRIPTION_PAGE.PRODUCT_DESCRIPTION" | translate}}</h2>
         <p class="description__text">{{ product?.description }}</p>
       </div>
     </div>

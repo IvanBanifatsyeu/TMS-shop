@@ -4,7 +4,7 @@ import {
   inject,
   OnInit,
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductFirebaseService } from '../../core/services/product-firebase.service';
 import { Product } from '../../core/interfaces/product.interface';
 import { ActivatedRoute } from '@angular/router';
@@ -15,7 +15,7 @@ import { StarsGeneratorComponent } from '../../shared/components/stars-generator
 @Component({
   selector: 'app-product-description-page',
   standalone: true,
-  imports: [CurrencyPipe, SvgIconComponent, StarsGeneratorComponent],
+  imports: [CurrencyPipe, SvgIconComponent, StarsGeneratorComponent, TranslateModule],
   templateUrl: './product-description-page.component.html',
   styleUrl: './product-description-page.component.scss',
   // changeDetection: ChangeDetectionStrategy.OnPush,

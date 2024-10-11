@@ -5,7 +5,7 @@
 }
 
 .product-description-page {
-    padding: 30px 10% 60px;
+    padding: 30px 6% 60px;
 }
 
 .product {
@@ -150,11 +150,12 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        gap: 10px;
+        gap: 5px;
         flex-wrap: wrap;
+        margin-bottom: 35px;
 
         .buttons__button {
-            width: 150px;
+            width: 180px;
             height: 40px;
             border: none;
             color: var(--light-color);
@@ -165,7 +166,9 @@
             background-color: var(--light-blue-color);
             border-radius: 5px;
             cursor: pointer;
-            margin-bottom: 35px;
+           
+            padding: 0 5px;
+            
 
             &:hover {
                 filter: brightness(1.2);

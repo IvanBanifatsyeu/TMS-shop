@@ -14,6 +14,7 @@ import { Product } from '../../core/interfaces/product.interface';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 import { ITEM_FOR_PAGE_COLUMN_LAYOUT, ITEM_FOR_PAGE_ROW_LAYOUT } from '../../core/constants/ui-constants';
+import { LogPipe } from "../../shared/pipes/log.pipe";
 
 @Component({
   selector: 'app-products-list-page',
@@ -24,7 +25,8 @@ import { ITEM_FOR_PAGE_COLUMN_LAYOUT, ITEM_FOR_PAGE_ROW_LAYOUT } from '../../cor
     CommonModule,
     ProductCardComponent,
     PaginationComponent,
-  ],
+    LogPipe
+],
   templateUrl: './products-list-page.component.html',
   styleUrl: './products-list-page.component.scss',
    changeDetection: ChangeDetectionStrategy.OnPush
