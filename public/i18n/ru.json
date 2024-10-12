@@ -35,6 +35,7 @@
   "SIZE": "Размер",
   "ADD_TO_CART": "Добавить в корзину",
   "ADD_TO_WISHLIST": "Добавить в избранное",
-  "PRODUCT_DESCRIPTION": "Описание Товара"
+  "PRODUCT_DESCRIPTION": "Описание Товара",
+    "SEARCH_FOR_PRODUCTS": "Поиск товара"
   }
 }

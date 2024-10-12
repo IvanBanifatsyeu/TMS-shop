@@ -20,7 +20,8 @@ import {
 } from '../../core/constants/ui-constants';
 import { LogPipe } from '../../shared/pipes/log.pipe';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { finalize } from 'rxjs';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-products-list-page',
@@ -32,6 +33,7 @@ import { finalize } from 'rxjs';
     ProductCardComponent,
     PaginationComponent,
     LogPipe,
+    ReactiveFormsModule,
   ],
   templateUrl: './products-list-page.component.html',
   styleUrl: './products-list-page.component.scss',
@@ -47,17 +49,23 @@ export class ProductsListPageComponent implements OnInit {
     this.layoutColumn() ? ITEM_FOR_PAGE_COLUMN_LAYOUT : ITEM_FOR_PAGE_ROW_LAYOUT
   );
   destroyRef = inject(DestroyRef);
-
-  // getting a list of products from Firebase
+  search = new FormControl('');
+ 
   ngOnInit(): void {
+   
     this.productsFirebaseService
-    .getProducts()
-    .pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe((res) => {
-      this.productsList.set(res);
-    });
+      .getProducts()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((res) => {
+        // console.log('this.productsFirebaseService.getProducts()', this.productsFirebaseService.getProducts());
+        this.productsList.set(res);
+      });
+    this.search.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+    .subscribe((value) => {
+    //  console.log('this.search.valueChanges', this.search.valueChanges);
+    })
   }
-  
+
   // calculate the elements to display depending on selected page number
   displayedItems = computed(() => {
     const startIndex = (this.currentPage() - 1) * this.itemsPerPage();

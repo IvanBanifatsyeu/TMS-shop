@@ -94,9 +94,58 @@
     }
 }
 
-//  -----------------------------------------
+//  -- sidebar
 
 .sidebar {
-    border: 1px solid green;
-    background-color: grey;
+    border: 1px solid var(--light-grey-color);
+    background-color: var(--light-color);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding: 18px;
+    row-gap: 20px;
+    box-shadow: 0px 2px 4px 0px #0000001A;
+
+
+    .search-wrapper {
+        position: relative;
+
+        .search {
+            width: 100%;
+            border: 1px solid var(--light-grey-color);
+            border-radius: 7px;
+            padding: 18px 46px 18px 23px;
+            color: var(--medium-grey-color);
+            background-color: var(--grey-light-bgn-color);
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 18px;
+            letter-spacing: 0.1px;
+
+            &::placeholder {
+                font-weight: 500;
+            }
+
+            &:focus {
+            
+                outline: 2px solid var(--medium-grey-color);
+            }
+
+
+        }
+
+        &:after {
+            content: '';
+            width: 20px;
+            height: 22px;
+            position: absolute;
+            top: 5px;
+            right:  15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-image: url('/assets/svg/loupe.svg');
+        }
+    }
+
 }
