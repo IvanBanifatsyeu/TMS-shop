@@ -19,7 +19,11 @@
           placeholder="{{'PRODUCT_DESCRIPTION_PAGE.SEARCH_FOR_PRODUCTS' | translate}}"
           [formControl]="search"
         />
+        <div *ngIf="search.errors?.['noCyrillic']" class="search-wrapper__error">
+          Don't use Cyrillic
+        </div>
       </div>
+ 
     </aside>
     <section class="product-wrapper__products-container products-container">
       <div class="products-container__layout-switcher layout-switcher">

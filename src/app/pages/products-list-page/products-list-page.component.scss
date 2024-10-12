@@ -146,6 +146,17 @@
             transform: translateY(-50%);
             background-image: url('/assets/svg/loupe.svg');
         }
+
+        .search-wrapper__error {
+            position: absolute;
+            top:-45px;
+            left: 20px;
+            color:red;
+            background-color: var(--grey-light-bgn-color);
+            border: 1px solid var(--medium-grey-color);
+            padding: 4px;
+            border-radius: 5px;
+        }
     }
 
 }

@@ -21,8 +21,8 @@ import {
 import { LogPipe } from '../../shared/pipes/log.pipe';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { combineLatest, debounceTime, map, Observable, startWith } from 'rxjs';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { combineLatest, debounceTime, map, startWith } from 'rxjs';
+import { noCyrillicValidator } from '../../core/validators/noCyrillicValidator';
 
 @Component({
   selector: 'app-products-list-page',
@@ -50,7 +50,7 @@ export class ProductsListPageComponent implements OnInit {
     this.layoutColumn() ? ITEM_FOR_PAGE_COLUMN_LAYOUT : ITEM_FOR_PAGE_ROW_LAYOUT
   );
   destroyRef = inject(DestroyRef);
-  search = new FormControl('');
+  search = new FormControl('', [noCyrillicValidator()]);
 
   ngOnInit(): void {
     const firebaseData$ = this.productsFirebaseService
