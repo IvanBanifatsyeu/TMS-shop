@@ -21,7 +21,8 @@ import {
 import { LogPipe } from '../../shared/pipes/log.pipe';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { combineLatest, debounceTime, map, Observable, startWith } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-products-list-page',
@@ -42,7 +43,7 @@ import { Observable } from 'rxjs';
 export class ProductsListPageComponent implements OnInit {
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
-  productsList = signal<Product[]>([]); // List of products on server
+  filteredData = signal<Product[]>([]); // List of products on server
   layoutColumn = signal(true); // selected layout (rows or columns)
   currentPage = signal(1);
   itemsPerPage = computed(() =>
@@ -50,32 +51,45 @@ export class ProductsListPageComponent implements OnInit {
   );
   destroyRef = inject(DestroyRef);
   search = new FormControl('');
- 
+
   ngOnInit(): void {
-   
-    this.productsFirebaseService
+    const firebaseData$ = this.productsFirebaseService
       .getProducts()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((res) => {
-        // console.log('this.productsFirebaseService.getProducts()', this.productsFirebaseService.getProducts());
-        this.productsList.set(res);
+      .pipe(takeUntilDestroyed(this.destroyRef));
+
+    const searchTerm$ = this.search.valueChanges.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      startWith(''),
+      map((value) => value!.trim().toLowerCase()),
+      debounceTime(300)
+    );
+
+    combineLatest([firebaseData$, searchTerm$])
+      .pipe(
+        map(([firebaseData, searchTerm]) => {
+          if (!searchTerm) {
+            return firebaseData;
+          }
+          return firebaseData.filter((item: any) =>
+            item.model.toLowerCase().includes(searchTerm)
+          );
+        })
+      )
+      .subscribe((filteredData) => {
+        this.filteredData.set(filteredData);
       });
-    this.search.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
-    .subscribe((value) => {
-    //  console.log('this.search.valueChanges', this.search.valueChanges);
-    })
   }
 
   // calculate the elements to display depending on selected page number
   displayedItems = computed(() => {
     const startIndex = (this.currentPage() - 1) * this.itemsPerPage();
-    return this.productsList().slice(
+    return this.filteredData().slice(
       startIndex,
       startIndex + this.itemsPerPage()
     );
   });
 
-  // istening to pagination event and updating current page
+  // listening to pagination event and updating current page
   onPageChange(page: number) {
     this.currentPage.set(page);
   }
@@ -83,11 +97,13 @@ export class ProductsListPageComponent implements OnInit {
   // Switching layout to column
   toggleLayoutToColumn() {
     this.layoutColumn.set(true);
+    this.currentPage.set(1);
   }
 
   // Switching layout to row
   toggleLayoutToRow() {
     this.layoutColumn.set(false);
+    this.currentPage.set(1);
   }
 
   // Returns true if layout is column
