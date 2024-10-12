@@ -7,6 +7,7 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
 import { ProductFirebaseService } from '../../core/services/product-firebase.service';
 import { Product } from '../../core/interfaces/product.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     CommonModule,
     TranslateModule,
     ProductCardComponent,
+    RouterModule
   ],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.scss',

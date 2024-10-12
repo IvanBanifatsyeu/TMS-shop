@@ -24,5 +24,4 @@ export class ProductCardComponent implements OnInit {
   goToProduct(productId: string | undefined) {
     this.router.navigate(['/shop', productId]);
   }
-
 }
