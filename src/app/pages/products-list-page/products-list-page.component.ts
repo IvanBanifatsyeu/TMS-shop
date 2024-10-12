@@ -23,6 +23,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { combineLatest, debounceTime, map, startWith } from 'rxjs';
 import { noCyrillicValidator } from '../../core/validators/noCyrillicValidator';
+import {CategoryService} from '../../core/services/category.service';
 
 @Component({
   selector: 'app-products-list-page',
@@ -41,6 +42,8 @@ import { noCyrillicValidator } from '../../core/validators/noCyrillicValidator';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsListPageComponent implements OnInit {
+  categoryService: CategoryService = inject(CategoryService);
+  categoryList = this.categoryService.categoryList;
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   filteredData = signal<Product[]>([]); // List of products on server
@@ -51,6 +54,8 @@ export class ProductsListPageComponent implements OnInit {
   );
   destroyRef = inject(DestroyRef);
   search = new FormControl('', [noCyrillicValidator()]);
+
+  categoryFilter_s = signal<string[]>([])
 
   ngOnInit(): void {
     const firebaseData$ = this.productsFirebaseService
@@ -109,5 +114,19 @@ export class ProductsListPageComponent implements OnInit {
   // Returns true if layout is column
   isColumnLayout() {
     return this.layoutColumn();
+  }
+
+  toggleCategoryCheckbox (event: Event, categoryItem: any ) {
+    // console.log('toggleCategoryCheckbox', event, categoryItem);
+    const isChecked = (event.target as HTMLInputElement).checked;
+    if (isChecked) {
+      this.categoryFilter_s.update((prev) => [...prev, categoryItem.category]);
+    } else {
+      this.categoryFilter_s.update((prev) => prev.filter((item) => item !== categoryItem.category));
+    }
+
+    console.log(this.categoryFilter_s());
+    
+    
   }
 }

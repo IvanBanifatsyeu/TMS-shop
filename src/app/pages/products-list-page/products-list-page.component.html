@@ -16,14 +16,39 @@
         <input
           class="search-wrapper__search search"
           type="text"
-          placeholder="{{'PRODUCT_DESCRIPTION_PAGE.SEARCH_FOR_PRODUCTS' | translate}}"
+          placeholder="{{
+            'PRODUCT_DESCRIPTION_PAGE.SEARCH_FOR_PRODUCTS' | translate
+          }}"
           [formControl]="search"
         />
-        <div *ngIf="search.errors?.['noCyrillic']" class="search-wrapper__error">
-          {{"PRODUCTS_LIST_PAGE.DONT_USE_CYRILLIC" | translate}}
+        <div
+          *ngIf="search.errors?.['noCyrillic']"
+          class="search-wrapper__error"
+        >
+          {{ "PRODUCTS_LIST_PAGE.DONT_USE_CYRILLIC" | translate }}
         </div>
       </div>
- 
+      <div class="sidebar__filter-category-wr filter-category-wr">
+        @for (categoryItem of categoryList; track categoryItem.name) {
+        <div
+          class="filter-category-wr__input-container-cat input-container-cat"
+        >
+          <input
+            [id]="categoryItem.name"
+            type="checkbox"
+            class="input-container-cat__checkbox-cat"
+            (change) = "toggleCategoryCheckbox($event, categoryItem)"
+          />
+          <label
+            [for]="categoryItem.name"
+            class="input-container-cat__label-cat label-cat"
+          >
+            <p class="label-cat__text">{{ categoryItem.name | translate }}</p>
+            <svg icon="plus" class="label-cat__plus-icon"></svg>
+          </label>
+        </div>
+        }
+      </div>
     </aside>
     <section class="product-wrapper__products-container products-container">
       <div class="products-container__layout-switcher layout-switcher">
