@@ -20,7 +20,7 @@
           [formControl]="search"
         />
         <div *ngIf="search.errors?.['noCyrillic']" class="search-wrapper__error">
-          Don't use Cyrillic
+          {{"PRODUCTS_LIST_PAGE.DONT_USE_CYRILLIC" | translate}}
         </div>
       </div>
  

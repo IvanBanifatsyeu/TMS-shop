@@ -28,7 +28,8 @@
   "PRODUCTS_LIST_PAGE": {
   "INTRO_SUBTITLE": "ЛЕТО 2020",
   "INTRO_TITLE": "Мода",
-  "INTRO_DESCRIPTION": "Найдите идеальный стиль"
+  "INTRO_DESCRIPTION": "Найдите идеальный стиль",
+  "DONT_USE_CYRILLIC": "Не используй кириллицу"
   },
   "PRODUCT_DESCRIPTION_PAGE": {
   "COLOR": "Цвет",
@@ -37,5 +38,6 @@
   "ADD_TO_WISHLIST": "Добавить в избранное",
   "PRODUCT_DESCRIPTION": "Описание Товара",
     "SEARCH_FOR_PRODUCTS": "Поиск товара"
+    
   }
 }
