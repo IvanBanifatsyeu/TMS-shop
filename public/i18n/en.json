@@ -3,6 +3,7 @@
     "HOME": "Home",
     "SHOP": "Shop"
   },
+
   "HEADER": {
     "MY_ACCOUNT": "My Account"
   },
@@ -10,6 +11,7 @@
    "ACCOUNT_SETTINGS": "Account Settings",
    "SWITCH_LANGUAGES": "Switch languages"
   },
+
   "CATEGORY_CARD": {
     "HAT": "HAT",
     "BAGS": "BAGS",
@@ -17,6 +19,7 @@
     "SHOES": "SHOES",
     "CLOTHES": "CLOTHES"
   },
+
   "HOME_PAGE": {
     "INTRO_SUBTITLE": "SUMMER 2020",
     "INTRO_TITLE": "New Collection",
@@ -25,20 +28,35 @@
     "FEATURED_PRODUCTS": "Featured Products",
     "LATEST_PRODUCTS": "Latest Products"
   },
+
   "PRODUCTS_LIST_PAGE": {
   "INTRO_SUBTITLE": "SUMMER 2020",
   "INTRO_TITLE": "Fashion",
   "INTRO_DESCRIPTION": "Find The Perfect style for you",
-  "DONT_USE_CYRILLIC":"Don't use Cyrillic"
+  "DONT_USE_CYRILLIC":"Don't use Cyrillic",
+  "SEARCH_FOR_PRODUCTS": "Search for products"
   },
+
   "PRODUCT_DESCRIPTION_PAGE": {
   "COLOR": "Color",
   "SIZE": "Size",
   "ADD_TO_CART": "Add To Cart",
   "ADD_TO_WISHLIST": "Add To Wishlist",
-  "PRODUCT_DESCRIPTION": "Product Description",
-  "SEARCH_FOR_PRODUCTS": "Search for products",
-  "DONT_USE_CYRILLIC":"Don't use Cyrillic"
+  "PRODUCT_DESCRIPTION": "Product Description"
+  
+  },
+
+  "FILTER" : {
+    "COLOR": "Color",
+    "RED": "Red",
+    "BLUE": "Blue",
+    "WHITE": "White",
+    "GREY": "Grey",
+    "YELLOW": "Yellow",
+    "BLACK": "Black",
+    "BROWN": "Brown",
+    "GREEN": "Green"
+
   }
 }
 

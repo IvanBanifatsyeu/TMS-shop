@@ -168,9 +168,9 @@
         row-gap: 20px;
 
         .input-container-cat {
-           
+
             &:hover {
-                transform:translateX(1px);
+                transform: translateX(1px);
                 filter: contrast(70%);
             }
 
@@ -195,14 +195,14 @@
                 cursor: pointer;
                 color: #F1F1F1;
                 --plus-color: #BDBDBD;
-                
+
             }
 
             .input-container-cat__checkbox-cat {
                 display: none;
             }
 
-            .input-container-cat__checkbox-cat:checked +.label-cat{
+            .input-container-cat__checkbox-cat:checked+.label-cat {
                 color: var(--blue-active-color);
 
                 & .label-cat__plus-icon {
@@ -210,14 +210,86 @@
                     --plus-color: white;
                 }
             }
-
-           
-
-
-
-
-
         }
+    }
+
+
+    .filter-color-wr {
+        width: 100%;
+        border: 1px solid var(--light-grey-color);
+        border-radius: 5px;
+        background-color: var(--grey-light-bgn-color);
+        padding: 30px 35px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+
+        .filter-color-wr__title {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 24px;
+            letter-spacing: 0.1px;
+            color: var(--dark-blue-color);
+            margin-bottom: 20px;
+        }
+
+        .color-list {
+            display: flex;
+            flex-direction: column;
+            row-gap: 15px;
+
+            .color-conteiner {
+                display: flex;
+                flex-direction: row;
+
+                &:hover {
+                    transform: translateX(1px);
+                    filter: contrast(70%);
+                }
+
+                .input-color:checked + .label-color .color-title,
+                .input-color:checked + .label-color .color-icon {
+                    color: var(--blue-active-color);
+                    
+                }
+
+                .input-color {
+                    display: none;
+                }
+
+
+                .label-color {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: start;
+                    width: 100%;
+                    cursor: pointer;
+                    column-gap: 15px;
+
+
+                    .color-icon {
+                        width: 26px;
+                        height: 26px;
+                        color: #DCDCDC;
+                    }
+
+                    .color-title {
+
+                        font-size: 14px;
+                        font-weight: 600;
+                        line-height: 28px;
+                        letter-spacing: 0.2px;
+                        color: var(--medium-grey-color);
+
+                    }
+                }
+
+            }
+        }
+
+
+
 
 
 
@@ -225,9 +297,9 @@
     }
 
 
+
+
 }
 
-svg {
-    --main-color: #ff6347; /* Цвет томата */
-    --secondary-color: #4682b4; /* Цвет стали */
-  }
+
+

@@ -3,13 +3,16 @@
   "HOME": "Главная",
   "SHOP": "Магазин"
   }, 
+
   "HEADER": {
     "MY_ACCOUNT": "Мой аккаунт"
   },
+
   "ACCOUNT-POPUP": {
     "ACCOUNT_SETTINGS": "Настройки аккаунта",
     "SWITCH_LANGUAGES": "Переключить язык"
   },
+
   "CATEGORY_CARD":{
     "HAT": "ШАПКИ",
     "BAGS": "СУМКИ",
@@ -17,6 +20,7 @@
     "SHOES": "ОБУВЬ",
     "CLOTHES": "ОДЕЖДА"
   },
+
   "HOME_PAGE": {
     "INTRO_SUBTITLE": "ЛЕТО 2020",
     "INTRO_TITLE": "Новая коллекция",
@@ -25,19 +29,34 @@
     "FEATURED_PRODUCTS": "Популярные товары",
     "LATEST_PRODUCTS": "Последние товары"
   },
+
   "PRODUCTS_LIST_PAGE": {
   "INTRO_SUBTITLE": "ЛЕТО 2020",
   "INTRO_TITLE": "Мода",
   "INTRO_DESCRIPTION": "Найдите идеальный стиль",
-  "DONT_USE_CYRILLIC": "Не используй кириллицу"
+  "DONT_USE_CYRILLIC": "Не используй кириллицу",
+  "SEARCH_FOR_PRODUCTS": "Поиск товара"
+
   },
+
   "PRODUCT_DESCRIPTION_PAGE": {
   "COLOR": "Цвет",
   "SIZE": "Размер",
   "ADD_TO_CART": "Добавить в корзину",
   "ADD_TO_WISHLIST": "Добавить в избранное",
-  "PRODUCT_DESCRIPTION": "Описание Товара",
-    "SEARCH_FOR_PRODUCTS": "Поиск товара"
-    
+  "PRODUCT_DESCRIPTION": "Описание Товара"
+  
+  },
+
+  "FILTER": {
+   "COLOR": "Цвет",
+   "RED": "Красный",
+   "BLUE": "Синий",
+   "WHITE": "Белый",
+   "GREY": "Серый",
+   "YELLOW": "Желтый",
+   "BLACK": "Черный",
+   "BROWN": "Коричневый",
+   "GREEN": "Зелый"
   }
 }

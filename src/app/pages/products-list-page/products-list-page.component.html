@@ -12,13 +12,12 @@
   </section>
   <div class="products-list-page__product-wrapper product-wrapper">
     <aside class="product-wrapper__sidebar sidebar">
-      
       <div class="sidebar__search-wrapper search-wrapper">
         <input
           class="search-wrapper__search search"
           type="text"
           placeholder="{{
-            'PRODUCT_DESCRIPTION_PAGE.SEARCH_FOR_PRODUCTS' | translate
+            'PRODUCTS_LIST_PAGE.SEARCH_FOR_PRODUCTS' | translate
           }}"
           [formControl]="search"
         />
@@ -39,7 +38,7 @@
             type="checkbox"
             class="input-container-cat__checkbox-cat"
             [checked]="categorySelected_s().includes(categoryItem.category)"
-            (change) = "toggleCategoryCheckbox($event, categoryItem)"
+            (change)="toggleCategoryCheckbox($event, categoryItem)"
           />
           <label
             [for]="categoryItem.name"
@@ -51,7 +50,25 @@
         </div>
         }
       </div>
-  
+      <div class="sidebar__filter-color-wr filter-color-wr">
+        <p class="filter-color-wr__title">{{ "FILTER.COLOR" | translate }}</p>
+        <div class="filter-color-wr__color-list color-list">
+          @for (color of colorList; track color.value) {
+          <div class="color-list__color-conteiner color-conteiner">
+            <input
+              [id]="color.value"
+              type="checkbox"
+              class="color-conteiner__input-color input-color"
+            />
+            <Label [for]="color.value" class="color-conteiner__label-color label-color">
+              <svg class="label-color__color-icon color-icon" icon="color-icon"></svg>
+              <p class="label-color__color-title color-title">{{ color.title | translate }}</p>
+            </Label>
+          </div>
+
+          }
+        </div>
+      </div>
     </aside>
     <section class="product-wrapper__products-container products-container">
       <div class="products-container__layout-switcher layout-switcher">

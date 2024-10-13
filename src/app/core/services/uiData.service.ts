@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { CategoryItem } from '../interfaces/categoryItem.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CategoryService {
-  categoryList = [
+export class UiDataService {
+  categoryList: CategoryItem[] = [
     {
       name: 'CATEGORY_CARD.HAT',
       imgUrl: 'assets/imgs/category/hat.png',
@@ -32,4 +33,16 @@ export class CategoryService {
       category: 'clothes',
     },
   ];
+
+  colorList: { title: string; value: string; }[] = [
+   {title: 'FILTER.RED', value: "red"},
+   {title: 'FILTER.WHITE', value: "white"},
+   {title: 'FILTER.BLUE', value: "blue"},
+   {title: 'FILTER.GREY', value: "grey"},
+   {title: 'FILTER.YELLOW', value: "yellow"},
+   {title: 'FILTER.BLACK', value: "black"},
+   {title: 'FILTER.GREEN', value: "green"},
+   {title: 'FILTER.BROWN', value: "brown"},
+  ];
+
 }

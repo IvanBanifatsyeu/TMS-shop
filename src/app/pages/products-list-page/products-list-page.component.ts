@@ -22,9 +22,9 @@ import {
 import { LogPipe } from '../../shared/pipes/log.pipe';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { combineLatest, debounceTime, finalize, map, startWith } from 'rxjs';
+import { combineLatest, debounceTime, map, startWith } from 'rxjs';
 import { noCyrillicValidator } from '../../core/validators/noCyrillicValidator';
-import { CategoryService } from '../../core/services/category.service';
+import { UiDataService } from '../../core/services/uiData.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -44,8 +44,9 @@ import { ActivatedRoute } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsListPageComponent implements OnInit {
-  categoryService: CategoryService = inject(CategoryService);
-  categoryList = this.categoryService.categoryList;
+  uiDataService = inject(UiDataService);
+  colorList = this.uiDataService.colorList;
+  categoryList = this.uiDataService.categoryList;
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   afterSearchData_s = signal<Product[]>([]);
@@ -66,10 +67,7 @@ export class ProductsListPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        finalize(() => console.log('ngOnDestroy'))
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((params) => {
         if (params['button']) {
           this.categorySelected_s.set([params['button']]);

@@ -6,10 +6,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   imports: [],
   template: '<svg:use [attr.href]="href"></svg:use>',
   styles: [`
-    :host {
-      display: inline-block;
-      filter: drop-shadow(0px 0px 1px #737373);
-    }
+    
   `],
    changeDetection: ChangeDetectionStrategy.OnPush
 })
