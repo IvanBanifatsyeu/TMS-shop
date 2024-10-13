@@ -37,6 +37,7 @@
             [id]="categoryItem.name"
             type="checkbox"
             class="input-container-cat__checkbox-cat"
+            [checked]="categoryFilter_s().includes(categoryItem.category)"
             (change) = "toggleCategoryCheckbox($event, categoryItem)"
           />
           <label

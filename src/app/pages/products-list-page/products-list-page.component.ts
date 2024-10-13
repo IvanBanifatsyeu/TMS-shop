@@ -21,9 +21,10 @@ import {
 import { LogPipe } from '../../shared/pipes/log.pipe';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { combineLatest, debounceTime, map, startWith } from 'rxjs';
+import { combineLatest, debounceTime, finalize, map, startWith } from 'rxjs';
 import { noCyrillicValidator } from '../../core/validators/noCyrillicValidator';
-import {CategoryService} from '../../core/services/category.service';
+import { CategoryService } from '../../core/services/category.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-products-list-page',
@@ -55,9 +56,25 @@ export class ProductsListPageComponent implements OnInit {
   destroyRef = inject(DestroyRef);
   search = new FormControl('', [noCyrillicValidator()]);
 
-  categoryFilter_s = signal<string[]>([])
+  categoryFilter_s = signal<string[]>([]);
+
+  buttonData: string | null = null;
+  route = inject(ActivatedRoute);
 
   ngOnInit(): void {
+   
+    this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef), finalize(() => console.log('ngOnDestroy'))).subscribe((params) => {
+      if(params['button']) {
+        this.categoryFilter_s.set([params['button']]);
+      }
+       
+       console.log('С какой кнопкой был выполнен переход:', this.buttonData);
+       
+    })
+
+
+
+    
     const firebaseData$ = this.productsFirebaseService
       .getProducts()
       .pipe(takeUntilDestroyed(this.destroyRef));
@@ -116,17 +133,17 @@ export class ProductsListPageComponent implements OnInit {
     return this.layoutColumn();
   }
 
-  toggleCategoryCheckbox (event: Event, categoryItem: any ) {
+  toggleCategoryCheckbox(event: Event, categoryItem: any) {
     // console.log('toggleCategoryCheckbox', event, categoryItem);
     const isChecked = (event.target as HTMLInputElement).checked;
     if (isChecked) {
       this.categoryFilter_s.update((prev) => [...prev, categoryItem.category]);
     } else {
-      this.categoryFilter_s.update((prev) => prev.filter((item) => item !== categoryItem.category));
+      this.categoryFilter_s.update((prev) =>
+        prev.filter((item) => item !== categoryItem.category)
+      );
     }
 
     console.log(this.categoryFilter_s());
-    
-    
   }
 }

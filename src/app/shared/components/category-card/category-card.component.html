@@ -1,3 +1,3 @@
 <div class="category-card">
-  <button class="category-card__button">{{ categoryItem.name | translate }}</button>
+  <button class="category-card__button" [routerLink]="['/shop'] " [queryParams]="{'button': categoryItem.category}">{{ categoryItem.name | translate }}</button>
 </div>
