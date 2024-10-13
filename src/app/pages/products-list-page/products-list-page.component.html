@@ -66,6 +66,7 @@
               <svg class="label-color__color-icon color-icon" icon="color-icon"></svg>
               <p class="label-color__color-title color-title">{{ color.title | translate }}</p>
             </Label>
+            <p class="color-conteiner__total-items total-items">{{calculateTotalItemsByColor(color.value) || ''}}</p>
           </div>
 
           }

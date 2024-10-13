@@ -55,8 +55,13 @@
     "YELLOW": "Yellow",
     "BLACK": "Black",
     "BROWN": "Brown",
-    "GREEN": "Green"
-
+    "GREEN": "Green",
+    "SIZE": "Size",
+    "EXTRA_LARGE": "Extra Large",
+    "LARGE": "Large",
+    "MEDIUM": "Medium",
+    "SMALL": "Small"
+    
   }
 }
 

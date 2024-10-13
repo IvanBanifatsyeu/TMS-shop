@@ -45,4 +45,11 @@ export class UiDataService {
    {title: 'FILTER.BROWN', value: "brown"},
   ];
 
+  sizeList: { title: string; value: string; }[] = [
+    {title: 'FILTER.EXTRA_LARGE', value: "XL"},
+    {title: 'FILTER.LARGE', value: "L"},
+    {title: 'FILTER.MEDIUM', value: "M"},
+    {title: 'FILTER.SMALL', value: "S"},
+   ];
+
 }

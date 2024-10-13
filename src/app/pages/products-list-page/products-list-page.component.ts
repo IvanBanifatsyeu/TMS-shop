@@ -96,6 +96,8 @@ export class ProductsListPageComponent implements OnInit {
         })
       )
       .subscribe((data) => {
+        console.log(data);
+        
         this.afterSearchData_s.set(data);
       });
   }
@@ -186,5 +188,9 @@ export class ProductsListPageComponent implements OnInit {
         prev.filter((item) => item !== color.value)
       );
     }
+  }
+
+  calculateTotalItemsByColor(TargetColor: string) {
+    return this.afterAllFiltersData_sc().filter((item: any) => item.color.includes(TargetColor)).length
   }
 }
