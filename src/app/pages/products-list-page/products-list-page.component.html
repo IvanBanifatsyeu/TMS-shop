@@ -59,6 +59,8 @@
               [id]="color.value"
               type="checkbox"
               class="color-conteiner__input-color input-color"
+              [checked]="colorSelected_s().includes(color.value)"
+              (change)="toggleColorCheckbox($event, color)"
             />
             <Label [for]="color.value" class="color-conteiner__label-color label-color">
               <svg class="label-color__color-icon color-icon" icon="color-icon"></svg>

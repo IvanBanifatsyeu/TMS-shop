@@ -59,11 +59,9 @@ export class ProductsListPageComponent implements OnInit {
   );
   destroyRef = inject(DestroyRef);
   search = new FormControl('', [noCyrillicValidator()]);
-
-  categorySelected_s = signal<string[]>([]);
-
-  buttonData: string | null = null;
   route = inject(ActivatedRoute);
+  categorySelected_s = signal<string[]>([]);
+  colorSelected_s = signal<string[]>([]);
 
   ngOnInit(): void {
     this.route.queryParams
@@ -111,10 +109,23 @@ export class ProductsListPageComponent implements OnInit {
   });
 
   afterAllFiltersData_sc = computed(() => {
-    if (this.categorySelected_s().length > 0) {
-      return this.afterSearchData_s().filter((item: any) =>
-        this.categorySelected_s().includes(item.category.toLocaleLowerCase())
-      );
+    if (
+      this.categorySelected_s().length > 0 ||
+      this.colorSelected_s().length > 0
+    ) {
+      return this.afterSearchData_s()
+        .filter((item: any) =>
+          this.categorySelected_s().length > 0
+            ? this.categorySelected_s().includes(
+                item.category.toLocaleLowerCase()
+              )
+            : true
+        )
+        .filter((item: any) =>
+          this.colorSelected_s().length > 0
+            ? this.colorSelected_s().some((color) => item.color.includes(color))
+            : true
+        );
     } else {
       return this.afterSearchData_s();
     }
@@ -161,6 +172,18 @@ export class ProductsListPageComponent implements OnInit {
     } else {
       this.categorySelected_s.update((prev) =>
         prev.filter((item) => item !== categoryItem.category)
+      );
+    }
+  }
+
+  toggleColorCheckbox(event: Event, color: any) {
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    if (isChecked) {
+      this.colorSelected_s.update((prev) => [...prev, color.value]);
+    } else {
+      this.colorSelected_s.update((prev) =>
+        prev.filter((item) => item !== color.value)
       );
     }
   }
