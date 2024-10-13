@@ -1,0 +1,21 @@
+<div class="checkbox-container">
+    <input
+      [id]="data().value"
+      type="checkbox"
+      class="checkbox-container__input "
+      [checked]="selectedArr().includes(data().value)"
+      (change) = "toggleColorCheckbox($event, data().value)"
+    />
+    <Label
+      [for]="data().value"
+      class="checkbox-container__label-wr label-wr"
+    >
+      <svg
+        class="label-wr__svg-icon svg-icon"
+        icon="color-icon"
+      ></svg>
+      <p class="label-wr__title ">
+        {{ data().title | translate }}
+      </p>
+    </Label>
+  </div>

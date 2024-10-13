@@ -26,6 +26,8 @@ import { combineLatest, debounceTime, map, startWith } from 'rxjs';
 import { noCyrillicValidator } from '../../core/validators/noCyrillicValidator';
 import { UiDataService } from '../../core/services/uiData.service';
 import { ActivatedRoute } from '@angular/router';
+import { RoundCheckboxComponent } from '../../shared/components/round-checkbox/round-checkbox.component';
+
 
 @Component({
   selector: 'app-products-list-page',
@@ -38,6 +40,7 @@ import { ActivatedRoute } from '@angular/router';
     PaginationComponent,
     LogPipe,
     ReactiveFormsModule,
+    RoundCheckboxComponent
   ],
   templateUrl: './products-list-page.component.html',
   styleUrl: './products-list-page.component.scss',
@@ -96,8 +99,6 @@ export class ProductsListPageComponent implements OnInit {
         })
       )
       .subscribe((data) => {
-        console.log(data);
-        
         this.afterSearchData_s.set(data);
       });
   }

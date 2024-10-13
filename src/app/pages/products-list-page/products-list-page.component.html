@@ -50,7 +50,7 @@
         </div>
         }
       </div>
-      <div class="sidebar__filter-color-wr filter-color-wr">
+      <!-- <div class="sidebar__filter-color-wr filter-color-wr">
         <p class="filter-color-wr__title">{{ "FILTER.COLOR" | translate }}</p>
         <div class="filter-color-wr__color-list color-list">
           @for (color of colorList; track color.value) {
@@ -62,13 +62,31 @@
               [checked]="colorSelected_s().includes(color.value)"
               (change)="toggleColorCheckbox($event, color)"
             />
-            <Label [for]="color.value" class="color-conteiner__label-color label-color">
-              <svg class="label-color__color-icon color-icon" icon="color-icon"></svg>
-              <p class="label-color__color-title color-title">{{ color.title | translate }}</p>
+            <Label
+              [for]="color.value"
+              class="color-conteiner__label-color label-color"
+            >
+              <svg
+                class="label-color__color-icon color-icon"
+                icon="color-icon"
+              ></svg>
+              <p class="label-color__color-title color-title">
+                {{ color.title | translate }}
+              </p>
             </Label>
-            <p class="color-conteiner__total-items total-items">{{calculateTotalItemsByColor(color.value) || ''}}</p>
+            <p class="color-conteiner__total-items total-items">
+              {{ calculateTotalItemsByColor(color.value) || "" }}
+            </p>
           </div>
-
+          }
+        </div>
+      </div> -->
+      <div class="sidebar__filter-color-wr filter-color-wr">
+        <p class="filter-color-wr__title">{{ "FILTER.COLOR" | translate }}</p>
+        <div class="filter-color-wr__color-list color-list">
+          @for (color of colorList; track color.value) {
+          
+            <app-round-checkbox [data]="color" [(selectedArr)] = "colorSelected_s"></app-round-checkbox>
           }
         </div>
       </div>
