@@ -16,13 +16,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './pagination.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PaginationComponent  {
+export class PaginationComponent {
   totalItems = input<number>(0);
   itemsPerPage = input<number>(20);
   currentPage = model(1);
-  totalPages = computed(()=> {
-    return Math.ceil(this.totalItems()  / this.itemsPerPage() )
-  })
+  totalPages = computed(() => {
+    return Math.ceil(this.totalItems() / this.itemsPerPage());
+  });
 
   // generating an array of pages
   pagesArray = computed(() => {
@@ -30,9 +30,10 @@ export class PaginationComponent  {
     return Array.from({ length: total }, (_, i) => i + 1);
   });
 
+
   nextPage() {
     if (this.currentPage() < this.totalPages()) {
-      this.currentPage.update((prev) => prev + 1); 
+      this.currentPage.update((prev) => prev + 1);
     }
   }
 

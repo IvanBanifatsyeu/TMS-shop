@@ -12,6 +12,7 @@
   </section>
   <div class="products-list-page__product-wrapper product-wrapper">
     <aside class="product-wrapper__sidebar sidebar">
+      
       <div class="sidebar__search-wrapper search-wrapper">
         <input
           class="search-wrapper__search search"
@@ -37,7 +38,7 @@
             [id]="categoryItem.name"
             type="checkbox"
             class="input-container-cat__checkbox-cat"
-            [checked]="categoryFilter_s().includes(categoryItem.category)"
+            [checked]="categorySelected_s().includes(categoryItem.category)"
             (change) = "toggleCategoryCheckbox($event, categoryItem)"
           />
           <label
@@ -50,6 +51,7 @@
         </div>
         }
       </div>
+  
     </aside>
     <section class="product-wrapper__products-container products-container">
       <div class="products-container__layout-switcher layout-switcher">
@@ -74,7 +76,7 @@
         class="products-container__product-gallery product-gallery"
         [ngClass]="isColumnLayout() ? 'column-layout' : 'row-layout'"
       >
-        @for (item of displayedItems(); track item.id) {
+        @for (item of displayedItems_sc(); track item.id) {
 
         <app-product-card
           [product]="item"
@@ -85,9 +87,9 @@
         }
       </div>
       <app-pagination
-        [totalItems]="filteredData().length"
-        [itemsPerPage]="itemsPerPage()"
-        [(currentPage)]="currentPage"
+        [totalItems]="afterAllFiltersData_sc().length"
+        [itemsPerPage]="itemsPerPage_sc()"
+        [(currentPage)]="currentPage_s"
       ></app-pagination>
     </section>
   </div>

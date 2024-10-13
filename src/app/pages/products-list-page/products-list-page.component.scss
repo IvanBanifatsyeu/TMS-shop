@@ -194,6 +194,7 @@
                 align-items: center;
                 cursor: pointer;
                 color: #F1F1F1;
+                --plus-color: #BDBDBD;
                 
             }
 
@@ -206,26 +207,11 @@
 
                 & .label-cat__plus-icon {
                     color: inherit;
+                    --plus-color: white;
                 }
             }
 
            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -240,3 +226,8 @@
 
 
 }
+
+svg {
+    --main-color: #ff6347; /* Цвет томата */
+    --secondary-color: #4682b4; /* Цвет стали */
+  }

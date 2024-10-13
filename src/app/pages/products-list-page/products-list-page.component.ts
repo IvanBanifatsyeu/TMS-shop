@@ -6,6 +6,7 @@ import {
   inject,
   OnInit,
   signal,
+  effect,
 } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
@@ -19,7 +20,7 @@ import {
   ITEM_FOR_PAGE_ROW_LAYOUT,
 } from '../../core/constants/ui-constants';
 import { LogPipe } from '../../shared/pipes/log.pipe';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { combineLatest, debounceTime, finalize, map, startWith } from 'rxjs';
 import { noCyrillicValidator } from '../../core/validators/noCyrillicValidator';
@@ -47,34 +48,34 @@ export class ProductsListPageComponent implements OnInit {
   categoryList = this.categoryService.categoryList;
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
-  filteredData = signal<Product[]>([]); // List of products on server
-  layoutColumn = signal(true); // selected layout (rows or columns)
-  currentPage = signal(1);
-  itemsPerPage = computed(() =>
-    this.layoutColumn() ? ITEM_FOR_PAGE_COLUMN_LAYOUT : ITEM_FOR_PAGE_ROW_LAYOUT
+  afterSearchData_s = signal<Product[]>([]);
+  layoutColumn_s = signal(true); // selected layout (rows or columns)
+  currentPage_s = signal(1);
+  itemsPerPage_sc = computed(() =>
+    this.layoutColumn_s()
+      ? ITEM_FOR_PAGE_COLUMN_LAYOUT
+      : ITEM_FOR_PAGE_ROW_LAYOUT
   );
   destroyRef = inject(DestroyRef);
   search = new FormControl('', [noCyrillicValidator()]);
 
-  categoryFilter_s = signal<string[]>([]);
+  categorySelected_s = signal<string[]>([]);
 
   buttonData: string | null = null;
   route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-   
-    this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef), finalize(() => console.log('ngOnDestroy'))).subscribe((params) => {
-      if(params['button']) {
-        this.categoryFilter_s.set([params['button']]);
-      }
-       
-       console.log('С какой кнопкой был выполнен переход:', this.buttonData);
-       
-    })
+    this.route.queryParams
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => console.log('ngOnDestroy'))
+      )
+      .subscribe((params) => {
+        if (params['button']) {
+          this.categorySelected_s.set([params['button']]);
+        }
+      });
 
-
-
-    
     const firebaseData$ = this.productsFirebaseService
       .getProducts()
       .pipe(takeUntilDestroyed(this.destroyRef));
@@ -92,58 +93,77 @@ export class ProductsListPageComponent implements OnInit {
           if (!searchTerm) {
             return firebaseData;
           }
+
           return firebaseData.filter((item: any) =>
             item.model.toLowerCase().includes(searchTerm)
           );
         })
       )
-      .subscribe((filteredData) => {
-        this.filteredData.set(filteredData);
+      .subscribe((data) => {
+        this.afterSearchData_s.set(data);
       });
   }
 
-  // calculate the elements to display depending on selected page number
-  displayedItems = computed(() => {
-    const startIndex = (this.currentPage() - 1) * this.itemsPerPage();
-    return this.filteredData().slice(
+  displayedItems_sc = computed(() => {
+    const startIndex = (this.currentPage_s() - 1) * this.itemsPerPage_sc();
+    return this.afterAllFiltersData_sc().slice(
       startIndex,
-      startIndex + this.itemsPerPage()
+      startIndex + this.itemsPerPage_sc()
     );
   });
 
+  afterAllFiltersData_sc = computed(() => {
+    if (this.categorySelected_s().length > 0) {
+      return this.afterSearchData_s().filter((item: any) =>
+        this.categorySelected_s().includes(item.category.toLocaleLowerCase())
+      );
+    } else {
+      return this.afterSearchData_s();
+    }
+  });
+
+  // to reset the page when filters are applied
+  resetcurrentPage = effect(
+    () => {
+      const filteredData = this.afterAllFiltersData_sc();
+      this.currentPage_s.set(1);
+    },
+    { allowSignalWrites: true }
+  );
+
   // listening to pagination event and updating current page
   onPageChange(page: number) {
-    this.currentPage.set(page);
+    this.currentPage_s.set(page);
   }
 
   // Switching layout to column
   toggleLayoutToColumn() {
-    this.layoutColumn.set(true);
-    this.currentPage.set(1);
+    this.layoutColumn_s.set(true);
+    this.currentPage_s.set(1);
   }
 
   // Switching layout to row
   toggleLayoutToRow() {
-    this.layoutColumn.set(false);
-    this.currentPage.set(1);
+    this.layoutColumn_s.set(false);
+    this.currentPage_s.set(1);
   }
 
   // Returns true if layout is column
   isColumnLayout() {
-    return this.layoutColumn();
+    return this.layoutColumn_s();
   }
 
   toggleCategoryCheckbox(event: Event, categoryItem: any) {
-    // console.log('toggleCategoryCheckbox', event, categoryItem);
     const isChecked = (event.target as HTMLInputElement).checked;
     if (isChecked) {
-      this.categoryFilter_s.update((prev) => [...prev, categoryItem.category]);
+      this.categorySelected_s.update((prev) => [
+        ...prev,
+        categoryItem.category,
+      ]);
     } else {
-      this.categoryFilter_s.update((prev) =>
+      this.categorySelected_s.update((prev) =>
         prev.filter((item) => item !== categoryItem.category)
       );
     }
-
-    console.log(this.categoryFilter_s());
   }
 }

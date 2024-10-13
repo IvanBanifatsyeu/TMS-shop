@@ -1,7 +1,7 @@
 <svg id="plus" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_511_8148)">
 <rect width="25" height="25" rx="12.5" fill="currentColor"/>
-<path d="M16.416 11.6H13.584V8.8H11.872V11.6H9.04V13.2H11.872V16H13.584V13.2H16.416V11.6Z" fill="#BDBDBD"/>
+<path d="M16.416 11.6H13.584V8.8H11.872V11.6H9.04V13.2H11.872V16H13.584V13.2H16.416V11.6Z" fill="var(--plus-color)"/>
 </g>
 <defs>
 <clipPath id="clip0_511_8148">
