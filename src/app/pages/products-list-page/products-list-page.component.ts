@@ -50,6 +50,7 @@ export class ProductsListPageComponent implements OnInit {
   uiDataService = inject(UiDataService);
   colorList = this.uiDataService.colorList;
   categoryList = this.uiDataService.categoryList;
+  sizeList = this.uiDataService.sizeList;
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   afterSearchData_s = signal<Product[]>([]);
@@ -65,6 +66,7 @@ export class ProductsListPageComponent implements OnInit {
   route = inject(ActivatedRoute);
   categorySelected_s = signal<string[]>([]);
   colorSelected_s = signal<string[]>([]);
+  sizeSelected_s = signal<string[]>([]);
 
   ngOnInit(): void {
     this.route.queryParams
@@ -112,9 +114,12 @@ export class ProductsListPageComponent implements OnInit {
   });
 
   afterAllFiltersData_sc = computed(() => {
+    
+    
     if (
       this.categorySelected_s().length > 0 ||
-      this.colorSelected_s().length > 0
+      this.colorSelected_s().length > 0 ||
+      this.sizeSelected_s().length > 0
     ) {
       return this.afterSearchData_s()
         .filter((item: any) =>
@@ -127,6 +132,11 @@ export class ProductsListPageComponent implements OnInit {
         .filter((item: any) =>
           this.colorSelected_s().length > 0
             ? this.colorSelected_s().some((color) => item.color.includes(color))
+            : true
+        )
+        .filter((item: any) =>
+          this.sizeSelected_s().length > 0
+            ? this.sizeSelected_s().some((size) => item.sizes.includes(size))
             : true
         );
     } else {

@@ -11,6 +11,7 @@
     </p>
   </section>
   <div class="products-list-page__product-wrapper product-wrapper">
+
     <aside class="product-wrapper__sidebar sidebar">
       <div class="sidebar__search-wrapper search-wrapper">
         <input
@@ -28,6 +29,7 @@
           {{ "PRODUCTS_LIST_PAGE.DONT_USE_CYRILLIC" | translate }}
         </div>
       </div>
+      
       <div class="sidebar__filter-category-wr filter-category-wr">
         @for (categoryItem of categoryList; track categoryItem.name) {
         <div
@@ -50,47 +52,41 @@
         </div>
         }
       </div>
-      <!-- <div class="sidebar__filter-color-wr filter-color-wr">
+
+      <div class="sidebar__filter-color-wr filter-color-wr">
         <p class="filter-color-wr__title">{{ "FILTER.COLOR" | translate }}</p>
         <div class="filter-color-wr__color-list color-list">
           @for (color of colorList; track color.value) {
           <div class="color-list__color-conteiner color-conteiner">
-            <input
-              [id]="color.value"
-              type="checkbox"
-              class="color-conteiner__input-color input-color"
-              [checked]="colorSelected_s().includes(color.value)"
-              (change)="toggleColorCheckbox($event, color)"
-            />
-            <Label
-              [for]="color.value"
-              class="color-conteiner__label-color label-color"
-            >
-              <svg
-                class="label-color__color-icon color-icon"
-                icon="color-icon"
-              ></svg>
-              <p class="label-color__color-title color-title">
-                {{ color.title | translate }}
-              </p>
-            </Label>
+            <app-round-checkbox
+              [data]="color"
+              [(selectedArr)]="colorSelected_s"
+            ></app-round-checkbox>
             <p class="color-conteiner__total-items total-items">
               {{ calculateTotalItemsByColor(color.value) || "" }}
             </p>
           </div>
           }
         </div>
-      </div> -->
-      <div class="sidebar__filter-color-wr filter-color-wr">
-        <p class="filter-color-wr__title">{{ "FILTER.COLOR" | translate }}</p>
-        <div class="filter-color-wr__color-list color-list">
-          @for (color of colorList; track color.value) {
-          
-            <app-round-checkbox [data]="color" [(selectedArr)] = "colorSelected_s"></app-round-checkbox>
+      </div>
+
+      <div class="sidebar__filter-sizer-wr filter-size-wr">
+        <p class="filter-size-wr__title">{{ "FILTER.SIZE" | translate }}</p>
+        <div class="filter-size-wr__size-list size-list">
+          @for (size of sizeList; track size.value) {
+          <app-round-checkbox
+            [data]="size"
+            [(selectedArr)]="sizeSelected_s"
+          ></app-round-checkbox>
           }
         </div>
       </div>
+      <div class="sidebar__filter-price-wr filter-price-wr">
+        <p class="filter-size-wr__title">{{ "FILTER.SIZE" | translate }}</p>
+
+      </div>
     </aside>
+
     <section class="product-wrapper__products-container products-container">
       <div class="products-container__layout-switcher layout-switcher">
         <a

@@ -241,50 +241,8 @@
             .color-conteiner {
                 display: flex;
                 flex-direction: row;
-
-                &:hover {
-                    transform: translateX(1px);
-                    filter: contrast(70%);
-                }
-
-                .input-color:checked+.label-color .color-title,
-                .input-color:checked+.label-color .color-icon {
-                    color: var(--blue-active-color);
-
-                }
-
-                .input-color {
-                    display: none;
-                }
-
-
-                .label-color {
-                    display: flex;
-                    column-gap: 15px;
-                    flex-direction: row;
-                    align-items: center;
-                    justify-content: start;
-                    width: 100%;
-                    cursor: pointer;
-
-
-                    .color-icon {
-                        width: 26px;
-                        height: 26px;
-                        color: #DCDCDC;
-                    }
-
-                    .color-title {
-                        color: var(--medium-grey-color);
-                        font-weight: 600;
-
-                        font-size: 14px;
-                        line-height: 28px;
-                        letter-spacing: 0.2px;
-
-                    }
-                }
-
+                align-items: center;
+                justify-content: space-between;
 
                 .total-items {
                     color: var(--medium-grey-color);
@@ -294,15 +252,52 @@
                     letter-spacing: 0.2px;
                 }
             }
+
+
+        }
+    }
+
+    .filter-size-wr {
+
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        width: 100%;
+        padding: 30px 35px;
+        border: 1px solid var(--light-grey-color);
+        border-radius: 5px;
+        background-color: var(--grey-light-bgn-color);
+
+        .filter-size-wr__title {
+            margin-bottom: 20px;
+            color: var(--dark-blue-color);
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 24px;
+            letter-spacing: 0.1px;
         }
 
+        .size-list {
+            display: flex;
+            row-gap: 15px;
+            flex-direction: column;
 
-
-
-
-
+            .size-conteiner {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
 
     }
+
+
+
+
+
+
+
 
 
 
