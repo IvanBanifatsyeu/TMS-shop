@@ -45,6 +45,19 @@
         font-size: 24px;
         line-height: 36px;
         letter-spacing: 0.1px;
+        
+
+        .favorit-icon {
+            width: 30px;
+            height: 30px;
+            color: var(--blue-active-color);
+            
+        }
+
+        .model-curColor__dummy {
+            width: 30px;
+            height: 30px;
+        }
 
         .model-curColor__model {
             font-weight: 700;
@@ -162,9 +175,9 @@
             background-color: var(--light-blue-color);
             border-radius: 5px;
             cursor: pointer;
-           
+
             padding: 0 5px;
-            
+
 
             &:hover {
                 filter: brightness(1.2);

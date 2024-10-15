@@ -105,12 +105,14 @@ export class ProductsListPageComponent implements OnInit {
       )
       .subscribe((data) => {
         this.afterSearchData_s.set(data);
-        this.priceMaxSelected_s.set(
-          this.productsFirebaseService.getMaxPrice(data)
-        );
-        this.priceMinSelected_s.set(
-          this.productsFirebaseService.getMinPrice(data)
-        );
+        if (!this.isClicked()) {
+          this.priceMaxSelected_s.set(
+            this.productsFirebaseService.getMaxPrice(data)
+          );
+          this.priceMinSelected_s.set(
+            this.productsFirebaseService.getMinPrice(data)
+          );
+        }
       });
   }
 

@@ -7,6 +7,13 @@
       <div class="info__model-curColor model-curColor">
         <h1 class="model-curColor__model">{{ product?.model }}</h1>
         <p class="model-curColor__curColor">({{ product?.curColor }})</p>
+        @if(isFavorite()) {
+          <svg class="model-curColor__favorit-icon favorit-icon"
+            icon="fav"
+          ></svg>
+        } @else {
+          <div class="model-curColor__dummy"></div>
+        }
       </div>
       <div class="info__rating-wrapper rating-wrapper">
         <p class="rating-wrapper__rating">{{ product?.rating }}</p>
