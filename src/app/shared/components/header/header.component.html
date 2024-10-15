@@ -11,8 +11,14 @@
     <app-account-popup @fadeInOut></app-account-popup>
     }
   </a>
-  <a class="actions__favorite-icon favorite-icon" [routerLink]="['/my-favorite']">
+  <a
+    class="actions__favorite-icon favorite-icon"
+    [routerLink]="['/my-favorite']"
+  >
     <svg icon="fav" class="favorite-icon__img"></svg>
+    @if(listMyFavorite_s()?.length){
+    <span class="favorite-icon__counter">{{ listMyFavorite_s()?.length }}</span>
+    }
   </a>
   <a class="actions__cart-icon cart-icon">
     <svg icon="cart" class="cart-icon__img"></svg>

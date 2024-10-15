@@ -23,7 +23,6 @@ import { ProductCardComponent } from '../../shared/components/product-card/produ
 export class MyFavoriteComponent implements OnInit {
   productsFirebaseService = inject(ProductFirebaseService);
   destroyRef = inject(DestroyRef);
-  listMyFavorite: Product[] | null = null;
   listMyFavorite_s = signal<Product[] | null>(null);
 
   ngOnInit(): void {
