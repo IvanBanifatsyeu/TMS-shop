@@ -42,7 +42,8 @@
   "SIZE": "Size",
   "ADD_TO_CART": "Add To Cart",
   "ADD_TO_WISHLIST": "Add To Wishlist",
-  "PRODUCT_DESCRIPTION": "Product Description"
+  "PRODUCT_DESCRIPTION": "Product Description",
+  "REMOVE_FROM_WISHLIST": "Remove From Wishlist"
   
   },
 
@@ -63,6 +64,11 @@
     "SMALL": "Small",
     "FILTER_BY_PRICE": "Filter by price"
     
+  },
+
+  "MY_FAVORITE": {
+    "MY_FAVORITE": "My Favorite",
+    "EMPTY_FAVORITE": "Your favorites list is empty 🥺"
   }
 }
 

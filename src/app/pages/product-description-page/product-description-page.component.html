@@ -38,7 +38,16 @@
         </div>
       </div>
       <div class="info__buttons buttons">
-        <button class="buttons__button">{{"PRODUCT_DESCRIPTION_PAGE.ADD_TO_WISHLIST" | translate}}</button>
+        <button class="buttons__button" (click)="toggleFavorit(product, $event)">{{
+          (isFavorite() ? 
+          
+          "PRODUCT_DESCRIPTION_PAGE.REMOVE_FROM_WISHLIST" :
+          
+          "PRODUCT_DESCRIPTION_PAGE.ADD_TO_WISHLIST") | translate
+        
+        
+        
+        }}</button>
         <button class="buttons__button">{{"PRODUCT_DESCRIPTION_PAGE.ADD_TO_CART" | translate}}</button>
       </div>
       <div class="info__description description">

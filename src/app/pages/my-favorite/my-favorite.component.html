@@ -1,5 +1,5 @@
 <div class="favorites-container">
-    <h1 class="favorites-container__title">My Favorites</h1>
+    <h1 class="favorites-container__title">{{"MY_FAVORITE.MY_FAVORITE" | translate}}</h1>
     <div class="favorites-container__list-wr list-wr">
         @for (item of listMyFavorite_s(); track item.id) {
             <app-product-card [product]="item" class="list-wr__product-card product-card"></app-product-card>
@@ -7,7 +7,7 @@
     </div>
     @if (!listMyFavorite_s()?.length) {
         <div  class="empty-message">
-            <p class="empty-message__text">Your favorites list is empty 🥺</p>
+            <p class="empty-message__text">{{ "MY_FAVORITE.EMPTY_FAVORITE" | translate}}</p>
         </div>
     }
     

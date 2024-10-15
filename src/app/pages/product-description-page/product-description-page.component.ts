@@ -4,6 +4,7 @@ import {
   DestroyRef,
   inject,
   OnInit,
+  signal,
 } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductFirebaseService } from '../../core/services/product-firebase.service';
@@ -25,7 +26,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   ],
   templateUrl: './product-description-page.component.html',
   styleUrl: './product-description-page.component.scss',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  //  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDescriptionPageComponen implements OnInit {
   translate = inject(TranslateService);
@@ -35,6 +36,8 @@ export class ProductDescriptionPageComponen implements OnInit {
   id: string | null = '';
   destroyRef = inject(DestroyRef);
   route = inject(ActivatedRoute);
+  listMyFavorite_s = signal<Product[] | null>(null);
+  isFavorite = signal<boolean>(false);
 
   ngOnInit(): void {
     this.productsFirebaseService
@@ -47,5 +50,26 @@ export class ProductDescriptionPageComponen implements OnInit {
         });
         this.imgUrl = this.product?.imgUrl;
       });
+
+      const firebaseDataFavorite$ = this.productsFirebaseService
+      .getMyFavorite()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((res) => {
+        this.id = this.route.snapshot.paramMap.get('id');
+        this.listMyFavorite_s.set(res);
+        this.isFavorite.set( 
+          res.some((element) => element.id === this.id)
+        );
+
+      });
+  }
+
+  toggleFavorit(product: Product | undefined, event: Event) {
+    event.stopPropagation();
+    if (this.isFavorite()) {
+      this.productsFirebaseService.removeFromMyFavorite(this.id!);
+    } else {
+      this.productsFirebaseService.addItemToMyFavorite(product!);
+    }
   }
 }
