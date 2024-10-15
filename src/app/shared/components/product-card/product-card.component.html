@@ -1,11 +1,19 @@
-<div class="product-card__img-conteiner img-conteiner" (click)="goToProduct(productId)">
+<div
+  class="product-card__img-conteiner img-conteiner"
+  (click)="goToProduct(productId)"
+>
   <img
     class="img-conteiner__image"
     [src]="product?.imgUrl"
     alt="image-product"
   />
 
-  <svg icon="favorit-icon" class="img-conteiner__favorit-icon"></svg>
+  <svg
+    icon="favorit-icon"
+    class="img-conteiner__favorit-icon"
+    (click)="toggleFavorit(product, $event)"
+    [ngClass]="{ favorite: isFavorite() }"
+  ></svg>
 </div>
 <div class="product-card__info">
   <div class="product-card__info__wrapper-title wrapper-title">

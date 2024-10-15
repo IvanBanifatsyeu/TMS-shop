@@ -20,6 +20,8 @@
   --svg-brown: #6A4029;
   --svg-white: #ffffff;
 
+   --bgn-favorit-icon:#E8E8E8;
+   --fill-opacity-favorit-icon:0.46;
 
 }
 
@@ -29,6 +31,13 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+a {
+  text-decoration: none; /* Убирает подчеркивание */
+  color: inherit; /* Убирает стандартный цвет и унаследует цвет от родителя */
+  cursor: auto; /* Сбрасывает курсор по умолчанию */
+  outline: none; /* Убирает обводку при фокусировке */
 }
 
 body {

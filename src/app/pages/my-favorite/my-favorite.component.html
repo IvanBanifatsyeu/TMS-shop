@@ -1,0 +1,13 @@
+<div class="favorites-container">
+    <h1>My Favorites</h1>
+    <div class="favorites-list">
+        @for (item of listMyFavorite_s(); track item.id) {
+            <app-product-card [product]="item" class="product-card"></app-product-card>
+        }
+       
+        <!-- <app-product-card *ngFor="let product of favoriteProducts" [product]="product"></app-product-card> -->
+    </div>
+    <div *ngIf="false" class="empty-message">
+        <p>Your favorites list is empty.</p>
+    </div>
+</div>

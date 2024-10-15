@@ -57,6 +57,11 @@
     justify-content: center;
     width: 32px;
     height: 32px;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.1);
+    }
 
     .favorite-icon__img {
         width: 29px;

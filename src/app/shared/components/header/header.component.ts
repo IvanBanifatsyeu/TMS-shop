@@ -12,7 +12,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AccountPopupComponent } from './account-popup/account-popup.component';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Subscription, tap } from 'rxjs';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 
@@ -25,6 +25,7 @@ import { SvgIconComponent } from '../svg-icon/svg-icon.component';
     AccountPopupComponent,
     CommonModule,
     SvgIconComponent,
+    RouterModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -60,7 +61,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // добавляем/удаляем класс в зависимости от текущего роута
     if (url === '/') {
       this.isAbsolute = true;
-    } else if (url.startsWith("/shop")) {
+    } else if (url.startsWith("/shop") || "/my-favorite") {
       this.isAbsolute = false;
     }
   }
