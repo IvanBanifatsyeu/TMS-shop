@@ -20,14 +20,14 @@ import {
   ITEM_FOR_PAGE_ROW_LAYOUT,
 } from '../../core/constants/ui-constants';
 import { LogPipe } from '../../shared/pipes/log.pipe';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { combineLatest, debounceTime, map, startWith } from 'rxjs';
 import { noCyrillicValidator } from '../../core/validators/noCyrillicValidator';
 import { UiDataService } from '../../core/services/uiData.service';
 import { ActivatedRoute } from '@angular/router';
 import { RoundCheckboxComponent } from '../../shared/components/round-checkbox/round-checkbox.component';
-
+import { DualRangeSliderComponent } from '../../shared/components/dual-range-slider/dual-range-slider.component';
 
 @Component({
   selector: 'app-products-list-page',
@@ -40,7 +40,8 @@ import { RoundCheckboxComponent } from '../../shared/components/round-checkbox/r
     PaginationComponent,
     LogPipe,
     ReactiveFormsModule,
-    RoundCheckboxComponent
+    RoundCheckboxComponent,
+    DualRangeSliderComponent,
   ],
   templateUrl: './products-list-page.component.html',
   styleUrl: './products-list-page.component.scss',
@@ -67,6 +68,9 @@ export class ProductsListPageComponent implements OnInit {
   categorySelected_s = signal<string[]>([]);
   colorSelected_s = signal<string[]>([]);
   sizeSelected_s = signal<string[]>([]);
+  priceMinSelected_s = signal<number>(0);
+  priceMaxSelected_s = signal<number>(150);
+  isClicked = signal<boolean>(false);
 
   ngOnInit(): void {
     this.route.queryParams
@@ -94,7 +98,6 @@ export class ProductsListPageComponent implements OnInit {
           if (!searchTerm) {
             return firebaseData;
           }
-
           return firebaseData.filter((item: any) =>
             item.model.toLowerCase().includes(searchTerm)
           );
@@ -102,6 +105,12 @@ export class ProductsListPageComponent implements OnInit {
       )
       .subscribe((data) => {
         this.afterSearchData_s.set(data);
+        this.priceMaxSelected_s.set(
+          this.productsFirebaseService.getMaxPrice(data)
+        );
+        this.priceMinSelected_s.set(
+          this.productsFirebaseService.getMinPrice(data)
+        );
       });
   }
 
@@ -114,14 +123,14 @@ export class ProductsListPageComponent implements OnInit {
   });
 
   afterAllFiltersData_sc = computed(() => {
-    
-    
+    let dataAfterAllFilters: Product[] = this.afterSearchData_s();
+
     if (
       this.categorySelected_s().length > 0 ||
       this.colorSelected_s().length > 0 ||
       this.sizeSelected_s().length > 0
     ) {
-      return this.afterSearchData_s()
+      dataAfterAllFilters = this.afterSearchData_s()
         .filter((item: any) =>
           this.categorySelected_s().length > 0
             ? this.categorySelected_s().includes(
@@ -139,10 +148,44 @@ export class ProductsListPageComponent implements OnInit {
             ? this.sizeSelected_s().some((size) => item.sizes.includes(size))
             : true
         );
-    } else {
-      return this.afterSearchData_s();
     }
+
+    if (!this.isClicked()) {
+      let minPrice = Math.min(...dataAfterAllFilters.map((item) => item.price));
+      let maxPrice = Math.max(...dataAfterAllFilters.map((item) => item.price));
+
+      dataAfterAllFilters = dataAfterAllFilters.filter((item: any) => {
+        return item.price >= minPrice && item.price <= maxPrice;
+      });
+    } else {
+      dataAfterAllFilters = dataAfterAllFilters.filter((item: any) => {
+        return (
+          item.price >= this.priceMinSelected_s() &&
+          item.price <= this.priceMaxSelected_s()
+        );
+      });
+    }
+
+    return dataAfterAllFilters;
   });
+
+  trackForMinMaxPrice = effect(
+    (): void => {
+      if (!this.isClicked()) {
+        this.priceMaxSelected_s.set(
+          this.productsFirebaseService.getMaxPrice(
+            this.afterAllFiltersData_sc()
+          )
+        );
+        this.priceMinSelected_s.set(
+          this.productsFirebaseService.getMinPrice(
+            this.afterAllFiltersData_sc()
+          )
+        );
+      }
+    },
+    { allowSignalWrites: true }
+  );
 
   // to reset the page when filters are applied
   resetcurrentPage = effect(
@@ -202,6 +245,12 @@ export class ProductsListPageComponent implements OnInit {
   }
 
   calculateTotalItemsByColor(TargetColor: string) {
-    return this.afterAllFiltersData_sc().filter((item: any) => item.color.includes(TargetColor)).length
+    return this.afterAllFiltersData_sc().filter((item: any) =>
+      item.color.includes(TargetColor)
+    ).length;
+  }
+
+  clickFilterByPrice() {
+    this.isClicked.set(true);
   }
 }

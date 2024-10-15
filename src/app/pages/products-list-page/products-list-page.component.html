@@ -11,7 +11,6 @@
     </p>
   </section>
   <div class="products-list-page__product-wrapper product-wrapper">
-
     <aside class="product-wrapper__sidebar sidebar">
       <div class="sidebar__search-wrapper search-wrapper">
         <input
@@ -29,7 +28,7 @@
           {{ "PRODUCTS_LIST_PAGE.DONT_USE_CYRILLIC" | translate }}
         </div>
       </div>
-      
+
       <div class="sidebar__filter-category-wr filter-category-wr">
         @for (categoryItem of categoryList; track categoryItem.name) {
         <div
@@ -82,8 +81,14 @@
         </div>
       </div>
       <div class="sidebar__filter-price-wr filter-price-wr">
-        <p class="filter-size-wr__title">{{ "FILTER.SIZE" | translate }}</p>
-
+        <p class="filter-size-wr__title">
+          {{ "FILTER.FILTER_BY_PRICE" | translate }}
+        </p>
+        <app-dual-range-slider
+          [(value)]="priceMinSelected_s"
+          [(highValue)]="priceMaxSelected_s"
+          (click)="clickFilterByPrice()"
+        ></app-dual-range-slider>
       </div>
     </aside>
 

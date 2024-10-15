@@ -24,4 +24,12 @@ export class ProductFirebaseService {
   addItem(newProduct: Product) {
     return addDoc(this.productCollection, newProduct);
   }
+
+  getMaxPrice (products: Product[]): number {
+    return Math.max(...products.map(product => product.price));
+  }
+
+  getMinPrice (products: Product[]): number {
+    return Math.min(...products.map(product => product.price));
+  }
 }
