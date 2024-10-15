@@ -46,11 +46,13 @@
     background-color: var(--grey-light-bgn-color);
 }
 
+// products-container 💡💡💡💡💡💡
+
 .products-container {
     display: flex;
     row-gap: 40px;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: start;
 }
 
 .layout-switcher {
@@ -81,20 +83,24 @@
     display: grid;
 
     &.column-layout {
-        grid-template-rows: repeat(5, 276px);
+        grid-template-rows: repeat(1, 276px);
         grid-template-columns: repeat(4, 1fr);
         column-gap: 40px;
         row-gap: 45px;
     }
 
     &.row-layout {
-        grid-template-rows: repeat(8, 237px);
+        grid-template-rows: repeat(1, 237px);
         grid-template-columns: 1fr;
         row-gap: 10px;
     }
 }
 
-//  -- sidebar
+.products-container__pagination {
+    margin-top: auto;
+}
+
+//  -- sidebar 💡💡💡💡💡💡
 
 .sidebar {
     display: flex;
@@ -106,7 +112,6 @@
     border-radius: 10px;
     background-color: var(--light-color);
     box-shadow: 0px 2px 4px 0px #0000001A;
-
 
     .search-wrapper {
         position: relative;
@@ -252,8 +257,6 @@
                     letter-spacing: 0.2px;
                 }
             }
-
-
         }
     }
 
@@ -311,50 +314,5 @@
             line-height: 24px;
             letter-spacing: 0.1px;
         }
-
-        // .range_container {
-
-        //     display: flex;
-        //     flex-direction: column;
-        //     width: 100%;
-        //     margin: 35% auto;
-
-        //     .sliders_conteiner {
-        //         position: relative;
-        //         width: 100%;
-        //         min-height: 50px;
-
-        //         .sliders_conteiner__slider {
-        //             width: 100%;
-        //             position: absolute;
-        //             cursor: pointer;
-        //             // pointer-events: all;
-        //         }
-
-        //         .fromSlider {
-        //             height: 0;
-        //             z-index: 1;
-        //         }
-
-        //     }
-
-        //     .form_control {
-        //         position: relative;
-        //         display: flex;
-        //         flex-direction: row;
-        //         justify-content: space-between;
-        //     }
-
-        // }
     }
-
-
-
-
-
-
-
-
-
-
 }
