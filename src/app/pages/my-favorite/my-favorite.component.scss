@@ -3,6 +3,7 @@
     padding: 20px 40px;
     text-align: center;
     background-color: var(--grey-light-bgn-color);
+    height: 100%;
 
     .favorites-container__title {
         margin-bottom: 40px;
@@ -51,8 +52,6 @@
     .list-wr {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        width: 100%;
-        height: 100%;
         gap: 20px;
 
         .product-card {
