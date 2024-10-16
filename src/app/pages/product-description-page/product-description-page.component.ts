@@ -50,7 +50,6 @@ export class ProductDescriptionPageComponen implements OnInit {
         });
         this.imgUrl = this.product?.imgUrl;
       });
-
       const firebaseDataFavorite$ = this.productsFirebaseService
       .getMyFavorite()
       .pipe(takeUntilDestroyed(this.destroyRef))

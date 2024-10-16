@@ -58,7 +58,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef)
+      )
       .subscribe((event: NavigationEnd) => {
         this.currentRoute.set(event.url); // Обновляем сигнал при изменении маршрута
         this.handleRouteChange(event.url); // Обрабатываем изменение маршрута

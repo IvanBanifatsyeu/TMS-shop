@@ -6,13 +6,11 @@
     <div class="product__info info">
       <div class="info__model-curColor model-curColor">
         <h1 class="model-curColor__model">{{ product?.model }}</h1>
-        <p class="model-curColor__curColor">({{ product?.curColor }})</p>
+        <p class="model-curColor__curColor">({{product?.curColor}})</p>
         @if(isFavorite()) {
-          <svg class="model-curColor__favorit-icon favorit-icon"
-            icon="fav"
-          ></svg>
+        <svg class="model-curColor__favorit-icon favorit-icon" icon="fav"></svg>
         } @else {
-          <div class="model-curColor__dummy"></div>
+        <div class="model-curColor__dummy"></div>
         }
       </div>
       <div class="info__rating-wrapper rating-wrapper">
@@ -23,7 +21,9 @@
       </div>
       <p class="info__price">{{ product?.price | currency }}</p>
       <div class="info__colors colors">
-        <p class="colors__title">{{"PRODUCT_DESCRIPTION_PAGE.COLOR" | translate}}</p>
+        <p class="colors__title">
+          {{ "PRODUCT_DESCRIPTION_PAGE.COLOR" | translate }}
+        </p>
         <div class="colors__colors-list">
           @for(color of product?.color; track $index) {
 
@@ -36,7 +36,9 @@
         </div>
       </div>
       <div class="info__sizes sizes">
-        <p class="sizes__title">{{"PRODUCT_DESCRIPTION_PAGE.SIZE" | translate}}</p>
+        <p class="sizes__title">
+          {{ "PRODUCT_DESCRIPTION_PAGE.SIZE" | translate }}
+        </p>
         <div class="sizes__sizes-list sizes-list">
           @for(size of product?.sizes; track $index) {
           <div class="sizes-list__size">{{ size }}</div>
@@ -45,20 +47,25 @@
         </div>
       </div>
       <div class="info__buttons buttons">
-        <button class="buttons__button" (click)="toggleFavorit(product, $event)">{{
-          (isFavorite() ? 
-          
-          "PRODUCT_DESCRIPTION_PAGE.REMOVE_FROM_WISHLIST" :
-          
-          "PRODUCT_DESCRIPTION_PAGE.ADD_TO_WISHLIST") | translate
-        
-        
-        
-        }}</button>
-        <button class="buttons__button">{{"PRODUCT_DESCRIPTION_PAGE.ADD_TO_CART" | translate}}</button>
+        <button
+          class="buttons__button"
+          (click)="toggleFavorit(product, $event)"
+        >
+          {{
+            (isFavorite()
+              ? "PRODUCT_DESCRIPTION_PAGE.REMOVE_FROM_WISHLIST"
+              : "PRODUCT_DESCRIPTION_PAGE.ADD_TO_WISHLIST"
+            ) | translate
+          }}
+        </button>
+        <button class="buttons__button">
+          {{ "PRODUCT_DESCRIPTION_PAGE.ADD_TO_CART" | translate }}
+        </button>
       </div>
       <div class="info__description description">
-        <h2 class="description__title">{{"PRODUCT_DESCRIPTION_PAGE.PRODUCT_DESCRIPTION" | translate}}</h2>
+        <h2 class="description__title">
+          {{ "PRODUCT_DESCRIPTION_PAGE.PRODUCT_DESCRIPTION" | translate }}
+        </h2>
         <p class="description__text">{{ product?.description }}</p>
       </div>
     </div>
