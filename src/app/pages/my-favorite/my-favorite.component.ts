@@ -35,4 +35,8 @@ export class MyFavoriteComponent implements OnInit {
         this.listMyFavorite_s.set(res);
       });
   }
+
+  removeAll() {
+    this.productsFirebaseService.removeAllFromMyFavorite().subscribe();
+  }
 }

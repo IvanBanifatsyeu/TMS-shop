@@ -23,6 +23,31 @@
         }
     }
 
+    .favorites-container__remove-btn {
+        margin-left: auto;
+        display: block;
+        width: 185px;
+        height: 40px;
+        border: none;
+        color: var(--light-color);
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 28px;
+        letter-spacing: 0.2px;
+        background-color: rgb(251, 60, 60);
+        border-radius: 5px;
+        cursor: pointer;
+        margin-bottom: 40px;
+
+        &:hover {
+            filter:invert(9%); ;
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+
     .list-wr {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
