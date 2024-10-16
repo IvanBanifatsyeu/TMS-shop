@@ -1,15 +1,21 @@
 <app-navigation></app-navigation>
 <div class="actions">
-  <a
-    class="actions__my-account my-account"
+  <div
+    class="actions__switch-language switch-language"
     (mouseenter)="showPopup()"
     (mouseleave)="hidePopup()"
   >
-    <svg icon="avatar" class="my-account__icon"></svg>
-    <span class="my-account__text">{{ "HEADER.MY_ACCOUNT" | translate }}</span>
+    <svg class="switch-language__icon" icon="switch__language"></svg>
     @if(isPopupVisible) {
     <app-account-popup @fadeInOut></app-account-popup>
     }
+  </div>
+  <a
+    class="actions__my-account my-account"
+  >
+    <svg icon="avatar" class="my-account__icon"></svg>
+    <span class="my-account__text">{{ "HEADER.MY_ACCOUNT" | translate }}</span>
+    
   </a>
   <a
     class="actions__favorite-icon favorite-icon"
