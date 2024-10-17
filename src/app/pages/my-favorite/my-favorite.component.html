@@ -1,6 +1,6 @@
 <div class="favorites-container">
     <h1 class="favorites-container__title">{{"MY_FAVORITE.MY_FAVORITE" | translate}}</h1>
-    <button class="favorites-container__remove-btn" (click)="removeAll()">{{"MY_FAVORITE.REMOVE_ALL" | translate}}</button>
+    <button [ngClass]="{disabled: !listMyFavorite_s()?.length}" class="favorites-container__remove-btn" (click)="removeAll()">{{"MY_FAVORITE.REMOVE_ALL" | translate}}</button>
     <div class="favorites-container__list-wr list-wr">
         @for (item of listMyFavorite_s(); track item.id) {
             <app-product-card [product]="item" class="list-wr__product-card product-card"></app-product-card>

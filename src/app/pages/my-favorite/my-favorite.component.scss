@@ -49,6 +49,10 @@
         }
     }
 
+    .disabled {
+        display: none;
+    }
+
     .list-wr {
         display: grid;
         grid-template-columns: repeat(4, 1fr);

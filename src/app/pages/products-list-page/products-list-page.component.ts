@@ -86,10 +86,10 @@ export class ProductsListPageComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef));
 
     const searchTerm$ = this.search.valueChanges.pipe(
-      takeUntilDestroyed(this.destroyRef),
       startWith(''),
       map((value) => value!.trim().toLowerCase()),
-      debounceTime(300)
+      debounceTime(300),
+      takeUntilDestroyed(this.destroyRef)
     );
 
     combineLatest([firebaseData$, searchTerm$])
