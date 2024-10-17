@@ -63,7 +63,10 @@
             ) | translate
           }}
         </button>
-        <button class="buttons__button">
+        <button class="buttons__button"
+        [disabled]="this.selectedColor_s() === '' || this.selectedSize_s() === ''"
+        (click)="addToCart(product, $event)"
+        >
           {{ "PRODUCT_DESCRIPTION_PAGE.ADD_TO_CART" | translate }}
         </button>
       </div>

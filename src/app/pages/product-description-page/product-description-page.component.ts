@@ -80,7 +80,7 @@ export class ProductDescriptionPageComponen implements OnInit {
 
     if (this.selectedColor_s() === color) {
       this.selectedColor_s.set('');
-    } else { 
+    } else {
       this.selectedColor_s.set(color);
     }
     console.log('🚀 ', this.selectedColor_s());
@@ -88,12 +88,16 @@ export class ProductDescriptionPageComponen implements OnInit {
 
   setSelectedSize(size: string, event: Event) {
     event.stopPropagation();
-   if (this.selectedSize_s() === size) {
-     this.selectedSize_s.set('');
-   } else {
-     this.selectedSize_s.set(size);
-   }
+    if (this.selectedSize_s() === size) {
+      this.selectedSize_s.set('');
+    } else {
+      this.selectedSize_s.set(size);
+    }
 
     console.log('🚀 ', this.selectedSize_s());
+  }
+
+  addToCart(product: Product | undefined, event: Event) {
+    event.stopPropagation();
   }
 }

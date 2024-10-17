@@ -210,8 +210,18 @@
             background-color: var(--light-blue-color);
             border-radius: 5px;
             cursor: pointer;
-
             padding: 0 5px;
+
+
+            &:disabled {
+                background-color: #e0e0e0;
+                color: var(--blue-not-active-color);
+                cursor: inherit;
+
+                &:hover {
+                    filter: none;
+                }
+            }
 
 
             &:hover {
