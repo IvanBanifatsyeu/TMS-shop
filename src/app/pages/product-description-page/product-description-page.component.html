@@ -6,7 +6,7 @@
     <div class="product__info info">
       <div class="info__model-curColor model-curColor">
         <h1 class="model-curColor__model">{{ product?.model }}</h1>
-        <p class="model-curColor__curColor">({{product?.curColor}})</p>
+        <p class="model-curColor__curColor">({{ product?.curColor }})</p>
         @if(isFavorite()) {
         <svg class="model-curColor__favorit-icon favorit-icon" icon="fav"></svg>
         } @else {
@@ -24,13 +24,14 @@
         <p class="colors__title">
           {{ "PRODUCT_DESCRIPTION_PAGE.COLOR" | translate }}
         </p>
-        <div class="colors__colors-list">
+        <div class="colors__colors-list colors-list">
           @for(color of product?.color; track $index) {
-
           <svg
             icon="color"
-            class="colors-list__icon"
+            class="colors-list__color-icon color-icon"
             [style.color]="'var(--svg-' + color + ')'"
+            (click)="setSelectedColor(color, $event)"
+            [ngClass]="{ selectedColor: this.selectedColor_s() === color }"
           ></svg>
           }
         </div>
@@ -41,8 +42,12 @@
         </p>
         <div class="sizes__sizes-list sizes-list">
           @for(size of product?.sizes; track $index) {
-          <div class="sizes-list__size">{{ size }}</div>
-
+          <div class="sizes-list__size" 
+          (click)="setSelectedSize(size, $event)"
+          [ngClass]="{ selectedSize: this.selectedSize_s() === size }"
+          >
+            {{ size }}
+          </div>
           }
         </div>
       </div>

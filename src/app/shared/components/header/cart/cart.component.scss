@@ -1,0 +1,128 @@
+:host {
+    position: absolute;
+    width: 700px;
+    height: 500px;
+    background-color: #ccc;
+    left: -700px;
+    
+}
+
+
+.shopping-cart {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.product-image img {
+    width: 100px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.product-details {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.product-details h3 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.product-details p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-control input {
+    width: 40px;
+    text-align: center;
+}
+
+.quantity-btn {
+    background-color: #ccc;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.product-price {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.remove-item {
+    margin-left: 20px;
+}
+
+.remove-btn {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cart-summary {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.cart-summary p {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+
+.cart-summary span {
+    font-weight: bold;
+}
+
+.checkout-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.continue-shopping-btn {
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

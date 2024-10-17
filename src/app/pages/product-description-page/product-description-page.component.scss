@@ -45,13 +45,13 @@
         font-size: 24px;
         line-height: 36px;
         letter-spacing: 0.1px;
-        
+
 
         .favorit-icon {
             width: 30px;
             height: 30px;
             color: var(--blue-active-color);
-            
+
         }
 
         .model-curColor__dummy {
@@ -117,19 +117,38 @@
             letter-spacing: 0.2px;
         }
 
-        .colors__colors-list .sizes-list {
+        .colors-list,
+        .sizes-list {
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
             align-items: center;
             justify-content: start;
-            column-gap: 6px;
+            column-gap: 3px;
         }
 
-        .colors-list__icon {
-            width: 30px;
-            height: 30px;
+
+
+        .color-icon {
+            width: 32px;
+            height: 32px;
+
+            &:hover {
+                transform: scale(1.1);
+                cursor: pointer;
+
+                &:active {
+                    transform: scale(0.95);
+                }
+            }
+
+            &.selectedColor {
+                --svg-color-icon-stroke-color: var(--blue-active-color);
+                --svg-color-icon-stroke-size: 3;
+            }
         }
+
+
 
         .sizes-list {
             display: flex;
@@ -147,6 +166,22 @@
             line-height: 28px;
             letter-spacing: 0.2px;
             text-align: center;
+
+            &:hover {
+                transform: scale(1.1);
+                cursor: pointer;
+
+                &:active {
+                    transform: scale(0.95);
+                }
+            }
+
+            &.selectedSize {
+                outline: 2px solid var(--blue-active-color);
+                border: none;
+            }
+
+
         }
     }
 

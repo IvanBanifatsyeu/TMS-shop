@@ -2,21 +2,18 @@
 <div class="actions">
   <div
     class="actions__switch-language switch-language"
-    (mouseenter)="showPopup()"
-    (mouseleave)="hidePopup()"
+    (mouseenter)="showLanguagePopup()"
+    (mouseleave)="hideLanguagePopup()"
   >
     <svg class="switch-language__icon" icon="switch__language"></svg>
-    @if(isPopupVisible) {
+    @if(isPopupLanguageVisible) {
     <app-account-popup @fadeInOut></app-account-popup>
     }
   </div>
-  <a
-    class="actions__my-account my-account"
-  >
+  <div class="actions__my-account my-account">
     <svg icon="avatar" class="my-account__icon"></svg>
     <span class="my-account__text">{{ "HEADER.MY_ACCOUNT" | translate }}</span>
-    
-  </a>
+  </div>
   <a
     class="actions__favorite-icon favorite-icon"
     [routerLink]="['/my-favorite']"
@@ -26,7 +23,14 @@
     <span class="favorite-icon__counter">{{ listMyFavorite_s()?.length }}</span>
     }
   </a>
-  <a class="actions__cart-icon cart-icon">
-    <svg icon="cart" class="cart-icon__img"></svg>
-  </a>
+  <div
+    class="actions__cart-icon-wrapper cart-icon-wrapper"
+    (mouseenter)="showCartPopup()"
+    (mouseleave)="hideCartPopup()"
+  >
+    <svg icon="cart" class="cart-icon-wrapper__img"></svg>
+    @if(isPopupCartVisible) {
+    <app-cart ></app-cart>
+    }
+  </div>
 </div>

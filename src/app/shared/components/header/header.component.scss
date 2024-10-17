@@ -112,12 +112,12 @@
     }
 }
 
-
-.cart-icon {
+.cart-icon-wrapper {
+    position: relative;
     width: 58px;
     height: 58px;
 
-    .cart-icon__img {
+    .cart-icon-wrapper__img {
         width: 58px;
         height: 58px;
     }

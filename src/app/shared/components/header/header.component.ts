@@ -19,6 +19,7 @@ import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { Product } from '../../../core/interfaces/product.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CartComponent } from "./cart/cart.component";
 
 @Component({
   selector: 'app-header',
@@ -29,8 +30,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     AccountPopupComponent,
     CommonModule,
     SvgIconComponent,
-    RouterModule
-  ],
+    RouterModule,
+    CartComponent
+],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,7 +48,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   @HostBinding('class.position-absolute') isAbsolute = true;
-  isPopupVisible = false;
+  isPopupLanguageVisible = false;
+  isPopupCartVisible = false;
   translate = inject(TranslateService);
   currentRoute = signal<string>(''); 
   subscription!: Subscription;
@@ -90,11 +93,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  showPopup() {
-    this.isPopupVisible = true;
+  showLanguagePopup() {
+    this.isPopupLanguageVisible = true;
   }
 
-  hidePopup() {
-    this.isPopupVisible = false;
+  hideLanguagePopup() {
+    this.isPopupLanguageVisible = false;
+  }
+
+  showCartPopup() {
+    this.isPopupCartVisible = true;
+  }
+
+  hideCartPopup() {
+    this.isPopupCartVisible = false;
   }
 }

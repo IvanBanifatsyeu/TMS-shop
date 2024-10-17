@@ -10,7 +10,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductFirebaseService } from '../../core/services/product-firebase.service';
 import { Product } from '../../core/interfaces/product.interface';
 import { ActivatedRoute } from '@angular/router';
-import { CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
 import { StarsGeneratorComponent } from '../../shared/components/stars-generator/stars-generator.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -23,6 +23,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     SvgIconComponent,
     StarsGeneratorComponent,
     TranslateModule,
+    CommonModule,
   ],
   templateUrl: './product-description-page.component.html',
   styleUrl: './product-description-page.component.scss',
@@ -39,6 +40,11 @@ export class ProductDescriptionPageComponen implements OnInit {
   listMyFavorite_s = signal<Product[] | null>(null);
   isFavorite = signal<boolean>(false);
 
+  //zzz
+  selectedColor_s = signal<string>('');
+  selectedSize_s = signal<string>('');
+  //zzz
+
   ngOnInit(): void {
     this.productsFirebaseService
       .getProducts()
@@ -50,16 +56,13 @@ export class ProductDescriptionPageComponen implements OnInit {
         });
         this.imgUrl = this.product?.imgUrl;
       });
-      const firebaseDataFavorite$ = this.productsFirebaseService
+    const firebaseDataFavorite$ = this.productsFirebaseService
       .getMyFavorite()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
         this.id = this.route.snapshot.paramMap.get('id');
         this.listMyFavorite_s.set(res);
-        this.isFavorite.set( 
-          res.some((element) => element.id === this.id)
-        );
-
+        this.isFavorite.set(res.some((element) => element.id === this.id));
       });
   }
 
@@ -70,5 +73,27 @@ export class ProductDescriptionPageComponen implements OnInit {
     } else {
       this.productsFirebaseService.addItemToMyFavorite(product!);
     }
+  }
+
+  setSelectedColor(color: string, event: Event) {
+    event.stopPropagation();
+
+    if (this.selectedColor_s() === color) {
+      this.selectedColor_s.set('');
+    } else { 
+      this.selectedColor_s.set(color);
+    }
+    console.log('🚀 ', this.selectedColor_s());
+  }
+
+  setSelectedSize(size: string, event: Event) {
+    event.stopPropagation();
+   if (this.selectedSize_s() === size) {
+     this.selectedSize_s.set('');
+   } else {
+     this.selectedSize_s.set(size);
+   }
+
+    console.log('🚀 ', this.selectedSize_s());
   }
 }
