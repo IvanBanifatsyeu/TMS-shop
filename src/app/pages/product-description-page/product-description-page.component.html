@@ -7,10 +7,14 @@
       <div class="info__model-curColor model-curColor">
         <h1 class="model-curColor__model">{{ product?.model }}</h1>
         <p class="model-curColor__curColor">({{ product?.curColor }})</p>
-        @if(isFavorite()) {
-        <svg class="model-curColor__favorit-icon favorit-icon" icon="fav"></svg>
+      </div>
+      <div class="info__status-bar status-bar">
+        @if(isFavorite_s()) {
+        <svg class="status-bar__favorit-icon favorit-icon" icon="fav"></svg>
         } @else {
-        <div class="model-curColor__dummy"></div>
+        <div class="status-bar__favorit-icon-dummy favorit-icon-dummy"></div>
+        } @if(isAddedToCart_s()) {
+        <svg class="status-bar__inCart-icon inCart-icon" icon="in-cart"></svg>
         }
       </div>
       <div class="info__rating-wrapper rating-wrapper">
@@ -42,13 +46,28 @@
         </p>
         <div class="sizes__sizes-list sizes-list">
           @for(size of product?.sizes; track $index) {
-          <div class="sizes-list__size" 
-          (click)="setSelectedSize(size, $event)"
-          [ngClass]="{ selectedSize: this.selectedSize_s() === size }"
+          <div
+            class="sizes-list__size"
+            (click)="setSelectedSize(size, $event)"
+            [ngClass]="{ selectedSize: this.selectedSize_s() === size }"
           >
             {{ size }}
           </div>
           }
+        </div>
+      </div>
+      <div class="info__quantity-price-selector quantity-price-selector">
+        <div class="quantity-price-selector__quantity-wrapper quantity-wrapper">
+          <p class="quantity-wrapper__title">выбирите количество</p>
+          <div class="quantity-wrapper__choice-wrapper choice-wrapper">
+            <button class="choice-wrapper__button" (click)="decreaseQuantity()">-</button>
+            <div class="choice-wrapper__number">{{this.selectedQuantity_s()}}</div>
+            <button class="choice-wrapper__button" (click)="increaseQuantity()">+</button>
+          </div>
+        </div>
+        <div class="quantity-price-selector__price">
+          <p class="quantity-price-selector__title">цена заказа</p>
+          <div>{{this.orderSum_sc()}}</div>
         </div>
       </div>
       <div class="info__buttons buttons">
@@ -57,15 +76,18 @@
           (click)="toggleFavorit(product, $event)"
         >
           {{
-            (isFavorite()
+            (isFavorite_s()
               ? "PRODUCT_DESCRIPTION_PAGE.REMOVE_FROM_WISHLIST"
               : "PRODUCT_DESCRIPTION_PAGE.ADD_TO_WISHLIST"
             ) | translate
           }}
         </button>
-        <button class="buttons__button"
-        [disabled]="this.selectedColor_s() === '' || this.selectedSize_s() === ''"
-        (click)="addToCart(product, $event)"
+        <button
+          class="buttons__button"
+          [disabled]="
+            this.selectedColor_s() === '' || this.selectedSize_s() === ''
+          "
+          (click)="addToCart(product, $event)"
         >
           {{ "PRODUCT_DESCRIPTION_PAGE.ADD_TO_CART" | translate }}
         </button>

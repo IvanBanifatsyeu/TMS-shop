@@ -20,7 +20,9 @@ export class ProductFirebaseService {
   firestore = inject(Firestore);
   productCollection = collection(this.firestore, 'products');
   myFavorite = collection(this.firestore, 'my-favorite');
+  myCart = collection(this.firestore, 'my-cart');
 
+  // MY FAVORITE Collection 🩷
   getMyFavorite(): Observable<Product[]> {
     return collectionData(this.myFavorite, {}) as Observable<Product[]>;
   }
@@ -42,13 +44,30 @@ export class ProductFirebaseService {
       mergeMap((docs) =>
         from(docs).pipe(
           mergeMap((doc) => from(deleteDoc(doc.ref))),
-          toArray(),
+          toArray()
         )
       ),
-      map(() => { }),
+      map(() => {})
     );
   }
 
+  // MY CART Collection 🛒🛒
+  getItemsFromMyCart(): Observable<Product[]> {
+    return collectionData(this.myCart, {}) as Observable<Product[]>;
+  }
+
+  addItemToMyCart(product: Product) {
+    const docRef = doc(this.firestore, 'my-cart', product.id);
+    return setDoc(docRef, product);
+  }
+
+  removeFromMyCart(id: string): Observable<void> {
+    const docRef = doc(this.firestore, `my-cart/${id}`);
+    const promise = deleteDoc(docRef);
+    return from(promise);
+  }
+
+  //  PRODUCT Collection 👚👚👚
   getProducts(): Observable<Product[]> {
     return collectionData(this.productCollection, {
       idField: 'id',

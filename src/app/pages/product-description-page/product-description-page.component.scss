@@ -40,24 +40,10 @@
         align-items: center;
         justify-content: start;
         column-gap: 6px;
-        margin-bottom: 14px;
         font-weight: 700;
         font-size: 24px;
         line-height: 36px;
         letter-spacing: 0.1px;
-
-
-        .favorit-icon {
-            width: 30px;
-            height: 30px;
-            color: var(--blue-active-color);
-
-        }
-
-        .model-curColor__dummy {
-            width: 30px;
-            height: 30px;
-        }
 
         .model-curColor__model {
             font-weight: 700;
@@ -73,6 +59,33 @@
             line-height: 36px;
             letter-spacing: 0.1px;
         }
+    }
+
+    .status-bar {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
+        column-gap: 6px;
+        margin-bottom: 14px;
+
+        .favorit-icon {
+            width: 30px;
+            height: 30px;
+            color: var(--blue-active-color);
+        }
+
+        .favorit-icon-dummy {
+            width: 30px;
+            height: 30px;
+        }
+
+        .inCart-icon {
+            width: 30px;
+            height: 30px;
+        }
+
+
     }
 
     .rating-wrapper {
@@ -189,6 +202,40 @@
         margin-bottom: 35px;
     }
 
+    .quantity-price-selector {
+
+        .choice-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 120px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+
+            .choice-wrapper__button {
+                background-color: var(--light-blue-color);
+                color: white;
+                border: none;
+                width: 30px;
+                height: 40px;
+                cursor: pointer;
+                font-size: 18px;
+                font-weight: bold;
+                transition: filter 0.2s;
+
+                &:hover {
+                    filter: brightness(1.2);
+                }
+
+                &:active {
+                    transform: scale(0.95);
+                }
+            }
+        }
+
+    }
+
     .buttons {
         display: flex;
         flex-direction: row;
@@ -211,6 +258,7 @@
             border-radius: 5px;
             cursor: pointer;
             padding: 0 5px;
+            transition: filter 0.2s;
 
 
             &:disabled {

@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   inject,
   OnInit,
@@ -38,12 +39,16 @@ export class ProductDescriptionPageComponen implements OnInit {
   destroyRef = inject(DestroyRef);
   route = inject(ActivatedRoute);
   listMyFavorite_s = signal<Product[] | null>(null);
-  isFavorite = signal<boolean>(false);
-
-  //zzz
+  listCart_s = signal<Product[] | null>(null);
+  isFavorite_s = signal<boolean>(false);
+  isAddedToCart_s = signal<boolean>(false);
   selectedColor_s = signal<string>('');
   selectedSize_s = signal<string>('');
-  //zzz
+  selectedQuantity_s = signal<number>(0);
+
+  orderSum_sc = computed(() => {
+    return this.selectedQuantity_s() * this.product!?.price || 0;
+  });
 
   ngOnInit(): void {
     this.productsFirebaseService
@@ -55,20 +60,29 @@ export class ProductDescriptionPageComponen implements OnInit {
           return product.id === this.id;
         });
         this.imgUrl = this.product?.imgUrl;
+        this.selectedQuantity_s.set(1);
       });
-    const firebaseDataFavorite$ = this.productsFirebaseService
+    this.productsFirebaseService
       .getMyFavorite()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
         this.id = this.route.snapshot.paramMap.get('id');
         this.listMyFavorite_s.set(res);
-        this.isFavorite.set(res.some((element) => element.id === this.id));
+        this.isFavorite_s.set(res.some((element) => element.id === this.id));
+      });
+    this.productsFirebaseService
+      .getItemsFromMyCart()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((res) => {
+        this.listCart_s.set(res);
+        this.isAddedToCart_s.set(res.some((element) => element.id === this.id));
+        console.log('❤️💛🩷 in cart?', this.isAddedToCart_s());
       });
   }
 
   toggleFavorit(product: Product | undefined, event: Event) {
     event.stopPropagation();
-    if (this.isFavorite()) {
+    if (this.isFavorite_s()) {
       this.productsFirebaseService.removeFromMyFavorite(this.id!);
     } else {
       this.productsFirebaseService.addItemToMyFavorite(product!);
@@ -99,5 +113,53 @@ export class ProductDescriptionPageComponen implements OnInit {
 
   addToCart(product: Product | undefined, event: Event) {
     event.stopPropagation();
+
+    let arrOfORderedItems: { color: string; size: string }[] = [];
+    if (this.selectedSize_s() && this.selectedColor_s()) {
+      // arrOfORderedItems = [
+      //   [this.selectedSize_s(), this.selectedColor_s()],
+      // ];
+
+      for (let i = 0; i < this.selectedQuantity_s(); i++) {
+        arrOfORderedItems.push({
+          color: this.selectedColor_s(),
+          size: this.selectedSize_s(),
+        });
+      }
+    }
+
+    // ])
+
+    const productForCart: Product = {
+      ...product,
+      quantity: arrOfORderedItems,
+      color: [this.selectedColor_s()],
+      sizes: [this.selectedSize_s()],
+      category: product!.category || '',
+      model: product!.model || '',
+      price: product!.price || 0,
+      description: product!.description || '',
+      rating: product!.rating || 0,
+      id: product!.id || '',
+      imgUrl: product!.imgUrl || '',
+      addedAt: product!.addedAt || '',
+      curColor: product!.curColor || '',
+    };
+
+    this.productsFirebaseService.addItemToMyCart(productForCart);
+    this.selectedColor_s.set('');
+    this.selectedSize_s.set('');
+  }
+
+  decreaseQuantity() {
+    if (this.selectedQuantity_s() > 1) {
+      this.selectedQuantity_s.update((prev) => prev - 1);
+    }
+  }
+
+  increaseQuantity() {
+    if (this.selectedQuantity_s() < 5) {
+      this.selectedQuantity_s.update((prev) => prev + 1);
+    }
   }
 }
