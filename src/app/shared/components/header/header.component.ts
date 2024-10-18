@@ -40,9 +40,9 @@ import { CartComponent } from "./cart/cart.component";
     trigger('fadeInOut', [
       transition(':enter', [
         style({ opacity: 0 }),
-        animate('300ms ease-in', style({ opacity: 1 })),
+        animate('200ms ease-in', style({ opacity: 1 })),
       ]),
-      transition(':leave', [animate('300ms ease-out', style({ opacity: 0 }))]),
+      transition(':leave', [animate('200ms ease-out', style({ opacity: 0 }))]),
     ]),
   ],
 })

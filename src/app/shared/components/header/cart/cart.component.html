@@ -1,35 +1,29 @@
 <div class="shopping-cart">
-  <h1>Shopping Cart</h1>
-  <div class="cart-items">
-    <div class="cart-item">
-      <div class="product-image">
-        <img src="product-image.jpg" alt="Product Image">
+  <h1 class="shopping-cart__title">Shopping Cart</h1>
+  <button>remove all</button>
+  <div class="shopping-cart__card-list card-list">
+    @for (item of this.listCartForDisplay_s(); track $index) {
+
+    <div class="cart-list__card-wrapper card-wrapper">
+      <app-product-card
+        [product]="item"
+        class="product-card--inCart"
+      ></app-product-card>
+      <div class="card-wrapper__quantity-control quantity-control">
+        <button (click)="removeFromCart(item, $event )">Remove</button>
+        <p class="card-wrapper__quantity">{{ item.quantity }}</p>
+        <button>изменить количество</button>
       </div>
-      <div class="product-details">
-        <h3>Product Name</h3>
-        <p>Size: M</p>
-        <p>Color: Blue</p>
-        <div class="quantity-control">
-          <button class="quantity-btn">-</button>
-          <input type="number" value="1">
-          <button class="quantity-btn">+</button>
-        </div>
-      </div>
-      <div class="product-price">
-        <p>$49.99</p>
-      </div>
-      <div class="remove-item">
-        <button class="remove-btn">Remove</button>
-      </div>
+      <div class="card-wrapper__total-price-card total-price-card">{{
+   (item.quantity && item.price) ? (item.quantity * item.price | number:'1.2-2') : 'error calculation 💀 '
+      }}</div>
+      
     </div>
-    <!-- Add more items as needed -->
+
+    }
+
+    
   </div>
 
-  <div class="cart-summary">
-    <p>Subtotal: <span>$49.99</span></p>
-    <p>Tax: <span>$5.00</span></p>
-    <p>Total: <span>$54.99</span></p>
-    <button class="checkout-btn">Proceed to Checkout</button>
-    <button class="continue-shopping-btn">Continue Shopping</button>
-  </div>
+
 </div>

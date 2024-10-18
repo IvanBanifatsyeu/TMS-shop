@@ -15,9 +15,9 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
 import { StarsGeneratorComponent } from '../../shared/components/stars-generator/stars-generator.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { OrderedProduct } from '../../core/interfaces/orderedProduct.interface';
+import { OrderedSpecificFields } from '../../core/interfaces/orderedSpecificFields.interface';
 import { or } from '@firebase/firestore';
-import { LogPipe } from "../../shared/pipes/log.pipe";
+import { LogPipe } from '../../shared/pipes/log.pipe';
 
 @Component({
   selector: 'app-product-description-page',
@@ -28,8 +28,8 @@ import { LogPipe } from "../../shared/pipes/log.pipe";
     StarsGeneratorComponent,
     TranslateModule,
     CommonModule,
-    LogPipe
-],
+    LogPipe,
+  ],
   templateUrl: './product-description-page.component.html',
   styleUrl: './product-description-page.component.scss',
   //  changeDetection: ChangeDetectionStrategy.OnPush,
@@ -117,7 +117,8 @@ export class ProductDescriptionPageComponen implements OnInit {
 
   addToCart(product: Product | undefined, event: Event) {
     event.stopPropagation();
-    let prevItemsInCartOfThisProduct: OrderedProduct[] =
+
+    let prevItemsInCartOfThisProduct: OrderedSpecificFields[] =
       this.listCart_s()!
         .map((element) => {
           if (element.id === this.id) {
@@ -128,20 +129,23 @@ export class ProductDescriptionPageComponen implements OnInit {
         })
         .flat()
         .filter((item) => item !== undefined);
-    
-    const order : OrderedProduct = {
+
+    // console.log(
+    //   '🚀🚀🚀🚀🚀🚀🚀🚀 ~ ProductDescriptionPageComponen ~ addToCart ~ prevItemsInCartOfThisProduct:',
+    //   prevItemsInCartOfThisProduct
+    // );
+    let orderId: number = new Date().getTime();
+
+    const order: OrderedSpecificFields = {
       color: this.selectedColor_s(),
       size: this.selectedSize_s(),
       quantity: this.selectedQuantity_s(),
+      orderId,
     };
-    
 
     const productForCart: Product = {
       ...this.product!,
-      arrItemsInCart: [
-        ...prevItemsInCartOfThisProduct,
-        order
-      ]
+      arrItemsInCart: [...prevItemsInCartOfThisProduct, order],
     };
 
     this.productsFirebaseService.addItemToMyCart(productForCart);

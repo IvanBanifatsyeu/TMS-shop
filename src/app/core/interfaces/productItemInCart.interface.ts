@@ -1,7 +1,6 @@
 import { OrderedSpecificFields } from './orderedSpecificFields.interface';
 
-
-export interface Product {
+export interface ProductItemInCart {
   category: string;
   model: string;
   price: number;
@@ -13,7 +12,7 @@ export interface Product {
   addedAt: string;
   sizes: string[];
   curColor: string;
-  arrItemsInCart?: OrderedSpecificFields[];
-  // quantity?: number;
-  // orderId?: number;
+//   arrItemsInCart: OrderedSpecificFields[];  
+  quantity: number;
+  orderId: number;
 }

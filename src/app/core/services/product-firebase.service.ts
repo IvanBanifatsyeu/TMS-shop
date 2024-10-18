@@ -11,6 +11,7 @@ import {
 } from '@angular/fire/firestore';
 import { from, map, mergeMap, Observable, toArray } from 'rxjs';
 import { Product } from '../interfaces/product.interface';
+import {  OrderedSpecificFields } from '../interfaces/orderedSpecificFields.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -51,7 +52,7 @@ export class ProductFirebaseService {
     );
   }
 
-  // MY CART Collection 🛒🛒
+  // MY CART Collection 🛒🛒💲💲💰💰
   getItemsFromMyCart(): Observable<Product[]> {
     return collectionData(this.myCart, {}) as Observable<Product[]>;
   }
@@ -64,6 +65,15 @@ export class ProductFirebaseService {
   removeFromMyCart(id: string): Observable<void> {
     const docRef = doc(this.firestore, `my-cart/${id}`);
     const promise = deleteDoc(docRef);
+    return from(promise);
+  }
+
+  updateArrItemsInCart(
+    id: string,
+    dataToUpdate: OrderedSpecificFields[]
+  ): Observable<void> {
+    const docRef = doc(this.firestore, `my-cart/${id}`);
+    const promise = setDoc(docRef, { arrItemsInCart: dataToUpdate });
     return from(promise);
   }
 
