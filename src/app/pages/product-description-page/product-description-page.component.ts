@@ -17,6 +17,7 @@ import { StarsGeneratorComponent } from '../../shared/components/stars-generator
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { OrderedProduct } from '../../core/interfaces/orderedProduct.interface';
 import { or } from '@firebase/firestore';
+import { LogPipe } from "../../shared/pipes/log.pipe";
 
 @Component({
   selector: 'app-product-description-page',
@@ -27,7 +28,8 @@ import { or } from '@firebase/firestore';
     StarsGeneratorComponent,
     TranslateModule,
     CommonModule,
-  ],
+    LogPipe
+],
   templateUrl: './product-description-page.component.html',
   styleUrl: './product-description-page.component.scss',
   //  changeDetection: ChangeDetectionStrategy.OnPush,

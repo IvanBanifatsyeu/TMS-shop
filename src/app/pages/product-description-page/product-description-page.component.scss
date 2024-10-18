@@ -9,10 +9,10 @@
 }
 
 .product {
-    padding: 40px 30px;
     display: grid;
     grid-template-columns: 2fr 1fr;
     column-gap: 3%;
+    padding: 40px 30px;
 }
 
 .img-conteiner__image {
@@ -23,23 +23,23 @@
 }
 
 .info {
-    width: 100%;
     word-wrap: break-word;
-    overflow: hidden;
-    text-overflow: ellipsis;
     display: flex;
     flex-direction: column;
     align-items: start;
     justify-content: start;
+    width: 100%;
     padding: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     .model-curColor {
         display: flex;
+        column-gap: 6px;
         flex-direction: row;
         flex-wrap: wrap;
         align-items: center;
         justify-content: start;
-        column-gap: 6px;
         font-weight: 700;
         font-size: 24px;
         line-height: 36px;
@@ -63,10 +63,10 @@
 
     .status-bar {
         display: flex;
+        column-gap: 6px;
         flex-direction: row;
         align-items: center;
         justify-content: start;
-        column-gap: 6px;
         margin-bottom: 14px;
 
         .favorit-icon {
@@ -90,42 +90,72 @@
 
     .rating-wrapper {
         display: flex;
+        column-gap: 6px;
         flex-direction: row;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: start;
-        flex-wrap: wrap;
-        column-gap: 6px;
         margin-bottom: 20px;
 
         .rating-wrapper__rating {
             color: var(--gold-color);
-            font-size: 16px;
             font-weight: 700;
+            font-size: 16px;
             line-height: 32px;
             letter-spacing: 0.2px;
         }
     }
 
     .info__price {
-        font-size: 24px;
+        margin-bottom: 35px;
         font-weight: 700;
+        font-size: 24px;
         line-height: 36px;
         letter-spacing: 0.1px;
-        margin-bottom: 35px;
     }
 
     .colors,
     .sizes {
         display: flex;
+        position: relative;
         flex-direction: column;
         align-items: start;
+        width: 100%;
         margin-bottom: 10px;
+
+        .buttons__popup-add-color-size {
+            position: absolute;
+            top: 65px;
+            left: 20px;
+            color: rgb(154, 15, 15);
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 28px;
+            letter-spacing: 0.2px;
+            animation: fadeIn 4s ease-in-out;
+            opacity: 1;
+
+
+            @keyframes fadeIn {
+                0% {
+                    opacity: 0;
+                }
+
+                50% {
+                    opacity: 0;
+                }
+
+                100% {
+                    opacity: 1;
+                }
+            }
+        }
 
         .colors__title,
         .sizes__title {
             color: var(--medium-grey-color);
-            font-size: 16px;
             font-weight: 700;
+            font-size: 16px;
             line-height: 28px;
             letter-spacing: 0.2px;
         }
@@ -133,11 +163,11 @@
         .colors-list,
         .sizes-list {
             display: flex;
+            column-gap: 3px;
             flex-direction: row;
             flex-wrap: wrap;
             align-items: center;
             justify-content: start;
-            column-gap: 3px;
         }
 
 
@@ -190,8 +220,8 @@
             }
 
             &.selectedSize {
-                outline: 2px solid var(--blue-active-color);
                 border: none;
+                outline: 2px solid var(--blue-active-color);
             }
         }
     }
@@ -199,15 +229,15 @@
 
     .quantity-price-selector {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: start;
-        flex-wrap: wrap;
         visibility: hidden;
         column-gap: 10px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: start;
         margin-bottom: 10px;
-        border: 1px solid var(--medium-grey-color);
         padding: 5px;
+        border: 1px solid var(--medium-grey-color);
         border-radius: 5px;
 
 
@@ -220,9 +250,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: start;
-            gap: 4px;
-            // border: 1px solid red;
             height: 66px;
+            gap: 4px;
 
             .quantity-wrapper__title {
                 color: var(--medium-grey-color);
@@ -233,13 +262,12 @@
         }
 
         .price-wrapeer {
-            // border: 1px solid rgb(0, 17, 255);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: start;
-            gap: 4px;
             height: 66px;
+            gap: 4px;
 
             .price-wrapeer__title {
                 color: var(--medium-grey-color);
@@ -257,19 +285,19 @@
             align-items: center;
             justify-content: space-between;
             width: 100px;
+            overflow: hidden;
             border: 1px solid #ccc;
             border-radius: 5px;
-            overflow: hidden;
 
             .choice-wrapper__button {
-                background-color: var(--light-blue-color);
-                color: white;
-                border: none;
                 width: 30px;
                 height: 30px;
-                cursor: pointer;
-                font-size: 18px;
+                border: none;
+                background-color: var(--light-blue-color);
+                color: white;
                 font-weight: bold;
+                font-size: 18px;
+                cursor: pointer;
                 transition: filter 0.2s;
 
                 &:hover {
@@ -286,34 +314,38 @@
 
     .buttons {
         display: flex;
+        position: relative;
         flex-direction: row;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        flex-wrap: wrap;
         margin-bottom: 35px;
-        position: relative;
+        gap: 8px;
+
+
+
 
         .buttons__button {
             width: 185px;
             height: 40px;
+            padding: 0 5px;
             border: none;
+            border-radius: 5px;
+            background-color: var(--light-blue-color);
             color: var(--light-color);
             font-weight: 600;
             font-size: 14px;
             line-height: 28px;
             letter-spacing: 0.2px;
-            background-color: var(--light-blue-color);
-            border-radius: 5px;
             cursor: pointer;
-            padding: 0 5px;
             transition: filter 0.2s;
+
 
 
             &:disabled {
                 background-color: #e0e0e0;
-                color: var(--blue-not-active-color);
                 cursor: not-allowed;
+
 
                 &:hover {
                     filter: none;
@@ -322,6 +354,7 @@
                 &:active {
                     transform: none;
                 }
+
             }
 
 
@@ -339,19 +372,19 @@
             position: absolute;
             top: -10px;
             left: 50%;
-            background-color: rgb(255, 251, 251);
             padding: 5px;
-            border-radius: 5px;
-            border: var(--light-grey-color) 1px solid;
-            color: var(--dark-blue-color);
             transform: translateY(-100%);
-           
+            border: var(--light-grey-color) 1px solid;
+            border-radius: 5px;
+            background-color: rgb(255, 251, 251);
+            color: var(--dark-blue-color);
+
         }
 
         .visible-popup {
             display: block;
-            opacity: 0;
             animation: fadeInOut 4s 0.5s ease;
+            opacity: 0;
         }
 
         @keyframes fadeInOut {
@@ -367,22 +400,24 @@
                 opacity: 0;
             }
         }
+
+
     }
 
     .description__title {
-        font-size: 24px;
+        margin-bottom: 4px;
         font-weight: 500;
+        font-size: 24px;
         line-height: 38px;
         letter-spacing: 0.2px;
-        margin-bottom: 4px;
     }
 
     .description__text {
-        font-size: 16px;
+        color: var(--medium-grey-color);
         font-weight: 500;
+        font-size: 16px;
         line-height: 28px;
         letter-spacing: 0.2px;
-        color: var(--medium-grey-color)
     }
 
 }
