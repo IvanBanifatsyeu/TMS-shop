@@ -1,13 +1,15 @@
 :host {
-    position: absolute;
-    width: 1000px;
-    height: 500px;
-    background-color: #b4b4b4;
-    right: -50px;
-    top: 40px;
-    color: var(--dark-blue-color);
     z-index: 10;
-
+    position: absolute;
+    top: 70px;
+    right: 2%;
+    width: 80dvw;
+    max-width: 1200px;
+    color: var(--dark-blue-color);
+    backdrop-filter: blur(10px);
+    /* Применение размытия */
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 
@@ -15,33 +17,35 @@
     width: 100%;
     margin: 0 auto;
     padding: 20px;
-    background-color: #f9f9f9;
     border-radius: 8px;
+    background-color: #f9f9f9;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 
     .shopping-cart__title {
-        text-align: center;
-        font-size: 2rem;
         margin-bottom: 20px;
         color: var(--dark-blue-color);
+        font-size: 2rem;
+        text-align: center;
     }
 
     .card-list {
         display: flex;
         flex-direction: column;
-        gap: 20px;
-// zzz
+        row-gap: 20px;
+
         .card-wrapper {
-            // border: 1px solid red;
-            padding: 10px;
+            border: 1px solid red;
             display: flex;
+            column-gap: 20px;
             flex-direction: row;
+            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            column-gap: 20px;
-            width: 900px;
+            // width: 900px;
+            padding: 10px;
             border-radius: 10px;
             background-color: var(--light-color);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
 
         }

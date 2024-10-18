@@ -2,7 +2,7 @@
   <h1 class="shopping-cart__title">Shopping Cart</h1>
   <button>remove all</button>
   <div class="shopping-cart__card-list card-list">
-    @for (item of this.listCartForDisplay_s(); track $index) {
+    @for (item of this.listCart_s() ; track item.orderId) {
 
     <div class="cart-list__card-wrapper card-wrapper">
       <app-product-card

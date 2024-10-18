@@ -84,8 +84,6 @@
             width: 30px;
             height: 30px;
         }
-
-
     }
 
     .rating-wrapper {
@@ -135,7 +133,6 @@
             animation: fadeIn 4s ease-in-out;
             opacity: 1;
 
-
             @keyframes fadeIn {
                 0% {
                     opacity: 0;
@@ -170,8 +167,6 @@
             justify-content: start;
         }
 
-
-
         .color-icon {
             width: 32px;
             height: 32px;
@@ -190,8 +185,6 @@
                 --svg-color-icon-stroke-size: 3;
             }
         }
-
-
 
         .sizes-list {
             display: flex;
@@ -226,7 +219,6 @@
         }
     }
 
-
     .quantity-price-selector {
         display: flex;
         visibility: hidden;
@@ -239,7 +231,6 @@
         padding: 5px;
         border: 1px solid var(--medium-grey-color);
         border-radius: 5px;
-
 
         &.is-visible {
             visibility: visible;
@@ -257,8 +248,6 @@
                 color: var(--medium-grey-color);
                 font-size: 20px;
             }
-
-
         }
 
         .price-wrapeer {
@@ -277,7 +266,6 @@
             .price-wrapeer__price {
                 font-size: 24px;
             }
-
         }
 
         .choice-wrapper {
@@ -309,7 +297,6 @@
                 }
             }
         }
-
     }
 
     .buttons {
@@ -321,9 +308,6 @@
         justify-content: center;
         margin-bottom: 35px;
         gap: 8px;
-
-
-
 
         .buttons__button {
             width: 185px;
@@ -340,12 +324,9 @@
             cursor: pointer;
             transition: filter 0.2s;
 
-
-
             &:disabled {
                 background-color: #e0e0e0;
                 cursor: not-allowed;
-
 
                 &:hover {
                     filter: none;
@@ -354,9 +335,7 @@
                 &:active {
                     transform: none;
                 }
-
             }
-
 
             &:hover {
                 filter: brightness(1.2);
@@ -378,7 +357,6 @@
             border-radius: 5px;
             background-color: rgb(255, 251, 251);
             color: var(--dark-blue-color);
-
         }
 
         .visible-popup {
@@ -400,8 +378,6 @@
                 opacity: 0;
             }
         }
-
-
     }
 
     .description__title {
@@ -419,5 +395,4 @@
         line-height: 28px;
         letter-spacing: 0.2px;
     }
-
 }

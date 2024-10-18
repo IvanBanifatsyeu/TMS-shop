@@ -27,44 +27,25 @@ export class CartComponent implements OnInit {
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   destroyRef = inject(DestroyRef);
-  listCartFromFirebase_s = signal<Product[]>([]);
-  // zzz
-  listCartForDisplay_s = computed(() => {
-    const listForDisplayInCart: ProductItemInCart[] = [];
-    this.listCartFromFirebase_s()!.forEach((product) => {
-      product.arrItemsInCart!.map((value) => {
-        listForDisplayInCart.push({
-          ...product,
-          color: [value.color],
-          sizes: [value.size],
-          quantity: value.quantity,
-          orderId: value.orderId,
-          // arrItemsInCart: [value],
-        });
-      });
-    });
-
-  console.log('%c💡 listForDisplayInCart' ,'font-size: 16px; color: red; font-weight: bold;', listForDisplayInCart );
-    return listForDisplayInCart;
-  });
-
+  listCart_s = signal<ProductItemInCart[]>([]);
+  
   ngOnInit(): void {
     this.productsFirebaseService
       .getItemsFromMyCart()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
-        this.listCartFromFirebase_s.set(res);
+        this.listCart_s.set(res);
       });
   }
 
   removeFromCart(product: Product, event: Event) {
     event.stopPropagation();
-    console.log(product);
+ 
 
-    if (product.arrItemsInCart?.length === 1) {
-      this.productsFirebaseService.removeFromMyCart(product.id);
-    } else {
-    }
+    // if (product.arrItemsInCart?.length === 1) {
+    //   this.productsFirebaseService.removeFromMyCart(product.id);
+    // } else {
+    // }
 
     // this.productsFirebaseService.removeItemFromMyCart(product);
   }

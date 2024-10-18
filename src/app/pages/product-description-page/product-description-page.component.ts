@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
@@ -15,9 +14,8 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
 import { StarsGeneratorComponent } from '../../shared/components/stars-generator/stars-generator.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { OrderedSpecificFields } from '../../core/interfaces/orderedSpecificFields.interface';
-import { or } from '@firebase/firestore';
 import { LogPipe } from '../../shared/pipes/log.pipe';
+import { ProductItemInCart } from '../../core/interfaces/productItemInCart.interface';
 
 @Component({
   selector: 'app-product-description-page',
@@ -32,27 +30,24 @@ import { LogPipe } from '../../shared/pipes/log.pipe';
   ],
   templateUrl: './product-description-page.component.html',
   styleUrl: './product-description-page.component.scss',
-  //  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductDescriptionPageComponen implements OnInit {
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   product: Product | undefined = undefined;
-  imgUrl: string | undefined = '';
+  imgUrl: string  = '';
   id: string | null = '';
   destroyRef = inject(DestroyRef);
   route = inject(ActivatedRoute);
-  listMyFavorite_s = signal<Product[] | null>(null);
-  listCart_s = signal<Product[] | null>(null);
+  listMyFavorite_s = signal<Product[] | []>([]);
   isFavorite_s = signal<boolean>(false);
   isAddedToCart_s = signal<boolean>(false);
   selectedColor_s = signal<string>('');
   selectedSize_s = signal<string>('');
-  selectedQuantity_s = signal<number>(0);
+  selectedQuantity_s = signal<number>(1);
   showPopupAddToCart_s = signal<boolean>(false);
-
   orderSum_sc = computed(() => {
-    return this.selectedQuantity_s() * this.product!?.price || 0;
+    return this.selectedQuantity_s() * this.product!?.price;
   });
 
   ngOnInit(): void {
@@ -64,9 +59,9 @@ export class ProductDescriptionPageComponen implements OnInit {
         this.product = res.find((product) => {
           return product.id === this.id;
         });
-        this.imgUrl = this.product?.imgUrl;
-        this.selectedQuantity_s.set(1);
+        this.imgUrl = this.product!.imgUrl;
       });
+    
     this.productsFirebaseService
       .getMyFavorite()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -75,11 +70,11 @@ export class ProductDescriptionPageComponen implements OnInit {
         this.listMyFavorite_s.set(res);
         this.isFavorite_s.set(res.some((element) => element.id === this.id));
       });
+    
     this.productsFirebaseService
       .getItemsFromMyCart()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
-        this.listCart_s.set(res);
         this.isAddedToCart_s.set(res.some((element) => element.id === this.id));
       });
   }
@@ -101,7 +96,6 @@ export class ProductDescriptionPageComponen implements OnInit {
     } else {
       this.selectedColor_s.set(color);
     }
-    console.log('🚀 ', this.selectedColor_s());
   }
 
   setSelectedSize(size: string, event: Event) {
@@ -111,47 +105,23 @@ export class ProductDescriptionPageComponen implements OnInit {
     } else {
       this.selectedSize_s.set(size);
     }
-
-    console.log('🚀 ', this.selectedSize_s());
   }
 
-  addToCart(product: Product | undefined, event: Event) {
+  addToCart(product: Product , event: Event) {
     event.stopPropagation();
-
-    let prevItemsInCartOfThisProduct: OrderedSpecificFields[] =
-      this.listCart_s()!
-        .map((element) => {
-          if (element.id === this.id) {
-            return element.arrItemsInCart;
-          } else {
-            return [];
-          }
-        })
-        .flat()
-        .filter((item) => item !== undefined);
-
-    // console.log(
-    //   '🚀🚀🚀🚀🚀🚀🚀🚀 ~ ProductDescriptionPageComponen ~ addToCart ~ prevItemsInCartOfThisProduct:',
-    //   prevItemsInCartOfThisProduct
-    // );
-    let orderId: number = new Date().getTime();
-
-    const order: OrderedSpecificFields = {
-      color: this.selectedColor_s(),
-      size: this.selectedSize_s(),
+ 
+    const productForCart: ProductItemInCart = {
+      ...product,
+      color: [this.selectedColor_s()],
+      sizes: [this.selectedSize_s()],
       quantity: this.selectedQuantity_s(),
-      orderId,
-    };
-
-    const productForCart: Product = {
-      ...this.product!,
-      arrItemsInCart: [...prevItemsInCartOfThisProduct, order],
     };
 
     this.productsFirebaseService.addItemToMyCart(productForCart);
     this.selectedColor_s.set('');
     this.selectedSize_s.set('');
     this.showPopupAddToCart_s.set(true);
+    this.selectedQuantity_s.set(1);
   }
 
   handleAnimationEnd() {

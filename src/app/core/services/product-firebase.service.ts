@@ -11,7 +11,8 @@ import {
 } from '@angular/fire/firestore';
 import { from, map, mergeMap, Observable, toArray } from 'rxjs';
 import { Product } from '../interfaces/product.interface';
-import {  OrderedSpecificFields } from '../interfaces/orderedSpecificFields.interface';
+import { ProductItemInCart } from '../interfaces/productItemInCart.interface';
+import { v4 as uuidv4 }  from 'uuid'; 
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class ProductFirebaseService {
   myFavorite = collection(this.firestore, 'my-favorite');
   myCart = collection(this.firestore, 'my-cart');
 
-  // MY FAVORITE Collection 🩷
+  // MY FAVORITE Collection 🩷🩷🩷
   getMyFavorite(): Observable<Product[]> {
     return collectionData(this.myFavorite, {}) as Observable<Product[]>;
   }
@@ -53,13 +54,25 @@ export class ProductFirebaseService {
   }
 
   // MY CART Collection 🛒🛒💲💲💰💰
-  getItemsFromMyCart(): Observable<Product[]> {
-    return collectionData(this.myCart, {}) as Observable<Product[]>;
+  getItemsFromMyCart(): Observable<ProductItemInCart[]> {
+    return collectionData(this.myCart) as Observable<ProductItemInCart[]>;
   }
 
-  addItemToMyCart(product: Product) {
-    const docRef = doc(this.firestore, 'my-cart', product.id);
-    return setDoc(docRef, product);
+  addItemToMyCart(
+    productToCart: ProductItemInCart
+  ): Observable<ProductItemInCart> {
+
+    
+    const cartItemId = uuidv4();
+    const cartItemRef = doc(this.myCart, cartItemId);
+    const data = {
+      ...productToCart,
+      orderId: cartItemId,
+    };
+
+    return from(setDoc(cartItemRef, data)).pipe(
+      map(() => data as ProductItemInCart)
+    );
   }
 
   removeFromMyCart(id: string): Observable<void> {
@@ -68,14 +81,14 @@ export class ProductFirebaseService {
     return from(promise);
   }
 
-  updateArrItemsInCart(
-    id: string,
-    dataToUpdate: OrderedSpecificFields[]
-  ): Observable<void> {
-    const docRef = doc(this.firestore, `my-cart/${id}`);
-    const promise = setDoc(docRef, { arrItemsInCart: dataToUpdate });
-    return from(promise);
-  }
+  // updateArrItemsInCart(
+  //   id: string,
+  //   dataToUpdate: OrderedSpecificFields[]
+  // ): Observable<void> {
+  //   const docRef = doc(this.firestore, `my-cart/${id}`);
+  //   const promise = setDoc(docRef, { arrItemsInCart: dataToUpdate });
+  //   return from(promise);
+  // }
 
   //  PRODUCT Collection 👚👚👚
   getProducts(): Observable<Product[]> {

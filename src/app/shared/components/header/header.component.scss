@@ -13,6 +13,7 @@
     font-size: 16px;
     line-height: 28px;
     letter-spacing: 0.2px;
+    position: relative;
 
     &.position-absolute {
         position: absolute;
@@ -113,7 +114,7 @@
 }
 
 .cart-icon-wrapper {
-    position: relative;
+    //  position: relative;
     width: 58px;
     height: 58px;
 

@@ -53,9 +53,10 @@
           >
             {{ size }}
           </div>
-          } 
-          @if(this.selectedColor_s() === ''|| this.selectedSize_s() === '') {
-          <p class="buttons__popup-add-color-size" visible >{{"PRODUCT_DESCRIPTION_PAGE.SELECT_COLOR_AND_SIZE" | translate}}</p>
+          } @if(this.selectedColor_s() === ''|| this.selectedSize_s() === '') {
+          <p class="buttons__popup-add-color-size" visible>
+            {{ "PRODUCT_DESCRIPTION_PAGE.SELECT_COLOR_AND_SIZE" | translate }}
+          </p>
           }
         </div>
       </div>
@@ -108,7 +109,7 @@
           [disabled]="
             this.selectedColor_s() === '' || this.selectedSize_s() === ''
           "
-          (click)="addToCart(product, $event)"
+          (click)="product && addToCart(product, $event)"
         >
           {{ "PRODUCT_DESCRIPTION_PAGE.ADD_TO_CART" | translate }}
         </button>
