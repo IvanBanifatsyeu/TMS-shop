@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { AccountPopupComponent } from './account-popup/account-popup.component';
+import { LanguageSwitchComponent } from './language-switch/language-switch.component';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -27,12 +27,12 @@ import { CartComponent } from "./cart/cart.component";
   imports: [
     NavigationComponent,
     TranslateModule,
-    AccountPopupComponent,
+    LanguageSwitchComponent,
     CommonModule,
     SvgIconComponent,
     RouterModule,
-    CartComponent
-],
+    CartComponent,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -51,13 +51,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isPopupLanguageVisible = false;
   isPopupCartVisible = false;
   translate = inject(TranslateService);
-  currentRoute = signal<string>(''); 
+  currentRoute = signal<string>('');
   subscription!: Subscription;
-  router= inject(Router);
+  router = inject(Router);
   productsFirebaseService = inject(ProductFirebaseService);
   destroyRef = inject(DestroyRef);
   listMyFavorite_s = signal<Product[] | null>(null);
-
 
   ngOnInit(): void {
     this.subscription = this.router.events
@@ -70,7 +69,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.handleRouteChange(event.url); // Обрабатываем изменение маршрута
       });
 
-      const firebaseDataFavorite$ = this.productsFirebaseService
+    const firebaseDataFavorite$ = this.productsFirebaseService
       .getMyFavorite()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
@@ -82,7 +81,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     // добавляем/удаляем класс в зависимости от текущего роута
     if (url === '/') {
       this.isAbsolute = true;
-    } else if (url.startsWith("/shop") || "/my-favorite") {
+    } else if (url.startsWith('/shop') || '/my-favorite') {
       this.isAbsolute = false;
     }
   }

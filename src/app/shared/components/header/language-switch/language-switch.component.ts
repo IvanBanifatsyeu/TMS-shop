@@ -5,11 +5,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
   selector: 'app-account-popup',
   standalone: true,
   imports: [TranslateModule],
-  templateUrl: './account-popup.component.html',
-  styleUrl: './account-popup.component.scss',
+  templateUrl: './language-switch.component.html',
+  styleUrl: './language-switch.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountPopupComponent {
+export class LanguageSwitchComponent {
   translate = inject(TranslateService);
 
   useLanguage(language: string): void {
