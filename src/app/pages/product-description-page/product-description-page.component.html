@@ -56,18 +56,36 @@
           }
         </div>
       </div>
-      <div class="info__quantity-price-selector quantity-price-selector">
+      <div
+        class="info__quantity-price-selector quantity-price-selector"
+        [ngClass]="{
+          'is-visible':
+            this.selectedColor_s() !== '' && this.selectedSize_s() !== ''
+        }"
+      >
         <div class="quantity-price-selector__quantity-wrapper quantity-wrapper">
-          <p class="quantity-wrapper__title">выбирите количество</p>
+          <p class="quantity-wrapper__title">
+            {{ "PRODUCT_DESCRIPTION_PAGE.SELECT_QUANTITY" | translate }}
+          </p>
           <div class="quantity-wrapper__choice-wrapper choice-wrapper">
-            <button class="choice-wrapper__button" (click)="decreaseQuantity()">-</button>
-            <div class="choice-wrapper__number">{{this.selectedQuantity_s()}}</div>
-            <button class="choice-wrapper__button" (click)="increaseQuantity()">+</button>
+            <button class="choice-wrapper__button" (click)="decreaseQuantity()">
+              -
+            </button>
+            <div class="choice-wrapper__number">
+              {{ this.selectedQuantity_s() }}
+            </div>
+            <button class="choice-wrapper__button" (click)="increaseQuantity()">
+              +
+            </button>
           </div>
         </div>
-        <div class="quantity-price-selector__price">
-          <p class="quantity-price-selector__title">цена заказа</p>
-          <div>{{this.orderSum_sc()}}</div>
+        <div class="quantity-price-selector__price-wr price-wrapeer">
+          <p class="price-wrapeer__title">
+            {{ "PRODUCT_DESCRIPTION_PAGE.PRICE_OF_ORDER" | translate }}
+          </p>
+          <p class="price-wrapeer__price">
+            {{ this.orderSum_sc() | number : "1.2-2" }}$
+          </p>
         </div>
       </div>
       <div class="info__buttons buttons">
@@ -91,6 +109,13 @@
         >
           {{ "PRODUCT_DESCRIPTION_PAGE.ADD_TO_CART" | translate }}
         </button>
+        <p
+          class="buttons__popup"
+          [class.visible-popup]="this.showPopupAddToCart_s()"
+          (animationend)="handleAnimationEnd()"
+        >
+          {{ "PRODUCT_DESCRIPTION_PAGE.ADDED_TO_CART" | translate }}
+        </p>
       </div>
       <div class="info__description description">
         <h2 class="description__title">

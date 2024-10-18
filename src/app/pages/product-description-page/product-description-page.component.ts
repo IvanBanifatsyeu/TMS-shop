@@ -45,6 +45,7 @@ export class ProductDescriptionPageComponen implements OnInit {
   selectedColor_s = signal<string>('');
   selectedSize_s = signal<string>('');
   selectedQuantity_s = signal<number>(0);
+  showPopupAddToCart_s = signal<boolean>(false);
 
   orderSum_sc = computed(() => {
     return this.selectedQuantity_s() * this.product!?.price || 0;
@@ -76,7 +77,6 @@ export class ProductDescriptionPageComponen implements OnInit {
       .subscribe((res) => {
         this.listCart_s.set(res);
         this.isAddedToCart_s.set(res.some((element) => element.id === this.id));
-        console.log('❤️💛🩷 in cart?', this.isAddedToCart_s());
       });
   }
 
@@ -114,41 +114,43 @@ export class ProductDescriptionPageComponen implements OnInit {
   addToCart(product: Product | undefined, event: Event) {
     event.stopPropagation();
 
-    let arrOfORderedItems: { color: string; size: string }[] = [];
+    let arrayItemsProductInCart: { color: string; size: string }[] = [];
     if (this.selectedSize_s() && this.selectedColor_s()) {
-      // arrOfORderedItems = [
-      //   [this.selectedSize_s(), this.selectedColor_s()],
-      // ];
-
       for (let i = 0; i < this.selectedQuantity_s(); i++) {
-        arrOfORderedItems.push({
+        arrayItemsProductInCart.push({
           color: this.selectedColor_s(),
           size: this.selectedSize_s(),
         });
       }
     }
-
-    // ])
+    let prevItemsInCartOfThisProduct: { color: string; size: string }[] =
+      this.listCart_s()!
+        .map((element) => {
+          if (element.id === this.id) {
+            return element.arrItemsInCart;
+          } else {
+            return [];
+          }
+        })
+        .flat()
+        .filter((item) => item !== undefined);
 
     const productForCart: Product = {
-      ...product,
-      quantity: arrOfORderedItems,
-      color: [this.selectedColor_s()],
-      sizes: [this.selectedSize_s()],
-      category: product!.category || '',
-      model: product!.model || '',
-      price: product!.price || 0,
-      description: product!.description || '',
-      rating: product!.rating || 0,
-      id: product!.id || '',
-      imgUrl: product!.imgUrl || '',
-      addedAt: product!.addedAt || '',
-      curColor: product!.curColor || '',
+      ...this.product!,
+      arrItemsInCart: [
+        ...prevItemsInCartOfThisProduct,
+        ...arrayItemsProductInCart,
+      ],
     };
 
     this.productsFirebaseService.addItemToMyCart(productForCart);
     this.selectedColor_s.set('');
     this.selectedSize_s.set('');
+    this.showPopupAddToCart_s.set(true);
+  }
+
+  handleAnimationEnd() {
+    this.showPopupAddToCart_s.set(false);
   }
 
   decreaseQuantity() {

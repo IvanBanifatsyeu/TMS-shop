@@ -10,5 +10,5 @@ export interface Product {
   addedAt: string;
   sizes: string[];
   curColor: string;
-  quantity?: { color: string; size: string }[];
+  arrItemsInCart?: { color: string; size: string }[];
 }

@@ -193,22 +193,70 @@
                 outline: 2px solid var(--blue-active-color);
                 border: none;
             }
-
-
         }
     }
 
-    .sizes {
-        margin-bottom: 35px;
-    }
 
     .quantity-price-selector {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: start;
+        flex-wrap: wrap;
+        visibility: hidden;
+        column-gap: 10px;
+        margin-bottom: 10px;
+        border: 1px solid var(--medium-grey-color);
+        padding: 5px;
+        border-radius: 5px;
+
+
+        &.is-visible {
+            visibility: visible;
+        }
+
+        .quantity-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            gap: 4px;
+            // border: 1px solid red;
+            height: 66px;
+
+            .quantity-wrapper__title {
+                color: var(--medium-grey-color);
+                font-size: 20px;
+            }
+
+
+        }
+
+        .price-wrapeer {
+            // border: 1px solid rgb(0, 17, 255);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            gap: 4px;
+            height: 66px;
+
+            .price-wrapeer__title {
+                color: var(--medium-grey-color);
+                font-size: 20px;
+            }
+
+            .price-wrapeer__price {
+                font-size: 24px;
+            }
+
+        }
 
         .choice-wrapper {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 120px;
+            width: 100px;
             border: 1px solid #ccc;
             border-radius: 5px;
             overflow: hidden;
@@ -218,7 +266,7 @@
                 color: white;
                 border: none;
                 width: 30px;
-                height: 40px;
+                height: 30px;
                 cursor: pointer;
                 font-size: 18px;
                 font-weight: bold;
@@ -244,6 +292,7 @@
         gap: 8px;
         flex-wrap: wrap;
         margin-bottom: 35px;
+        position: relative;
 
         .buttons__button {
             width: 185px;
@@ -264,10 +313,14 @@
             &:disabled {
                 background-color: #e0e0e0;
                 color: var(--blue-not-active-color);
-                cursor: inherit;
+                cursor: not-allowed;
 
                 &:hover {
                     filter: none;
+                }
+
+                &:active {
+                    transform: none;
                 }
             }
 
@@ -278,6 +331,40 @@
 
             &:active {
                 transform: scale(0.95);
+            }
+        }
+
+        .buttons__popup {
+            display: none;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            background-color: rgb(255, 251, 251);
+            padding: 5px;
+            border-radius: 5px;
+            border: var(--light-grey-color) 1px solid;
+            color: var(--dark-blue-color);
+            transform: translateY(-100%);
+           
+        }
+
+        .visible-popup {
+            display: block;
+            opacity: 0;
+            animation: fadeInOut 4s 0.5s ease;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
             }
         }
     }

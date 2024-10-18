@@ -43,7 +43,10 @@
   "ADD_TO_CART": "Add To Cart",
   "ADD_TO_WISHLIST": "Add To Wishlist",
   "PRODUCT_DESCRIPTION": "Product Description",
-  "REMOVE_FROM_WISHLIST": "Remove From Wishlist"
+  "REMOVE_FROM_WISHLIST": "Remove From Wishlist",
+   "SELECT_QUANTITY":"select quantity",
+   "PRICE_OF_ORDER": "price of order",
+   "ADDED_TO_CART": "Added to cart"
   
   },
 
