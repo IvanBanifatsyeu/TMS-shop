@@ -1,3 +1,5 @@
+import { OrderedProduct } from "./orderedProduct.interface";
+
 export interface Product {
   category: string;
   model: string;
@@ -10,5 +12,5 @@ export interface Product {
   addedAt: string;
   sizes: string[];
   curColor: string;
-  arrItemsInCart?: { color: string; size: string }[];
+  arrItemsInCart?: OrderedProduct[];
 }

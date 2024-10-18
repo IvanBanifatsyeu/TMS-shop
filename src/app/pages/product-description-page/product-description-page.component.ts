@@ -15,6 +15,8 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
 import { StarsGeneratorComponent } from '../../shared/components/stars-generator/stars-generator.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { OrderedProduct } from '../../core/interfaces/orderedProduct.interface';
+import { or } from '@firebase/firestore';
 
 @Component({
   selector: 'app-product-description-page',
@@ -113,17 +115,7 @@ export class ProductDescriptionPageComponen implements OnInit {
 
   addToCart(product: Product | undefined, event: Event) {
     event.stopPropagation();
-
-    let arrayItemsProductInCart: { color: string; size: string }[] = [];
-    if (this.selectedSize_s() && this.selectedColor_s()) {
-      for (let i = 0; i < this.selectedQuantity_s(); i++) {
-        arrayItemsProductInCart.push({
-          color: this.selectedColor_s(),
-          size: this.selectedSize_s(),
-        });
-      }
-    }
-    let prevItemsInCartOfThisProduct: { color: string; size: string }[] =
+    let prevItemsInCartOfThisProduct: OrderedProduct[] =
       this.listCart_s()!
         .map((element) => {
           if (element.id === this.id) {
@@ -134,13 +126,20 @@ export class ProductDescriptionPageComponen implements OnInit {
         })
         .flat()
         .filter((item) => item !== undefined);
+    
+    const order : OrderedProduct = {
+      color: this.selectedColor_s(),
+      size: this.selectedSize_s(),
+      quantity: this.selectedQuantity_s(),
+    };
+    
 
     const productForCart: Product = {
       ...this.product!,
       arrItemsInCart: [
         ...prevItemsInCartOfThisProduct,
-        ...arrayItemsProductInCart,
-      ],
+        order
+      ]
     };
 
     this.productsFirebaseService.addItemToMyCart(productForCart);
