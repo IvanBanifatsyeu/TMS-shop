@@ -29,8 +29,10 @@
     (mouseleave)="hideCartPopup()"
   >
     <svg icon="cart" class="cart-icon-wrapper__img"></svg>
-    @if(true) {
-    <app-cart @fadeInOut></app-cart>>
+    @if(isPopupVisible_s()) {
+    <div class="cart-icon-wrapper__overlay" (click)="hideCartPopup()"  >
+      <app-cart @fadeInOut (click)="$event.stopPropagation()" [(closePopupCart_m)]="isPopupVisible_s"></app-cart>>
+    </div>
     }
   </div>
 </div>

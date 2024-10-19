@@ -19,7 +19,7 @@ import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { Product } from '../../../core/interfaces/product.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CartComponent } from "./cart/cart.component";
+import { CartComponent } from './cart/cart.component';
 
 @Component({
   selector: 'app-header',
@@ -46,7 +46,7 @@ import { CartComponent } from "./cart/cart.component";
     ]),
   ],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
   @HostBinding('class.position-absolute') isAbsolute = true;
   isPopupLanguageVisible = false;
   isPopupCartVisible = false;
@@ -57,6 +57,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   productsFirebaseService = inject(ProductFirebaseService);
   destroyRef = inject(DestroyRef);
   listMyFavorite_s = signal<Product[] | null>(null);
+  isPopupVisible_s = signal<boolean>(false);
+  timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   ngOnInit(): void {
     this.subscription = this.router.events
@@ -86,12 +88,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
   showLanguagePopup() {
     this.isPopupLanguageVisible = true;
   }
@@ -101,10 +97,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   showCartPopup() {
-    this.isPopupCartVisible = true;
+    console.log('%c💡 show' ,'font-size: 16px; color: red; font-weight: bold;',);
+    this.timeoutId = setTimeout(() => {
+      this.isPopupVisible_s.set(true);
+    }, 600);
   }
 
   hideCartPopup() {
-    this.isPopupCartVisible = false;
+    console.log(
+      '%c💡 hideCartPopup',
+      'font-size: 16px; color: red; font-weight: bold;',
+      this.timeoutId
+    );
+
+     if (this.timeoutId) {
+       clearTimeout(this.timeoutId);
+       this.timeoutId = null; 
+     }
+     this.isPopupVisible_s.set(false);
   }
 }

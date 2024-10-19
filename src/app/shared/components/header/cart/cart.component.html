@@ -1,6 +1,11 @@
 <div class="shopping-cart">
   <h1 class="shopping-cart__title">Shopping Cart</h1>
-  <button>remove all</button>
+  <svg
+    class="shopping-cart__close-icon"
+    icon="cart-close"
+    (click)="hideCartPopup()"
+  ></svg>
+  <button class="shopping-cart__remove-btn remove-btn">remove all</button>
   <div class="shopping-cart__card-list card-list">
     @for (item of this.listCart_s() ; track item.orderId) {
 
@@ -10,20 +15,18 @@
         class="product-card--inCart"
       ></app-product-card>
       <div class="card-wrapper__quantity-control quantity-control">
-        <button (click)="removeFromCart(item, $event )">Remove</button>
+        <button (click)="removeFromCart(item, $event)">Remove</button>
         <p class="card-wrapper__quantity">{{ item.quantity }}</p>
         <button>изменить количество</button>
       </div>
-      <div class="card-wrapper__total-price-card total-price-card">{{
-   (item.quantity && item.price) ? (item.quantity * item.price | number:'1.2-2') : 'error calculation 💀 '
-      }}</div>
-      
+      <div class="card-wrapper__total-price-card total-price-card">
+        {{
+          item.quantity && item.price
+            ? (item.quantity * item.price | number : "1.2-2")
+            : "error calculation 💀 "
+        }}
+      </div>
     </div>
-
     }
-
-    
   </div>
-
-
 </div>

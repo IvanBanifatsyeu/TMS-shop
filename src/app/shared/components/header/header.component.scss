@@ -114,12 +114,33 @@
 }
 
 .cart-icon-wrapper {
-    //  position: relative;
+    position: relative;
     width: 58px;
     height: 58px;
 
     .cart-icon-wrapper__img {
         width: 58px;
         height: 58px;
+        color: var(--dark-blue-color);
+        transition: color 0.5s ease, transform 0.3s ease;
+
+        &:hover {
+            color: var(--blue-not-active-color);
+            transform: scale(1.1);
+        }
     }
+}
+
+.cart-icon-wrapper__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
 }

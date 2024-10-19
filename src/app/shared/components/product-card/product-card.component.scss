@@ -247,7 +247,6 @@
 
 }
 
-// zzz
 :host.product-card--inCart {
     display: flex;
     position: relative;
@@ -258,7 +257,6 @@
     background-color: var(--light-color);
     max-width: 70%;
     min-width: 35%;
-    border: 1px solid red;
 
     .product-card__info {
         row-gap: 0px;
@@ -268,6 +266,8 @@
         position: relative;
         width: 294px;
         height: 192px;
+        cursor: inherit;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .img-conteiner__image {
@@ -275,6 +275,10 @@
         height: 192px;
         object-position: center center;
         border-radius: 5px;
+
+        &:hover {
+                outline: none;
+            }
     }
 
     .img-conteiner__favorit-icon {
