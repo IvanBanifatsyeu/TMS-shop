@@ -11,5 +11,5 @@ export interface ProductItemInCart {
   sizes: string[];
   curColor: string;
   quantity: number;
-  orderId?: string;
+  idFromMainServer: string;
 }

@@ -5,17 +5,19 @@
     icon="cart-close"
     (click)="hideCartPopup()"
   ></svg>
-  <button class="shopping-cart__remove-btn remove-btn">remove all</button>
+  <button class="shopping-cart__remove-btn remove-btn" (click)="removeAllFromCart($event)">remove all</button>
   <div class="shopping-cart__card-list card-list">
-    @for (item of this.listCart_s() ; track item.orderId) {
-
+    
+    @for (item of this.listCart_s() ; track item.id) {
     <div class="cart-list__card-wrapper card-wrapper">
       <app-product-card
         [product]="item"
         class="product-card--inCart"
       ></app-product-card>
       <div class="card-wrapper__quantity-control quantity-control">
-        <button (click)="removeFromCart(item, $event)">Remove</button>
+        <button 
+        (click)="removeFromCart(item, $event)"
+        >Remove</button>
         <p class="card-wrapper__quantity">{{ item.quantity }}</p>
         <button>изменить количество</button>
       </div>

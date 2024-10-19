@@ -43,18 +43,18 @@ export class CartComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
         this.listCart_s.set(res);
-      });
+      })
   }
 
-  removeFromCart(product: Product, event: Event) {
+  removeFromCart(product: ProductItemInCart, event: Event) {
     event.stopPropagation();
 
-    // if (product.arrItemsInCart?.length === 1) {
-    //   this.productsFirebaseService.removeFromMyCart(product.id);
-    // } else {
-    // }
+     this.productsFirebaseService.removeFromMyCart(product.id);
+  }
 
-    // this.productsFirebaseService.removeItemFromMyCart(product);
+  removeAllFromCart(event: Event) {
+    event.stopPropagation();
+    this.productsFirebaseService.removeAllFromMyCart().subscribe();
   }
 
   hideCartPopup() {

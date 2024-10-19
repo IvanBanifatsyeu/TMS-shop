@@ -115,7 +115,15 @@ export class ProductDescriptionPageComponen implements OnInit {
       color: [this.selectedColor_s()],
       sizes: [this.selectedSize_s()],
       quantity: this.selectedQuantity_s(),
+      idFromMainServer: product.id,
     };
+    
+    console.log(
+      ' ~ ProductDescriptionPageComponen ~ addToCart ~ const 🚀🚀productForCart:🚀🚀',
+      productForCart
+    );
+
+    
 
     this.productsFirebaseService.addItemToMyCart(productForCart);
     this.selectedColor_s.set('');

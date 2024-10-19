@@ -9,10 +9,22 @@ import {
   deleteDoc,
   getDocs,
 } from '@angular/fire/firestore';
-import { from, map, mergeMap, Observable, toArray } from 'rxjs';
+import {
+  catchError,
+  concatMap,
+  delay,
+  from,
+  map,
+  mergeMap,
+  Observable,
+  of,
+  tap,
+  throwError,
+  toArray,
+} from 'rxjs';
 import { Product } from '../interfaces/product.interface';
 import { ProductItemInCart } from '../interfaces/productItemInCart.interface';
-import { v4 as uuidv4 }  from 'uuid'; 
+// import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
@@ -21,12 +33,14 @@ export class ProductFirebaseService {
   destroyRef = inject(DestroyRef);
   firestore = inject(Firestore);
   productCollection = collection(this.firestore, 'products');
-  myFavorite = collection(this.firestore, 'my-favorite');
-  myCart = collection(this.firestore, 'my-cart');
+  myFavoriteCollection = collection(this.firestore, 'my-favorite');
+  myCartCollection = collection(this.firestore, 'my-cart');
 
   // MY FAVORITE Collection 🩷🩷🩷
   getMyFavorite(): Observable<Product[]> {
-    return collectionData(this.myFavorite, {}) as Observable<Product[]>;
+    return collectionData(this.myFavoriteCollection, {}) as Observable<
+      Product[]
+    >;
   }
 
   addItemToMyFavorite(product: Product) {
@@ -41,7 +55,7 @@ export class ProductFirebaseService {
   }
 
   removeAllFromMyFavorite(): Observable<void> {
-    return from(getDocs(this.myFavorite)).pipe(
+    return from(getDocs(this.myFavoriteCollection)).pipe(
       map((snapshot) => snapshot.docs),
       mergeMap((docs) =>
         from(docs).pipe(
@@ -55,22 +69,22 @@ export class ProductFirebaseService {
 
   // MY CART Collection 🛒🛒💲💲💰💰
   getItemsFromMyCart(): Observable<ProductItemInCart[]> {
-    return collectionData(this.myCart) as Observable<ProductItemInCart[]>;
+    return collectionData(this.myCartCollection) as Observable<
+      ProductItemInCart[]
+    >;
   }
 
   addItemToMyCart(
     productToCart: ProductItemInCart
   ): Observable<ProductItemInCart> {
-
-    
-    const cartItemId = uuidv4();
-    const cartItemRef = doc(this.myCart, cartItemId);
+    const itemRef = doc(collection(this.firestore, 'my-cart'));
+    const itemId = itemRef.id;
     const data = {
       ...productToCart,
-      orderId: cartItemId,
+      id: itemId,
     };
 
-    return from(setDoc(cartItemRef, data)).pipe(
+    return from(setDoc(itemRef, data)).pipe(
       map(() => data as ProductItemInCart)
     );
   }
@@ -81,14 +95,18 @@ export class ProductFirebaseService {
     return from(promise);
   }
 
-  // updateArrItemsInCart(
-  //   id: string,
-  //   dataToUpdate: OrderedSpecificFields[]
-  // ): Observable<void> {
-  //   const docRef = doc(this.firestore, `my-cart/${id}`);
-  //   const promise = setDoc(docRef, { arrItemsInCart: dataToUpdate });
-  //   return from(promise);
-  // }
+  removeAllFromMyCart(): Observable<void> {
+    return from(getDocs(this.myCartCollection)).pipe(
+      map((snapshot) => snapshot.docs),
+      mergeMap((docs) =>
+        from(docs).pipe(
+          mergeMap((doc) => from(deleteDoc(doc.ref))),
+          toArray()
+        )
+      ),
+      map(() => {})
+    );
+  }
 
   //  PRODUCT Collection 👚👚👚
   getProducts(): Observable<Product[]> {

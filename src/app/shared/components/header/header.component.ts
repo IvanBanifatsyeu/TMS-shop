@@ -97,19 +97,12 @@ export class HeaderComponent implements OnInit {
   }
 
   showCartPopup() {
-    console.log('%c💡 show' ,'font-size: 16px; color: red; font-weight: bold;',);
     this.timeoutId = setTimeout(() => {
       this.isPopupVisible_s.set(true);
     }, 600);
   }
 
   hideCartPopup() {
-    console.log(
-      '%c💡 hideCartPopup',
-      'font-size: 16px; color: red; font-weight: bold;',
-      this.timeoutId
-    );
-
      if (this.timeoutId) {
        clearTimeout(this.timeoutId);
        this.timeoutId = null; 
