@@ -55,6 +55,13 @@
 
     }
 
+    .shopping-cart__empty-cart {
+        color: var(--dark-blue-color);
+        font-size: 24px;
+        text-align: center;
+        padding:  200px;
+    }
+
     .remove-btn {
         background-color: #FB3C3C;
         color: var(--light-color);
@@ -68,6 +75,7 @@
         text-align: center;
         align-self: flex-end;
         font-size: 18px;
+        visibility: hidden;
 
         &:hover {
             background-color: #fe2020;
@@ -77,6 +85,10 @@
         &:active {
             background-color: #fe2020;
             transform: scale(1);
+        }
+
+        &.showSwitcher {
+            visibility: visible;
         }
     }
 

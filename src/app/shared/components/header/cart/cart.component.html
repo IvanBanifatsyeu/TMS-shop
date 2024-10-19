@@ -7,10 +7,14 @@
   ></svg>
   <button
     class="shopping-cart__remove-btn remove-btn"
+    [class.showSwitcher]="this.listCart_s().length"
     (click)="removeAllFromCart($event)"
   >
     remove all
   </button>
+  @if(!this.listCart_s().length) {
+    <p class="shopping-cart__empty-cart">ваша корзина пуста 🥺</p>
+  }
   <div class="shopping-cart__card-list card-list">
     @for (item of this.listCart_s() ; track item.id) {
     <div class="cart-list__card-wrapper card-wrapper">
