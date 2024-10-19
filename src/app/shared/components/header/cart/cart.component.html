@@ -5,22 +5,34 @@
     icon="cart-close"
     (click)="hideCartPopup()"
   ></svg>
-  <button class="shopping-cart__remove-btn remove-btn" (click)="removeAllFromCart($event)">remove all</button>
+  <button
+    class="shopping-cart__remove-btn remove-btn"
+    (click)="removeAllFromCart($event)"
+  >
+    remove all
+  </button>
   <div class="shopping-cart__card-list card-list">
-    
     @for (item of this.listCart_s() ; track item.id) {
-      <div class="cart-list__card-wrapper card-wrapper">
-      <button (click)="updateQuantity(item, 8, $event)">change qalitty</button>
+    <div class="cart-list__card-wrapper card-wrapper">
       <app-product-card
         [product]="item"
         class="product-card--inCart"
       ></app-product-card>
+      <button class="card-wrapper__remove-btn remove-btn" (click)="removeFromCart(item, $event)">Remove</button>
       <div class="card-wrapper__quantity-control quantity-control">
-        <button 
-        (click)="removeFromCart(item, $event)"
-        >Remove</button>
         <p class="card-wrapper__quantity">{{ item.quantity }}</p>
-        <button>изменить количество</button>
+        @if(!iSshowQuantityPanel()) {
+
+          <button
+            class="quantity-control__button-show-panel"
+            (click)="showPanelContol($event)"
+          >
+            изменить количество
+          </button>
+        } @else {
+          <div>panel!!!!!!!!</div>
+          <button  (click)="showPanelContol($event)">применить</button>
+        }
       </div>
       <div class="card-wrapper__total-price-card total-price-card">
         {{

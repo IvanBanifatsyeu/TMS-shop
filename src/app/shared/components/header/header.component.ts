@@ -20,6 +20,7 @@ import { ProductFirebaseService } from '../../../core/services/product-firebase.
 import { Product } from '../../../core/interfaces/product.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CartComponent } from './cart/cart.component';
+import { ProductItemInCart } from '../../../core/interfaces/productItemInCart.interface';
 
 @Component({
   selector: 'app-header',
@@ -59,6 +60,7 @@ export class HeaderComponent implements OnInit {
   listMyFavorite_s = signal<Product[] | null>(null);
   isPopupVisible_s = signal<boolean>(false);
   timeoutId: ReturnType<typeof setTimeout> | null = null;
+  listCart_s = signal<ProductItemInCart[]>([]);
 
   ngOnInit(): void {
     this.subscription = this.router.events
@@ -71,11 +73,18 @@ export class HeaderComponent implements OnInit {
         this.handleRouteChange(event.url); // Обрабатываем изменение маршрута
       });
 
-    const firebaseDataFavorite$ = this.productsFirebaseService
+   this.productsFirebaseService
       .getMyFavorite()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
         this.listMyFavorite_s.set(res);
+      });
+    
+    this.productsFirebaseService
+      .getItemsFromMyCart()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((res) => {
+        this.listCart_s.set(res);
       });
   }
 
@@ -103,10 +112,10 @@ export class HeaderComponent implements OnInit {
   }
 
   hideCartPopup() {
-     if (this.timeoutId) {
-       clearTimeout(this.timeoutId);
-       this.timeoutId = null; 
-     }
-     this.isPopupVisible_s.set(false);
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null;
+    }
+    this.isPopupVisible_s.set(false);
   }
 }

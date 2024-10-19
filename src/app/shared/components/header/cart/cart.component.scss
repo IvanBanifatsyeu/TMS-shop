@@ -25,6 +25,14 @@
         color: var(--dark-blue-color);
         font-size: 2rem;
         text-align: center;
+
+        &:before,
+        &:after {
+            content: "🛒🛒🛒";
+            width: 40px;
+            height: 5px;
+            margin: 5px;
+        }
     }
 
     .shopping-cart__close-icon {
@@ -56,7 +64,7 @@
         font-size: 16px;
         cursor: pointer;
         transition: background-color 0.3s ease, transform 0.3s ease;
-        width: 200px;
+        width: 160px;
         text-align: center;
         align-self: flex-end;
         font-size: 18px;

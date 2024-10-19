@@ -37,6 +37,7 @@ export class CartComponent implements OnInit {
   destroyRef = inject(DestroyRef);
   listCart_s = signal<ProductItemInCart[]>([]);
   closePopupCart_m = model(true);
+  iSshowQuantityPanel = signal<boolean>(false);
 
   ngOnInit(): void {
     this.productsFirebaseService
@@ -47,13 +48,16 @@ export class CartComponent implements OnInit {
       });
   }
 
-  updateQuantity(product: ProductItemInCart, quantityNum: number, event: Event) {
+  updateQuantity(
+    product: ProductItemInCart,
+    quantityNum: number,
+    event: Event
+  ) {
     event.stopPropagation();
 
-    this.productsFirebaseService.updateQuantityOfItemInMyCart(
-      product.id,
-     { quantity: quantityNum } 
-    ).subscribe();
+    this.productsFirebaseService
+      .updateQuantityOfItemInMyCart(product.id, { quantity: quantityNum })
+      .subscribe();
   }
 
   removeFromCart(product: ProductItemInCart, event: Event) {
@@ -67,9 +71,12 @@ export class CartComponent implements OnInit {
     this.productsFirebaseService.removeAllFromMyCart().subscribe();
   }
 
-
-
   hideCartPopup() {
     this.closePopupCart_m.set(false);
+  }
+
+  showPanelContol(event: Event) {
+    event.stopPropagation();
+    this.iSshowQuantityPanel.set(!this.iSshowQuantityPanel());
   }
 }

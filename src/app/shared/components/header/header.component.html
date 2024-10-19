@@ -1,7 +1,7 @@
 <app-navigation></app-navigation>
-<div class="actions">
+<div class="header">
   <div
-    class="actions__switch-language switch-language"
+    class="header__switch-language switch-language"
     (mouseenter)="showLanguagePopup()"
     (mouseleave)="hideLanguagePopup()"
   >
@@ -10,26 +10,29 @@
     <app-account-popup @fadeInOut></app-account-popup>
     }
   </div>
-  <div class="actions__my-account my-account">
+  <div class="header__my-account my-account">
     <svg icon="avatar" class="my-account__icon"></svg>
     <span class="my-account__text">{{ "HEADER.MY_ACCOUNT" | translate }}</span>
   </div>
   <a
-    class="actions__favorite-icon favorite-icon"
+    class="header__favorite-icon favorite-icon"
     [routerLink]="['/my-favorite']"
   >
     <svg icon="fav" class="favorite-icon__img"></svg>
     @if(listMyFavorite_s()?.length){
-    <span class="favorite-icon__counter">{{ listMyFavorite_s()?.length }}</span>
+    <span class="favorite-icon__counter counter">{{ listMyFavorite_s()?.length }}</span>
     }
   </a>
   <div
-    class="actions__cart-icon-wrapper cart-icon-wrapper"
+    class="header__cart-icon-wrapper cart-icon-wrapper"
     (mouseenter)="showCartPopup()"
     (mouseleave)="hideCartPopup()"
   >
     <svg icon="cart" class="cart-icon-wrapper__img"></svg>
-    @if(isPopupVisible_s()) {
+     @if(this.listCart_s().length){
+    <span class="cart-icon-wrapper__counter counter">{{ this.listCart_s().length }}</span>
+    }
+    @if(true) {
     <div class="cart-icon-wrapper__overlay" (click)="hideCartPopup()"  >
       <app-cart @fadeInOut (click)="$event.stopPropagation()" [(closePopupCart_m)]="isPopupVisible_s"></app-cart>>
     </div>
