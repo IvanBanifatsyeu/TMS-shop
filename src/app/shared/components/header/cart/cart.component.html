@@ -13,7 +13,7 @@
     remove all
   </button>
   @if(!this.listCart_s().length) {
-    <p class="shopping-cart__empty-cart">ваша корзина пуста 🥺</p>
+  <p class="shopping-cart__empty-cart">ваша корзина пуста 🥺</p>
   }
   <div class="shopping-cart__card-list card-list">
     @for (item of this.listCart_s() ; track item.id) {
@@ -22,39 +22,61 @@
         [product]="item"
         class="product-card--inCart"
       ></app-product-card>
-      <button
-        class="card-wrapper__remove-btn remove-btn"
-        (click)="removeFromCart(item, $event)"
-      >
-        Remove
-      </button>
-      <div class="card-wrapper__quantity-control quantity-control">
-        @if(!iSshowQuantityPanel()) {
-
-        <p class="quantity-control__quantity-num">{{ item.quantity }}</p>
+      <div class="card-wrapper__aside aside">
         <button
-          class="quantity-control__button-show-control"
-          (click)="showPanelContol($event, item)"
+          class="aside__remove-btn remove-btn remove-btn--inCart"
+          (click)="removeFromCart(item, $event)"
         >
-          изменить количество
+          Remove
         </button>
-        } @else {
-        <div class="quantity-control__choice-wrapper choice-wrapper">
-          <button class="choice-wrapper__button" (click)="decrementCounter()">-</button>
-          <div class="choice-wrapper__number">
-            {{ this.counterQuantity_s() }}
+        <div class="aside__quantity-control quantity-control">
+          @if(!iSshowQuantityPanel()) {
+          <div class="quantity-control__quantity-conteiner quantity-conteiner">
+            <p class="quantity-conteiner__quantity-num">
+              количество - {{ item.quantity }}шт
+            </p>
+            <button
+              class="quantity-conteiner__button-show-control"
+              (click)="showPanelContol($event, item)"
+            >
+              изменить количество
+            </button>
           </div>
-          <button class="choice-wrapper__button" (click)="incrementCounter()">+</button>
+          } @else {
+          <div class="quantity-control__choice-wrapper choice-wrapper">
+            <div class="choice-wrapper__choice-contrall choice-contrall">
+              <button
+                class="choice-contrall__button"
+                (click)="decrementCounter()"
+              >
+                -
+              </button>
+              <div class="choice-contrall__number">
+                {{ this.counterQuantity_s() }}
+              </div>
+              <button
+                class="choice-contrall__button"
+                (click)="incrementCounter()"
+              >
+                +
+              </button>
+            </div>
+
+            <button class="choice-contrall__apply-btn" (click)="applyQuantity($event, item)">применить</button>
+          </div>
+          }
         </div>
-        <button (click)="applyQuantity($event, item)">применить</button>
-        }
-      </div>
-      <div class="card-wrapper__total-price-card total-price-card">
-        {{
-          item.quantity && item.price
-            ? (item.quantity * item.price | number : "1.2-2")
-            : "error calculation 💀 "
-        }}
+        <div class="aside__total-price total-price">
+          <div class="total-price__total-price-num">
+            итого -
+            {{
+              item.quantity && item.price
+                ? (item.quantity * item.price | number : "1.2-2" | currency)
+                : "error calculation 💀 "
+            }}
+          </div>
+          <button class="total-price__pay-btn">заказать</button>
+        </div>
       </div>
     </div>
     }
