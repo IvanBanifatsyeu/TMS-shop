@@ -18,20 +18,31 @@
         [product]="item"
         class="product-card--inCart"
       ></app-product-card>
-      <button class="card-wrapper__remove-btn remove-btn" (click)="removeFromCart(item, $event)">Remove</button>
+      <button
+        class="card-wrapper__remove-btn remove-btn"
+        (click)="removeFromCart(item, $event)"
+      >
+        Remove
+      </button>
       <div class="card-wrapper__quantity-control quantity-control">
-        <p class="card-wrapper__quantity">{{ item.quantity }}</p>
         @if(!iSshowQuantityPanel()) {
 
-          <button
-            class="quantity-control__button-show-panel"
-            (click)="showPanelContol($event)"
-          >
-            изменить количество
-          </button>
+        <p class="quantity-control__quantity-num">{{ item.quantity }}</p>
+        <button
+          class="quantity-control__button-show-control"
+          (click)="showPanelContol($event, item)"
+        >
+          изменить количество
+        </button>
         } @else {
-          <div>panel!!!!!!!!</div>
-          <button  (click)="showPanelContol($event)">применить</button>
+        <div class="quantity-control__choice-wrapper choice-wrapper">
+          <button class="choice-wrapper__button" (click)="decrementCounter()">-</button>
+          <div class="choice-wrapper__number">
+            {{ this.counterQuantity_s() }}
+          </div>
+          <button class="choice-wrapper__button" (click)="incrementCounter()">+</button>
+        </div>
+        <button (click)="applyQuantity($event, item)">применить</button>
         }
       </div>
       <div class="card-wrapper__total-price-card total-price-card">

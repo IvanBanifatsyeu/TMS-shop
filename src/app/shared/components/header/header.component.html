@@ -32,7 +32,7 @@
      @if(this.listCart_s().length){
     <span class="cart-icon-wrapper__counter counter">{{ this.listCart_s().length }}</span>
     }
-    @if(true) {
+    @if(this.isPopupVisible_s()) {
     <div class="cart-icon-wrapper__overlay" (click)="hideCartPopup()"  >
       <app-cart @fadeInOut (click)="$event.stopPropagation()" [(closePopupCart_m)]="isPopupVisible_s"></app-cart>>
     </div>

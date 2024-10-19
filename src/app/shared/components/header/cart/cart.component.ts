@@ -38,6 +38,7 @@ export class CartComponent implements OnInit {
   listCart_s = signal<ProductItemInCart[]>([]);
   closePopupCart_m = model(true);
   iSshowQuantityPanel = signal<boolean>(false);
+  counterQuantity_s = signal<number>(0);
 
   ngOnInit(): void {
     this.productsFirebaseService
@@ -75,8 +76,28 @@ export class CartComponent implements OnInit {
     this.closePopupCart_m.set(false);
   }
 
-  showPanelContol(event: Event) {
+  showPanelContol(event: Event, product: ProductItemInCart) {
     event.stopPropagation();
-    this.iSshowQuantityPanel.set(!this.iSshowQuantityPanel());
+    this.counterQuantity_s.set(product.quantity);
+    this.iSshowQuantityPanel.set(true);
+  }
+
+  decrementCounter() {
+    if (this.counterQuantity_s() > 1) {
+      this.counterQuantity_s.update((prev) => prev - 1);
+    }
+  }
+
+  incrementCounter() {
+    if (this.counterQuantity_s() < 5) {
+      this.counterQuantity_s.update((prev) => prev + 1);
+    }
+  }
+
+  applyQuantity(event: Event, product: ProductItemInCart) {
+    event.stopPropagation();
+    this.productsFirebaseService.updateQuantityOfItemInMyCart(product.id, { quantity: this.counterQuantity_s() }).subscribe();
+    this.iSshowQuantityPanel.set(false);
+    this.counterQuantity_s.set(0);
   }
 }
