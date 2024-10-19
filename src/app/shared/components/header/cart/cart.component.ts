@@ -16,6 +16,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { ProductItemInCart } from '../../../../core/interfaces/productItemInCart.interface';
 import { SvgIconComponent } from '../../svg-icon/svg-icon.component';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -43,19 +44,30 @@ export class CartComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
         this.listCart_s.set(res);
-      })
+      });
+  }
+
+  updateQuantity(product: ProductItemInCart, quantityNum: number, event: Event) {
+    event.stopPropagation();
+
+    this.productsFirebaseService.updateQuantityOfItemInMyCart(
+      product.id,
+     { quantity: quantityNum } 
+    ).subscribe();
   }
 
   removeFromCart(product: ProductItemInCart, event: Event) {
     event.stopPropagation();
 
-     this.productsFirebaseService.removeFromMyCart(product.id);
+    this.productsFirebaseService.removeFromMyCart(product.id);
   }
 
   removeAllFromCart(event: Event) {
     event.stopPropagation();
     this.productsFirebaseService.removeAllFromMyCart().subscribe();
   }
+
+
 
   hideCartPopup() {
     this.closePopupCart_m.set(false);

@@ -9,7 +9,8 @@
   <div class="shopping-cart__card-list card-list">
     
     @for (item of this.listCart_s() ; track item.id) {
-    <div class="cart-list__card-wrapper card-wrapper">
+      <div class="cart-list__card-wrapper card-wrapper">
+      <button (click)="updateQuantity(item, 8, $event)">change qalitty</button>
       <app-product-card
         [product]="item"
         class="product-card--inCart"

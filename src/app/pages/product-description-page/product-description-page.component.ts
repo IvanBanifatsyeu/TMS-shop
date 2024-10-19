@@ -118,13 +118,6 @@ export class ProductDescriptionPageComponen implements OnInit {
       idFromMainServer: product.id,
     };
     
-    console.log(
-      ' ~ ProductDescriptionPageComponen ~ addToCart ~ const 🚀🚀productForCart:🚀🚀',
-      productForCart
-    );
-
-    
-
     this.productsFirebaseService.addItemToMyCart(productForCart);
     this.selectedColor_s.set('');
     this.selectedSize_s.set('');
