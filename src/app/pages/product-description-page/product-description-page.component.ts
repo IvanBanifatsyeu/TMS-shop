@@ -44,7 +44,7 @@ export class ProductDescriptionPageComponen implements OnInit {
   isAddedToCart_s = signal<boolean>(false);
   selectedColor_s = signal<string>('');
   selectedSize_s = signal<string>('');
-  selectedQuantity_s = signal<number>(1);
+  selectedQuantity_s = signal<number>(0);
   showPopupAddToCart_s = signal<boolean>(false);
   orderSum_sc = computed(() => {
     return this.selectedQuantity_s() * this.product!?.price;
@@ -60,6 +60,7 @@ export class ProductDescriptionPageComponen implements OnInit {
           return product.id === this.id;
         });
         this.imgUrl = this.product!.imgUrl;
+        this.selectedQuantity_s.set(1)
       });
     
     this.productsFirebaseService
