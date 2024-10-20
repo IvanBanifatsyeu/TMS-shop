@@ -90,27 +90,15 @@ export class ProductFirebaseService {
     );
   }
 
-  // zzz
   updateQuantityOfItemInMyCart(
     itemId: string,
     updatedField: Partial<ProductItemInCart>
   ): Observable<void> {
     const itemRef = doc(this.firestore, 'my-cart', itemId);
-
-    // Create an object with only the field you want to update
     const updateData = { ...updatedField };
 
-    return from(updateDoc(itemRef, updateData)).pipe(
-      map(() => {
-        // Optionally, you can return the updated data here if needed
-        // You'd need to fetch the updated document from Firestore
-        // to get the full updated data.
-        console.log(`Item with ID ${itemId} updated successfully!`);
-      })
-    );
+    return from(updateDoc(itemRef, updateData));
   }
-
-  //zzz
 
   removeFromMyCart(id: string): Observable<void> {
     const docRef = doc(this.firestore, `my-cart/${id}`);

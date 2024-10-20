@@ -58,8 +58,6 @@ export class CartComponent implements OnInit {
       .subscribe((res) => {
         this.listCart_s.set(res);
       });
-
-    console.log(this.arrShowQuantityPanel_s());
   }
 
   updateQuantity(

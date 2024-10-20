@@ -75,7 +75,9 @@ export class ProductDescriptionPageComponen implements OnInit {
       .getItemsFromMyCart()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
-        this.isAddedToCart_s.set(res.some((element) => element.id === this.id));
+        this.isAddedToCart_s.set(
+          res.some((element) => element.idFromMainServer === this.id)
+        );
       });
   }
 
