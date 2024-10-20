@@ -128,6 +128,11 @@
             transform: scale(1.1);
         }
 
+        &:active {
+            color: var(--blue-not-active-color);
+            transform: scale(0.95);
+        }
+
     }
     
     .counter {

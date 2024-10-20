@@ -37,8 +37,19 @@ export class CartComponent implements OnInit {
   destroyRef = inject(DestroyRef);
   listCart_s = signal<ProductItemInCart[]>([]);
   closePopupCart_m = model(true);
-  iSshowQuantityPanel = signal<boolean>(false);
+  arrShowQuantityPanel_s = signal<string[]>([]);
   counterQuantity_s = signal<number>(0);
+
+  totalQuantityInCart_sc = computed(() => {
+    return this.listCart_s().reduce((acc, curr) => acc + curr.quantity, 0);
+  });
+
+  totalPriceInCart_sc = computed(() => {
+    return this.listCart_s().reduce(
+      (acc, curr) => acc + curr.quantity * curr.price,
+      0
+    );
+  });
 
   ngOnInit(): void {
     this.productsFirebaseService
@@ -47,6 +58,8 @@ export class CartComponent implements OnInit {
       .subscribe((res) => {
         this.listCart_s.set(res);
       });
+
+    console.log(this.arrShowQuantityPanel_s());
   }
 
   updateQuantity(
@@ -78,8 +91,11 @@ export class CartComponent implements OnInit {
 
   showPanelContol(event: Event, product: ProductItemInCart) {
     event.stopPropagation();
+    this.arrShowQuantityPanel_s.update((prev) => [
+      ...prev,
+      product.id.toString(),
+    ]);
     this.counterQuantity_s.set(product.quantity);
-    this.iSshowQuantityPanel.set(true);
   }
 
   decrementCounter() {
@@ -96,8 +112,16 @@ export class CartComponent implements OnInit {
 
   applyQuantity(event: Event, product: ProductItemInCart) {
     event.stopPropagation();
-    this.productsFirebaseService.updateQuantityOfItemInMyCart(product.id, { quantity: this.counterQuantity_s() }).subscribe();
-    this.iSshowQuantityPanel.set(false);
+
+    this.productsFirebaseService
+      .updateQuantityOfItemInMyCart(product.id, {
+        quantity: this.counterQuantity_s(),
+      })
+      .subscribe();
+
+    this.arrShowQuantityPanel_s.update((prev) =>
+      prev.filter((item) => item !== product.id.toString())
+    );
     this.counterQuantity_s.set(0);
   }
 }

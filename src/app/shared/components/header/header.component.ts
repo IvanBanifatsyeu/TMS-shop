@@ -59,7 +59,6 @@ export class HeaderComponent implements OnInit {
   destroyRef = inject(DestroyRef);
   listMyFavorite_s = signal<Product[] | null>(null);
   isPopupVisible_s = signal<boolean>(false);
-  timeoutId: ReturnType<typeof setTimeout> | null = null;
   listCart_s = signal<ProductItemInCart[]>([]);
 
   ngOnInit(): void {
@@ -106,16 +105,12 @@ export class HeaderComponent implements OnInit {
   }
 
   showCartPopup() {
-    this.timeoutId = setTimeout(() => {
+     setTimeout(() => {
       this.isPopupVisible_s.set(true);
-    }, 600);
+    }, 200);
   }
 
   hideCartPopup() {
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId);
-      this.timeoutId = null;
-    }
     this.isPopupVisible_s.set(false);
   }
 }

@@ -243,8 +243,7 @@
     justify-content: start;
     padding: 20px 22px 25px;
     background-color: var(--light-color);
-    max-width: 50%;
-     min-width: 435px;
+   width: 450px;
 
     .product-card__info {
         row-gap: 0px;
@@ -253,6 +252,8 @@
             position: absolute;
             left: 4%;
             top: 0;
+            font-size: 20px;
+            
         }
 
         .colors-list__icon {
@@ -295,6 +296,7 @@
             transform: scale(1.2);
             color: var(--dark-blue-color);
             filter: brightness(1.2);
+            cursor: pointer;
         }
     }
 
@@ -324,8 +326,8 @@
 
     .product-card__price {
         margin-bottom: 26px;
-        font-weight: 500;
-        font-size: 16px;
+        font-weight: 600;
+        font-size: 18px;
         line-height: 28px;
         letter-spacing: 0.2px;
     }

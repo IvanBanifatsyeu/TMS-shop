@@ -6,8 +6,8 @@
     (click)="hideCartPopup()"
   ></svg>
   <button
-    class="shopping-cart__remove-btn remove-btn"
-    [class.showSwitcher]="this.listCart_s().length"
+    class="shopping-cart__remove-all-btn remove-all-btn"
+    [class.showSwitcher]="this.listCart_s().length > 1"
     (click)="removeAllFromCart($event)"
   >
     remove all
@@ -23,24 +23,22 @@
         class="product-card--inCart"
       ></app-product-card>
       <div class="card-wrapper__aside aside">
-        <button
-          class="aside__remove-btn remove-btn remove-btn--inCart"
+        <svg
+          class="aside__remove-item-btn remove-item-btn"
+          icon="cart-close"
           (click)="removeFromCart(item, $event)"
-        >
-          Remove
-        </button>
+        ></svg>
         <div class="aside__quantity-control quantity-control">
-          @if(!iSshowQuantityPanel()) {
+          @if( !this.arrShowQuantityPanel_s().includes(item.id.toString()) ) {
           <div class="quantity-control__quantity-conteiner quantity-conteiner">
             <p class="quantity-conteiner__quantity-num">
               количество - {{ item.quantity }}шт
             </p>
-            <button
-              class="quantity-conteiner__button-show-control"
+            <svg
+              class="quantity-conteiner__edit-quantity"
+              icon="edit-quantity"
               (click)="showPanelContol($event, item)"
-            >
-              изменить количество
-            </button>
+            ></svg>
           </div>
           } @else {
           <div class="quantity-control__choice-wrapper choice-wrapper">
@@ -61,8 +59,11 @@
                 +
               </button>
             </div>
-
-            <button class="choice-contrall__apply-btn" (click)="applyQuantity($event, item)">применить</button>
+            <svg
+              class="choice-contrall__apply-btn"
+              icon="apply-quantity"
+              (click)="applyQuantity($event, item)"
+            ></svg>
           </div>
           }
         </div>
@@ -81,4 +82,19 @@
     </div>
     }
   </div>
+  @if (this.listCart_s().length > 1){
+  <div class="shopping-cart__cart-summary cart-summary">
+    <div class="cart-summary__content-summary content-summary">
+      <div class="content-summary__summary-text summary-text">
+        <p class="summary-text__quantity">общее количество товаров -</p>
+        <p class="summary-text__summary-price">общая сумма -</p>
+      </div>
+      <div class="content-summary__summary-num summary-num">
+        <p class="summary-num__quantity">{{ this.totalQuantityInCart_sc() }}шт</p>
+        <p class="summary-num__summary-price">{{this.totalPriceInCart_sc()| number : "1.2-2" | currency}}</p>
+      </div>
+    </div>
+    <button class="cart-summary__pay-btn">заказать все</button>
+  </div>
+  }
 </div>

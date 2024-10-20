@@ -45,7 +45,7 @@
   "PRODUCT_DESCRIPTION": "Product Description",
   "REMOVE_FROM_WISHLIST": "Remove From Wishlist",
    "SELECT_QUANTITY":"select quantity",
-   "PRICE_OF_ORDER": "price of order",
+   "PRICE_OF_ORDER": "total price",
    "ADDED_TO_CART": "Added to cart",
    "SELECT_COLOR_AND_SIZE": "Select color and size"
   
