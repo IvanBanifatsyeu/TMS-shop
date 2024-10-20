@@ -74,6 +74,22 @@
     "MY_FAVORITE": "My Favorite",
     "EMPTY_FAVORITE": "Your favorites list is empty 🥺",
     "REMOVE_ALL": "Remove All"
+  },
+
+  "CART" : {
+     "SHOPPING_CART": "Shopping Cart",
+     "REMOVE_ALL": "Remove All",
+     "YUOUR_SHOPPING_CART_IS_EMPTY": "your shopping cart is empty 🥺",
+     "QUANTITY":"quantity",
+     "PCS":"pcs",
+     "TOTAL":"total",
+     "ORDER":"order",
+     "TOTAL_QUANTITY":"total quantity",
+     "TOTAL_PRICE":"total price",
+     "ORDER_ALL":"order all"
+
+    
+   
   }
 }
 
