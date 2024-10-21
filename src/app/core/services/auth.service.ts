@@ -25,5 +25,7 @@ export class AuthService {
       updateProfile(response.user, { displayName: username })
     );
     return from(promise);
-  }
+    }
+    
+    
 }
