@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   HostBinding,
   inject,
@@ -21,6 +22,8 @@ import { Product } from '../../../core/interfaces/product.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CartComponent } from './cart/cart.component';
 import { ProductItemInCart } from '../../../core/interfaces/productItemInCart.interface';
+import { AuthService } from '../../../core/services/auth.service';
+import { UserInterface } from '../../../core/interfaces/user.interface';
 
 @Component({
   selector: 'app-header',
@@ -60,6 +63,8 @@ export class HeaderComponent implements OnInit {
   listMyFavorite_s = signal<Product[] | null>(null);
   isPopupVisible_s = signal<boolean>(false);
   listCart_s = signal<ProductItemInCart[]>([]);
+  authService = inject(AuthService);
+
 
   ngOnInit(): void {
     this.subscription = this.router.events
@@ -72,19 +77,36 @@ export class HeaderComponent implements OnInit {
         this.handleRouteChange(event.url); // Обрабатываем изменение маршрута
       });
 
-   this.productsFirebaseService
+    this.productsFirebaseService
       .getMyFavorite()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
         this.listMyFavorite_s.set(res);
       });
-    
+
     this.productsFirebaseService
       .getItemsFromMyCart()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
         this.listCart_s.set(res);
       });
+    
+    this.authService.user$.subscribe((user: any) => {
+      console.log('🎈 user = ', this.authService.currentUser_s());
+
+      if (user) {
+        this.authService.currentUser_s.set({
+          email: user.email,
+          username: user.displayName,
+        });
+      } else {
+        this.authService.currentUser_s.set(null);
+      }
+    });
+     
+    
+   
+    
   }
 
   private handleRouteChange(url: string): void {
@@ -105,7 +127,7 @@ export class HeaderComponent implements OnInit {
   }
 
   showCartPopup() {
-     setTimeout(() => {
+    setTimeout(() => {
       this.isPopupVisible_s.set(true);
     }, 200);
   }

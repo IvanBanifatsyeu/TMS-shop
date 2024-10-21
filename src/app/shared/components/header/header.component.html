@@ -12,7 +12,12 @@
   </div>
   <div class="header__my-account my-account" routerLink="/auth">
     <svg icon="avatar" class="my-account__icon"></svg>
-    <span class="my-account__text">{{ "HEADER.MY_ACCOUNT" | translate }}</span>
+    @if(authService.currentUser_s()) {
+
+    <span>{{ authService.currentUser_s()?.username }}</span>
+    } @else {
+    <span> {{ "HEADER.LOG_IN" | translate }}</span>
+    }
   </div>
   <a
     class="header__favorite-icon favorite-icon"
@@ -20,7 +25,9 @@
   >
     <svg icon="fav" class="favorite-icon__img"></svg>
     @if(listMyFavorite_s()?.length){
-    <span class="favorite-icon__counter counter">{{ listMyFavorite_s()?.length }}</span>
+    <span class="favorite-icon__counter counter">{{
+      listMyFavorite_s()?.length
+    }}</span>
     }
   </a>
   <div
@@ -28,12 +35,18 @@
     (click)="showCartPopup()"
   >
     <svg icon="cart" class="cart-icon-wrapper__img"></svg>
-     @if(this.listCart_s().length){
-    <span class="cart-icon-wrapper__counter counter">{{ this.listCart_s().length }}</span>
-    }
-    @if(isPopupVisible_s()) {
+    @if(this.listCart_s().length){
+    <span class="cart-icon-wrapper__counter counter">{{
+      this.listCart_s().length
+    }}</span>
+    } @if(isPopupVisible_s()) {
     <div class="cart-icon-wrapper__overlay">
-      <app-cart @fadeInOut (click)="$event.stopPropagation()" [(closePopupCart_m)]="isPopupVisible_s"></app-cart>>
+      <app-cart
+        @fadeInOut
+        (click)="$event.stopPropagation()"
+        [(closePopupCart_m)]="isPopupVisible_s"
+      ></app-cart
+      >>
     </div>
     }
   </div>
