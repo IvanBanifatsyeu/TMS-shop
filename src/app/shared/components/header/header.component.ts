@@ -15,7 +15,7 @@ import { LanguageSwitchComponent } from './language-switch/language-switch.compo
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, Subscription, tap } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { Product } from '../../../core/interfaces/product.interface';
@@ -23,7 +23,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CartComponent } from './cart/cart.component';
 import { ProductItemInCart } from '../../../core/interfaces/productItemInCart.interface';
 import { AuthService } from '../../../core/services/auth.service';
-import { UserInterface } from '../../../core/interfaces/user.interface';
+
 
 @Component({
   selector: 'app-header',

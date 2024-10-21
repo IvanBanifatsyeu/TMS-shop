@@ -1,18 +1,19 @@
 <div class="auth-wrapper">
   @if(authService.currentUser_s() == null) {
 
-  <div class="auth-wrapper__links">
-    <a routerLink="/login">Login</a>
-    <a routerLink="/register">Register</a>
+  <div class="auth-wrapper__links links">
+    <button class="links__item" [class.not-active]="this.activeButton() === 'signup' " (click)="switchToLogin()">Login</button>
+    <button class="links__item" [class.not-active]="this.activeButton() === 'signin' " (click)="switchToLogout()">Register</button>
   </div>
-
-  } @if(authService.currentUser_s()) {
+  @if(this.activeButton() == 'signup') {<app-register></app-register>} @if
+  (this.activeButton() == 'signin') {
+  <app-login></app-login>
+  } } @else {
   <p class="auth-wrapper__hello">
     Hello, {{ authService.currentUser_s()?.username }}
   </p>
-  
-    <button  class="auth-wrapper__btn" (click)="logout()">Logout</button>
-  
+
+  <button class="logout-btn" (click)="logout()">Logout</button>
 
   }
 </div>

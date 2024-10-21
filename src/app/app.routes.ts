@@ -13,6 +13,4 @@ export const routes: Routes = [
   { path: 'shop/:id', component: ProductDescriptionPageComponen },
   { path: 'my-favorite', component: MyFavoriteComponent },
   { path: 'auth', component: AuthComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
 ];

@@ -2,6 +2,11 @@
     padding: 30px;
     background-color: var(--light-color);
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    row-gap: 20px;
 }
 
 .auth-wrapper__hello {
@@ -10,4 +15,64 @@
     font-size: 24px;
     line-height: 36px;
     letter-spacing: 0.1px;
+}
+
+
+.logout-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00c8be;
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 18px;
+    width: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+        transform: scale(1.03);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+.links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.links__item {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00c8be;
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    transition: all 0.2s ease;
+    width: 140px;
+    text-align: center;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+
+}
+
+.not-active {
+    background-color: rgb(111, 111, 111);
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.03);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
 }
