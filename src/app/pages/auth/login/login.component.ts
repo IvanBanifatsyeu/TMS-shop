@@ -40,7 +40,6 @@ export class LoginComponent {
         this.router.navigate(['/']);
       },
       error: (err) => {
-        console.log('err.code login ❌❌❌❌❌', err.code);
         // Handle specific error codes
         switch (err.code) {
           case 'auth/wrong-password':

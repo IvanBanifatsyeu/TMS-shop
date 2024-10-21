@@ -54,7 +54,6 @@ export class RegisterComponent {
           this.router.navigate(['/']);
         },
         error: (err) => {
-          console.log('err.code register ❌❌❌❌❌', err.code);
 
           // Handle specific error codes
           switch (err.code) {

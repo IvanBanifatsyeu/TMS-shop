@@ -40,11 +40,11 @@
           }
         </div>
       </div>
-      <div class="info__sizes sizes">
+      <div class="info__sizes sizes " [class.is-already-in-cart] = "this.isAlreadyInCart_s()">
         <p class="sizes__title">
           {{ "PRODUCT_DESCRIPTION_PAGE.SIZE" | translate }}
         </p>
-        <div class="sizes__sizes-list sizes-list">
+        <div class="sizes__sizes-list sizes-list "  >
           @for(size of product?.sizes; track $index) {
           <div
             class="sizes-list__size"
@@ -64,7 +64,9 @@
         class="info__quantity-price-selector quantity-price-selector"
         [ngClass]="{
           'is-visible':
-            this.selectedColor_s() !== '' && this.selectedSize_s() !== ''
+            this.selectedColor_s() !== '' &&
+            this.selectedSize_s() !== '' &&
+            !this.isAlreadyInCart_s()
         }"
       >
         <div class="quantity-price-selector__quantity-wrapper quantity-wrapper">
@@ -107,7 +109,9 @@
         <button
           class="buttons__button"
           [disabled]="
-            this.selectedColor_s() === '' || this.selectedSize_s() === ''
+            this.selectedColor_s() === '' ||
+            this.selectedSize_s() === '' ||
+            this.isAlreadyInCart_s()
           "
           (click)="product && addToCart(product, $event)"
         >

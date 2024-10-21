@@ -35,13 +35,15 @@ export class ProductDescriptionPageComponen implements OnInit {
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   product: Product | undefined = undefined;
-  imgUrl: string  = '';
+  imgUrl: string = '';
   id: string | null = '';
   destroyRef = inject(DestroyRef);
   route = inject(ActivatedRoute);
   listMyFavorite_s = signal<Product[] | []>([]);
   isFavorite_s = signal<boolean>(false);
+  listMyCart_s = signal<ProductItemInCart[]>([]);
   isAddedToCart_s = signal<boolean>(false);
+  isAlreadyInCart_s = signal<boolean>(false);
   selectedColor_s = signal<string>('');
   selectedSize_s = signal<string>('');
   selectedQuantity_s = signal<number>(0);
@@ -60,9 +62,9 @@ export class ProductDescriptionPageComponen implements OnInit {
           return product.id === this.id;
         });
         this.imgUrl = this.product!.imgUrl;
-        this.selectedQuantity_s.set(1)
+        this.selectedQuantity_s.set(1);
       });
-    
+
     this.productsFirebaseService
       .getMyFavorite()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -71,7 +73,7 @@ export class ProductDescriptionPageComponen implements OnInit {
         this.listMyFavorite_s.set(res);
         this.isFavorite_s.set(res.some((element) => element.id === this.id));
       });
-    
+
     this.productsFirebaseService
       .getItemsFromMyCart()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -79,6 +81,7 @@ export class ProductDescriptionPageComponen implements OnInit {
         this.isAddedToCart_s.set(
           res.some((element) => element.idFromMainServer === this.id)
         );
+        this.listMyCart_s.set(res);
       });
   }
 
@@ -93,26 +96,51 @@ export class ProductDescriptionPageComponen implements OnInit {
 
   setSelectedColor(color: string, event: Event) {
     event.stopPropagation();
+    this.isAlreadyInCart_s.set(false);
 
     if (this.selectedColor_s() === color) {
       this.selectedColor_s.set('');
     } else {
       this.selectedColor_s.set(color);
+
+      if (
+        this.listMyCart_s().some(
+          (element) =>
+            element.idFromMainServer === this.id &&
+            element.color[0] === this.selectedColor_s() &&
+            element.sizes[0] === this.selectedSize_s()
+        )
+      ) {
+        this.isAlreadyInCart_s.set(true);
+      }
     }
   }
 
   setSelectedSize(size: string, event: Event) {
     event.stopPropagation();
+    this.isAlreadyInCart_s.set(false);
+
     if (this.selectedSize_s() === size) {
       this.selectedSize_s.set('');
     } else {
       this.selectedSize_s.set(size);
+
+      if (
+        this.listMyCart_s().some(
+          (element) =>
+            element.idFromMainServer === this.id &&
+            element.color[0] === this.selectedColor_s() &&
+            element.sizes[0] === this.selectedSize_s()
+        )
+      ) {
+        this.isAlreadyInCart_s.set(true);
+      }
     }
   }
 
-  addToCart(product: Product , event: Event) {
+  addToCart(product: Product, event: Event) {
     event.stopPropagation();
- 
+
     const productForCart: ProductItemInCart = {
       ...product,
       color: [this.selectedColor_s()],
@@ -120,7 +148,7 @@ export class ProductDescriptionPageComponen implements OnInit {
       quantity: this.selectedQuantity_s(),
       idFromMainServer: product.id,
     };
-    
+
     this.productsFirebaseService.addItemToMyCart(productForCart);
     this.selectedColor_s.set('');
     this.selectedSize_s.set('');

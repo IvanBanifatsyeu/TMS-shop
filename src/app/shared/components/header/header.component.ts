@@ -92,7 +92,6 @@ export class HeaderComponent implements OnInit {
       });
     
     this.authService.user$.subscribe((user: any) => {
-      console.log('🎈 user = ', this.authService.currentUser_s());
 
       if (user) {
         this.authService.currentUser_s.set({

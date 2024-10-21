@@ -17,7 +17,6 @@ export class AuthComponent implements OnInit {
   
 ngOnInit() {
   this.authService.user$.subscribe((user: any) => {
-    console.log('🎈 user = ', this.authService.currentUser_s());
     
     if (user) {
       this.authService.currentUser_s.set({
@@ -31,10 +30,7 @@ ngOnInit() {
   
 }
   logout() {
-    console.log('Logout clicked 🆘');
-
     this.authService.logout();
-    
   }
 
 }
