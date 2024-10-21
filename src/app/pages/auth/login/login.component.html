@@ -1,5 +1,9 @@
 <h1>Login</h1>
 
+@if (this.errorMessage()) {
+    <p>{{ this.errorMessage() }}</p>
+}
+
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div><input type="text" formControlName="email" placeholder="Email" /></div>
   <div>

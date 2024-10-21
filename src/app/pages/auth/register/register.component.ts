@@ -23,14 +23,15 @@ export class RegisterComponent {
   http = inject(HttpClient);
   fb = inject(FormBuilder);
   authService = inject(AuthService);
-  errorMessage = signal<string | null>(null);
-
+  
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
   });
-
+  
+  errorMessage = signal<string | null>(null);
+  
   onSubmit() {
     const rawForm = this.form.getRawValue();
 
