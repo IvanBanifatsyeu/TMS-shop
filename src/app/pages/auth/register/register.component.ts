@@ -47,11 +47,15 @@ export class RegisterComponent {
       .register(rawForm.email, rawForm.username, rawForm.password)
       .subscribe({
         next: () => {
+          this.authService.currentUser_s.set({
+            email: rawForm.email,
+            username: rawForm.username,
+          });
           this.router.navigate(['/']);
         },
         error: (err) => {
-          console.log("err.code register ❌❌❌❌❌",err.code);
-          
+          console.log('err.code register ❌❌❌❌❌', err.code);
+
           // Handle specific error codes
           switch (err.code) {
             case 'auth/invalid-email':

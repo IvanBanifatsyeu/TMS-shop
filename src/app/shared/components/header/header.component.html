@@ -14,9 +14,9 @@
     <svg icon="avatar" class="my-account__icon"></svg>
     @if(authService.currentUser_s()) {
 
-    <span>{{ authService.currentUser_s()?.username }}</span>
+    <span class="my-account__username">{{ authService.currentUser_s()?.username }}</span>
     } @else {
-    <span> {{ "HEADER.LOG_IN" | translate }}</span>
+    <span class="my-account__username">  {{ "HEADER.LOG_IN" | translate }}</span>
     }
   </div>
   <a
