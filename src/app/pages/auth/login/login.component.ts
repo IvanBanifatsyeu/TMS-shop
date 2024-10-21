@@ -16,7 +16,7 @@ export class LoginComponent {
   router = inject(Router);
   http = inject(HttpClient);
   fb = inject(FormBuilder);
-  authService=inject(AuthService);
+  authService = inject(AuthService);
 
   form = this.fb.nonNullable.group({
     email: ['', Validators.required],
@@ -35,15 +35,27 @@ export class LoginComponent {
     }
 
     // 2. Proceed with Firebase Authentication
-    this.authService
-      .login(rawForm.email, rawForm.password)
-      .subscribe({
-        next: () => {
-          this.router.navigate(['/']);
-        },
-        error: (err) => {
-          this.errorMessage.set(err.code);
-        },
-      });
+    this.authService.login(rawForm.email, rawForm.password).subscribe({
+      next: () => {
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.log('err.code login ❌❌❌❌❌', err.code);
+        // Handle specific error codes
+        switch (err.code) {
+          case 'auth/wrong-password':
+            this.errorMessage.set('Incorrect password. Please try again.');
+            break;
+          case 'auth/invalid-credential':
+            this.errorMessage.set('User not found. Please check your email and password. And try again.');
+            break;
+          case 'auth/invalid-email':
+            this.errorMessage.set('Invalid email format.');
+            break;
+          default:
+            this.errorMessage.set('An error occurred. Please try again later.');
+        }
+      },
+    });
   }
 }

@@ -1,8 +1,19 @@
+@if(authService.currentUser_s() == null) {
+
 <div>
     <a routerLink="/login"  >Login</a>
+    <br>
     <a routerLink="/register">Register</a>
 </div>
+
+
+}
+
+@if(authService.currentUser_s()) {
+<p>Hello, {{ authService.currentUser_s()?.username }}</p>
 <div>
     <span (click)="logout()"> Logout
     </span>
 </div>
+
+}

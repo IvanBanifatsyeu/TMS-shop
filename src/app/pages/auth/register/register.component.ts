@@ -23,15 +23,15 @@ export class RegisterComponent {
   http = inject(HttpClient);
   fb = inject(FormBuilder);
   authService = inject(AuthService);
-  
+
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
   });
-  
+
   errorMessage = signal<string | null>(null);
-  
+
   onSubmit() {
     const rawForm = this.form.getRawValue();
 
@@ -50,7 +50,23 @@ export class RegisterComponent {
           this.router.navigate(['/']);
         },
         error: (err) => {
-          this.errorMessage.set(err.code);
+          console.log("err.code register ❌❌❌❌❌",err.code);
+          
+          // Handle specific error codes
+          switch (err.code) {
+            case 'auth/invalid-email':
+              this.errorMessage.set('Please enter a valid email address.');
+              break;
+            case 'auth/weak-password':
+              this.errorMessage.set(
+                'Password must be at least 6 characters long.'
+              );
+              break;
+            default:
+              this.errorMessage.set(
+                'An error occurred. Please try again later.'
+              );
+          }
         },
       });
   }
