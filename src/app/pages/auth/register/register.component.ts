@@ -66,6 +66,11 @@ export class RegisterComponent {
                 'Password must be at least 6 characters long.'
               );
               break;
+            case 'auth/email-already-in-use':
+              this.errorMessage.set(
+                'This email address is already in use. Please choose a different address.'
+              );
+              break;
             default:
               this.errorMessage.set(
                 'An error occurred. Please try again later.'

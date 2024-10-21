@@ -1,19 +1,18 @@
-@if(authService.currentUser_s() == null) {
+<div class="auth-wrapper">
+  @if(authService.currentUser_s() == null) {
 
-<div>
-    <a routerLink="/login"  >Login</a>
-    <br>
+  <div class="auth-wrapper__links">
+    <a routerLink="/login">Login</a>
     <a routerLink="/register">Register</a>
+  </div>
+
+  } @if(authService.currentUser_s()) {
+  <p class="auth-wrapper__hello">
+    Hello, {{ authService.currentUser_s()?.username }}
+  </p>
+  
+    <button  class="auth-wrapper__btn" (click)="logout()">Logout</button>
+  
+
+  }
 </div>
-
-
-}
-
-@if(authService.currentUser_s()) {
-<p>Hello, {{ authService.currentUser_s()?.username }}</p>
-<div>
-    <span (click)="logout()"> Logout
-    </span>
-</div>
-
-}

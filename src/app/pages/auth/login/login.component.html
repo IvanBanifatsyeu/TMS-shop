@@ -1,13 +1,21 @@
-<h1>Login</h1>
+<div class="login-wrapper">
+  <div class="login-wrapper__title-wrapper title-wrapper">
+    <h1 class="title-wrapper__title">Login</h1>
 
-@if (this.errorMessage()) {
-    <p>{{ this.errorMessage() }}</p>
-}
-
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div><input type="text" formControlName="email" placeholder="Email" /></div>
-  <div>
-    <input type="password" formControlName="password" placeholder="Password" />
+    @if (this.errorMessage()) {
+    <p class="title-wrapper__error">{{ this.errorMessage() }}</p>
+    }
   </div>
-  <div><button type="submit">Sign In</button></div>
-</form>
+
+  <form class="login-wrapper__form form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <input class="form__input" type="text" formControlName="email" placeholder="Email" />
+  
+      <input class="form__input"
+        type="password"
+        formControlName="password"
+        placeholder="Password"
+      />
+   
+  <button class="form__button" type="submit">Sign In</button>
+  </form>
+</div>
