@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -16,10 +16,12 @@ import { UserInterface } from '../interfaces/user.interface';
 })
 export class AuthService {
   firebaseAuth = inject(Auth);
-  user$ = user(this.firebaseAuth);
-
   currentUser_s = signal<UserInterface | null | undefined>(undefined);
 
+  getCurrentUser$() {
+    return user(this.firebaseAuth);
+  }
+  
   register(
     email: string,
     username: string,
@@ -50,8 +52,8 @@ export class AuthService {
   }
 
   loadUser(): Observable<void> {
-    return this.user$.pipe(
-      switchMap((firebaseUser : User ) => {
+    return this.getCurrentUser$().pipe(
+      switchMap((firebaseUser: User) => {
         if (firebaseUser) {
           this.currentUser_s.set({
             email: firebaseUser.email ?? '',

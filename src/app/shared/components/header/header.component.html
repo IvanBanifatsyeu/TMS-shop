@@ -24,9 +24,9 @@
     [routerLink]="['/my-favorite']"
   >
     <svg icon="fav" class="favorite-icon__img"></svg>
-    @if(listUserFavorite_sc()?.length){
+    @if(userDataService.listUserFavorite_s()?.length){
     <span class="favorite-icon__counter counter">{{
-      listUserFavorite_sc()?.length
+      userDataService.listUserFavorite_s()?.length
     }}</span>
     }
   </a>

@@ -15,7 +15,7 @@ import { LanguageSwitchComponent } from './language-switch/language-switch.compo
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, of, Subscription, switchMap, tap } from 'rxjs';
+import { filter, map, of, Subscription, switchMap, tap } from 'rxjs';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { Product } from '../../../core/interfaces/product.interface';
@@ -63,23 +63,6 @@ export class HeaderComponent implements OnInit {
   isPopupLanguageVisible = false;
   currentRoute = signal<string>('');
   isPopupCartVisible_s = signal<boolean>(false);
-  listUserFavorite_sc = computed(() => {
-    const userCurrent = this.authService.currentUser_s();
-    console.log(
-      '%c💡 header this.userDataService.listUserFavorite_s()',
-      'font-size: 16px; color: red; font-weight: bold;',
-     this.userDataService.listUserFavorite_s()
-    );
-    return this.userDataService.listUserFavorite_s();
-  });
-  currentUser_sc = computed(() => {
-    console.log(
-      '%c header currentUser computed ',
-      'font-size: 16px; color: yellow; font-weight: bold;',
-      this.authService.currentUser_s()
-    );
-    return this.authService.currentUser_s();
-  });
   listCart_s = signal<ProductItemInCart[]>([]);
 
   ngOnInit(): void {
@@ -93,33 +76,52 @@ export class HeaderComponent implements OnInit {
         this.handleRouteChange(event.url); // Обрабатываем изменение маршрута
       });
 
-    // this.productsFirebaseService
-    //   .getUserFavoriteList(this.authService.currentUser_s()!?.userId)
-    //   .pipe(takeUntilDestroyed(this.destroyRef))
-    //   .subscribe((res) => {
-    //     if (this.currentUser_sc() == null) {
-    //       this.userDataService.listUserFavorite_s.set([]);
-    //     } else {
-    //       this.userDataService.listUserFavorite_s.set(res);
-    //     }
-    //   });
 
-    this.authService.user$
+    this.authService
+      .getCurrentUser$()
       .pipe(
-        switchMap((user: User) => {
+        switchMap((user: User | null) => {
           if (user) {
-            return this.productsFirebaseService.getUserFavoriteList(user.uid);
+            // Возвращаем как пользователя, так и список избранного
+            return this.productsFirebaseService
+              .getUserFavoriteList(user.uid)
+              .pipe(
+                map((favoriteProducts: Product[]) => ({
+                  user,
+                  favoriteProducts,
+                })) // Оборачиваем результат в объект
+              );
           } else {
-            this.userDataService.listUserFavorite_s.set([]);
-            return of([]); // Возвращаем пустой Observable, если нет пользователя
+            // this.authService.currentUser_s.set(null);
+            return of({ user: null, favoriteProducts: [] }); // Если нет пользователя, возвращаем пустые данные
           }
         }),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe((res: Product[]) => {
-        this.userDataService.listUserFavorite_s.set(res);
-      });
+      .subscribe(
+        ({
+          user,
+          favoriteProducts,
+        }: {
+          user: User | null;
+          favoriteProducts: Product[];
+        }) => {
+          // console.log('subscribe in header trigger', user, favoriteProducts);
 
+          this.userDataService.listUserFavorite_s.set(favoriteProducts);
+          if (user) {
+            console.log('🥶', user, user.displayName);
+
+            this.authService.currentUser_s.set({
+              email: user.email!,
+              username: user.displayName!,
+              userId: user.uid,
+            });
+          } else {
+            this.authService.currentUser_s.set(null);
+          }
+        }
+      );
 
     this.productsFirebaseService
       .getItemsFromMyCart()

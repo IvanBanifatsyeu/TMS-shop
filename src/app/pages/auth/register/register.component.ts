@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   inject,
   signal,
 } from '@angular/core';
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { User } from 'firebase/auth';
 import { SvgIconComponent } from '../../../shared/components/svg-icon/svg-icon.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-register',
@@ -22,6 +24,7 @@ import { SvgIconComponent } from '../../../shared/components/svg-icon/svg-icon.c
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
+  destroyRef = inject(DestroyRef);
   router = inject(Router);
   fb = inject(FormBuilder);
   authService = inject(AuthService);
@@ -50,14 +53,9 @@ export class RegisterComponent {
     // 2. Proceed with Firebase Authentication
     this.authService
       .register(rawForm.email, rawForm.username, rawForm.password)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.authService.currentUser_s.set({
-            email: rawForm.email,
-            username: rawForm.username,
-            userId: this.userId_s(),
-          });
-
           this.router.navigate(['/']);
         },
         error: (err) => {
@@ -83,17 +81,6 @@ export class RegisterComponent {
           }
         },
       });
-
-    //zzz
-    this.authService.user$.subscribe((user: User) => {
-      if (user) {
-        this.userId_s.set(user.uid);
-
-        // this.firebaseService.createSubcollectionForUser(this.userId_s()!, 'user-favorite', {});
-      } else {
-        this.userId_s.set(null);
-      }
-    });
   }
 
   togglePasswordVisibility(event: Event) {

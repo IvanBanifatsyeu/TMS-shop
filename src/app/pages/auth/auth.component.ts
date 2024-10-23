@@ -20,24 +20,12 @@ import { UserDataService } from '../../core/services/user-data.service';
   styleUrl: './auth.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent  {
   authService = inject(AuthService);
   activeButton = signal<string>('signin');
   userDataService = inject(UserDataService);
 
-  ngOnInit() {
-    this.authService.user$.subscribe((user: any) => {
-      if (user) {
-        this.authService.currentUser_s.set({
-          email: user.email,
-          username: user.displayName,
-          userId: user.uid,
-        });
-      } else {
-        this.authService.currentUser_s.set(null);
-      }
-    });
-  }
+
   logout() {
     this.authService.logout();
   }

@@ -29,9 +29,13 @@ export class ProductCardComponent {
   productsFirebaseService = inject(ProductFirebaseService);
   userDataService = inject(UserDataService);
   isFavorite_sc = computed(() => {
-    return this.userDataService
-      .listUserFavorite_s()!
-      .some((element) => element.id === this.product!.id);
+    if (this.userDataService.listUserFavorite_s() === null) {
+      return false;
+    } else {
+      return this.userDataService
+        .listUserFavorite_s()!
+        .some((element) => element.id === this.product!.id);
+    }
   });
   destroyRef = inject(DestroyRef);
 

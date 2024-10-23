@@ -180,40 +180,5 @@ export class ProductDescriptionPageComponen implements OnInit {
     }
   }
 
-  // zzz
-  userShowInLog() {
-    console.log('currentUser😎😎😎😎', this.authService.currentUser_s());
-  }
-
-  addToUserFavorite() {
-    console.log(
-      '%c💡 addToUserFavorite',
-      'font-size: 16px; color: red; font-weight: bold;'
-    );
-    this.productsFirebaseService.addToUserFavorite(
-      this.authService.currentUser_s()!.userId,
-      this.product!
-    );
-  }
-
-  getFavoriteList() {
-    this.productsFirebaseService
-      .getUserFavoriteList(this.authService.currentUser_s()!.userId)
-      .subscribe((res) => {
-        console.log(res);
-      });
-  }
-
-  removeFromUserFavorite() {
-    this.productsFirebaseService.removeFromUserFavorite(
-      this.authService.currentUser_s()!.userId,
-      this.product!.id
-    );
-  }
-
-  removeAllFromUserFavorite() {
-    this.productsFirebaseService
-      .removeAllFromUserFavorite(this.authService.currentUser_s()!.userId!)
-      .subscribe();
-  }
+  
 }
