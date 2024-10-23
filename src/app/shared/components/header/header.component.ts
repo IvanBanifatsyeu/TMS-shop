@@ -15,7 +15,7 @@ import { LanguageSwitchComponent } from './language-switch/language-switch.compo
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
+import { filter, of, Subscription, switchMap, tap } from 'rxjs';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { Product } from '../../../core/interfaces/product.interface';
@@ -23,7 +23,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CartComponent } from './cart/cart.component';
 import { ProductItemInCart } from '../../../core/interfaces/productItemInCart.interface';
 import { AuthService } from '../../../core/services/auth.service';
-
+import { UserDataService } from '../../../core/services/user-data.service';
+import { User } from 'firebase/auth';
 
 @Component({
   selector: 'app-header',
@@ -52,19 +53,34 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   @HostBinding('class.position-absolute') isAbsolute = true;
-  isPopupLanguageVisible = false;
-  isPopupCartVisible = false;
   translate = inject(TranslateService);
-  currentRoute = signal<string>('');
-  subscription!: Subscription;
   router = inject(Router);
   productsFirebaseService = inject(ProductFirebaseService);
   destroyRef = inject(DestroyRef);
-  listMyFavorite_s = signal<Product[] | null>(null);
-  isPopupVisible_s = signal<boolean>(false);
-  listCart_s = signal<ProductItemInCart[]>([]);
   authService = inject(AuthService);
-
+  userDataService = inject(UserDataService);
+  subscription!: Subscription;
+  isPopupLanguageVisible = false;
+  currentRoute = signal<string>('');
+  isPopupCartVisible_s = signal<boolean>(false);
+  listUserFavorite_sc = computed(() => {
+    const userCurrent = this.authService.currentUser_s();
+    console.log(
+      '%c💡 header this.userDataService.listUserFavorite_s()',
+      'font-size: 16px; color: red; font-weight: bold;',
+     this.userDataService.listUserFavorite_s()
+    );
+    return this.userDataService.listUserFavorite_s();
+  });
+  currentUser_sc = computed(() => {
+    console.log(
+      '%c header currentUser computed ',
+      'font-size: 16px; color: yellow; font-weight: bold;',
+      this.authService.currentUser_s()
+    );
+    return this.authService.currentUser_s();
+  });
+  listCart_s = signal<ProductItemInCart[]>([]);
 
   ngOnInit(): void {
     this.subscription = this.router.events
@@ -77,12 +93,33 @@ export class HeaderComponent implements OnInit {
         this.handleRouteChange(event.url); // Обрабатываем изменение маршрута
       });
 
-    this.productsFirebaseService
-      .getMyFavorite()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((res) => {
-        this.listMyFavorite_s.set(res);
+    // this.productsFirebaseService
+    //   .getUserFavoriteList(this.authService.currentUser_s()!?.userId)
+    //   .pipe(takeUntilDestroyed(this.destroyRef))
+    //   .subscribe((res) => {
+    //     if (this.currentUser_sc() == null) {
+    //       this.userDataService.listUserFavorite_s.set([]);
+    //     } else {
+    //       this.userDataService.listUserFavorite_s.set(res);
+    //     }
+    //   });
+
+    this.authService.user$
+      .pipe(
+        switchMap((user: User) => {
+          if (user) {
+            return this.productsFirebaseService.getUserFavoriteList(user.uid);
+          } else {
+            this.userDataService.listUserFavorite_s.set([]);
+            return of([]); // Возвращаем пустой Observable, если нет пользователя
+          }
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((res: Product[]) => {
+        this.userDataService.listUserFavorite_s.set(res);
       });
+
 
     this.productsFirebaseService
       .getItemsFromMyCart()
@@ -90,22 +127,6 @@ export class HeaderComponent implements OnInit {
       .subscribe((res) => {
         this.listCart_s.set(res);
       });
-    
-    this.authService.user$.subscribe((user: any) => {
-
-      if (user) {
-        this.authService.currentUser_s.set({
-          email: user.email,
-          username: user.displayName,
-        });
-      } else {
-        this.authService.currentUser_s.set(null);
-      }
-    });
-     
-    
-   
-    
   }
 
   private handleRouteChange(url: string): void {
@@ -126,12 +147,10 @@ export class HeaderComponent implements OnInit {
   }
 
   showCartPopup() {
-    setTimeout(() => {
-      this.isPopupVisible_s.set(true);
-    }, 200);
+    this.isPopupCartVisible_s.set(true);
   }
 
   hideCartPopup() {
-    this.isPopupVisible_s.set(false);
+    this.isPopupCartVisible_s.set(false);
   }
 }

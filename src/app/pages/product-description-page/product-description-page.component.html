@@ -9,7 +9,7 @@
         <p class="model-curColor__curColor">({{ product?.curColor }})</p>
       </div>
       <div class="info__status-bar status-bar">
-        @if(isFavorite_s()) {
+        @if(isUserFavorite_s()) {
         <svg class="status-bar__favorit-icon favorit-icon" icon="fav"></svg>
         } @else {
         <div class="status-bar__favorit-icon-dummy favorit-icon-dummy"></div>
@@ -35,12 +35,12 @@
             class="colors-list__color-icon color-icon"
             [style.color]="'var(--svg-' + color + ')'"
             (click)="setSelectedColor(color, $event)"
-            [ngClass]="{ selectedColor: this.selectedColor_s() === color }"
+            [ngClass]="{ selectedColor: selectedColor_s() === color }"
           ></svg>
           }
         </div>
       </div>
-      <div class="info__sizes sizes " [class.is-already-in-cart] = "this.isAlreadyInCart_s()">
+      <div class="info__sizes sizes " [class.is-already-in-cart] = "isAlreadyInCart_s()">
         <p class="sizes__title">
           {{ "PRODUCT_DESCRIPTION_PAGE.SIZE" | translate }}
         </p>
@@ -49,11 +49,11 @@
           <div
             class="sizes-list__size"
             (click)="setSelectedSize(size, $event)"
-            [ngClass]="{ selectedSize: this.selectedSize_s() === size }"
+            [ngClass]="{ selectedSize: selectedSize_s() === size }"
           >
             {{ size }}
           </div>
-          } @if(this.selectedColor_s() === ''|| this.selectedSize_s() === '') {
+          } @if(selectedColor_s() === ''|| selectedSize_s() === '') {
           <p class="buttons__popup-add-color-size" visible>
             {{ "PRODUCT_DESCRIPTION_PAGE.SELECT_COLOR_AND_SIZE" | translate }}
           </p>
@@ -64,9 +64,9 @@
         class="info__quantity-price-selector quantity-price-selector"
         [ngClass]="{
           'is-visible':
-            this.selectedColor_s() !== '' &&
-            this.selectedSize_s() !== '' &&
-            !this.isAlreadyInCart_s()
+            selectedColor_s() !== '' &&
+            selectedSize_s() !== '' &&
+            !isAlreadyInCart_s()
         }"
       >
         <div class="quantity-price-selector__quantity-wrapper quantity-wrapper">
@@ -78,7 +78,7 @@
               -
             </button>
             <div class="choice-wrapper__number">
-              {{ this.selectedQuantity_s() }}
+              {{ selectedQuantity_s() }}
             </div>
             <button class="choice-wrapper__button" (click)="increaseQuantity()">
               +
@@ -90,17 +90,17 @@
             {{ "PRODUCT_DESCRIPTION_PAGE.PRICE_OF_ORDER" | translate }}
           </p>
           <p class="price-wrapeer__price">
-            {{ this.orderSum_sc() | number : "1.2-2" }}$
+            {{ orderSum_sc() | number : "1.2-2" }}$
           </p>
         </div>
       </div>
       <div class="info__buttons buttons">
         <button
           class="buttons__button"
-          (click)="toggleFavorit(product, $event)"
+          (click)="toggleUserFavorite(product)"
         >
           {{
-            (isFavorite_s()
+            (isUserFavorite_s()
               ? "PRODUCT_DESCRIPTION_PAGE.REMOVE_FROM_WISHLIST"
               : "PRODUCT_DESCRIPTION_PAGE.ADD_TO_WISHLIST"
             ) | translate
@@ -109,9 +109,9 @@
         <button
           class="buttons__button"
           [disabled]="
-            this.selectedColor_s() === '' ||
-            this.selectedSize_s() === '' ||
-            this.isAlreadyInCart_s()
+            selectedColor_s() === '' ||
+            selectedSize_s() === '' ||
+            isAlreadyInCart_s()
           "
           (click)="product && addToCart(product, $event)"
         >
@@ -120,7 +120,7 @@
 
         <p
           class="buttons__popup"
-          [class.visible-popup]="this.showPopupAddToCart_s()"
+          [class.visible-popup]="showPopupAddToCart_s()"
           (animationend)="handleAnimationEnd()"
         >
           {{ "PRODUCT_DESCRIPTION_PAGE.ADDED_TO_CART" | translate }}
@@ -135,3 +135,12 @@
     </div>
   </section>
 </main>
+<button (click)="userShowInLog()">user show in log</button>
+<br>
+<button (click)="addToUserFavorite()">Add to user favorite</button>
+<br>
+<button (click)="getFavoriteList()">get list favorite ib log</button>
+<br>
+<button (click)="removeFromUserFavorite()">Remove from user favorite</button>
+<br>
+<button (click)="removeAllFromUserFavorite()">Remove allfrom user favorite</button>

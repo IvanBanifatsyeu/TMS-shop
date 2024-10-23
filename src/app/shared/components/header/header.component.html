@@ -24,9 +24,9 @@
     [routerLink]="['/my-favorite']"
   >
     <svg icon="fav" class="favorite-icon__img"></svg>
-    @if(listMyFavorite_s()?.length){
+    @if(listUserFavorite_sc()?.length){
     <span class="favorite-icon__counter counter">{{
-      listMyFavorite_s()?.length
+      listUserFavorite_sc()?.length
     }}</span>
     }
   </a>
@@ -35,16 +35,16 @@
     (click)="showCartPopup()"
   >
     <svg icon="cart" class="cart-icon-wrapper__img"></svg>
-    @if(this.listCart_s().length){
+    @if(listCart_s().length){
     <span class="cart-icon-wrapper__counter counter">{{
-      this.listCart_s().length
+      listCart_s().length
     }}</span>
-    } @if(isPopupVisible_s()) {
+    } @if(isPopupCartVisible_s()) {
     <div class="cart-icon-wrapper__overlay">
       <app-cart
         @fadeInOut
         (click)="$event.stopPropagation()"
-        [(closePopupCart_m)]="isPopupVisible_s"
+        [(closePopupCart_m)]="isPopupCartVisible_s"
       ></app-cart
       >>
     </div>

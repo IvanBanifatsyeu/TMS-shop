@@ -9,22 +9,13 @@ import {
   deleteDoc,
   getDocs,
   updateDoc,
+  DocumentReference,
+  writeBatch,
 } from '@angular/fire/firestore';
-import {
-  catchError,
-  concatMap,
-  delay,
-  from,
-  map,
-  mergeMap,
-  Observable,
-  of,
-  tap,
-  throwError,
-  toArray,
-} from 'rxjs';
+import { concatMap, from, map, mergeMap, Observable, toArray } from 'rxjs';
 import { Product } from '../interfaces/product.interface';
 import { ProductItemInCart } from '../interfaces/productItemInCart.interface';
+import { UserInterface } from '../interfaces/user.interface';
 // import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
@@ -34,14 +25,19 @@ export class ProductFirebaseService {
   destroyRef = inject(DestroyRef);
   firestore = inject(Firestore);
   productCollection = collection(this.firestore, 'products');
-  myFavoriteCollection = collection(this.firestore, 'my-favorite');
+  FavoriteCollection = collection(this.firestore, 'favorite');
   myCartCollection = collection(this.firestore, 'my-cart');
+  currentUserCollection = collection(this.firestore, 'current-user');
+
+  // current User 🥸🥸🥸
+
+  addCurrentUser(user: UserInterface) {
+    return addDoc(this.currentUserCollection, user);
+  }
 
   // MY FAVORITE Collection 🩷🩷🩷
   getMyFavorite(): Observable<Product[]> {
-    return collectionData(this.myFavoriteCollection, {}) as Observable<
-      Product[]
-    >;
+    return collectionData(this.FavoriteCollection, {}) as Observable<Product[]>;
   }
 
   addItemToMyFavorite(product: Product) {
@@ -56,8 +52,10 @@ export class ProductFirebaseService {
   }
 
   removeAllFromMyFavorite(): Observable<void> {
-    return from(getDocs(this.myFavoriteCollection)).pipe(
-      map((snapshot) => snapshot.docs),
+    return from(getDocs(this.FavoriteCollection)).pipe(
+      map((snapshot) => {
+        return snapshot.docs;
+      }),
       mergeMap((docs) =>
         from(docs).pipe(
           mergeMap((doc) => from(deleteDoc(doc.ref))),
@@ -136,5 +134,56 @@ export class ProductFirebaseService {
 
   getMinPrice(products: Product[]): number {
     return Math.min(...products.map((product) => product.price));
+  }
+
+  //zzz User favoriteCollection 💛❤️💛❤️💛❤️❤️💛❤️
+  addToUserFavorite(userId: string | null, product: Product): Observable<void> {
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+    const userDocRef = doc(this.firestore, 'favorite', userId);
+    const subcollectionRef = collection(userDocRef, 'user-favorite');
+    const documentRef = doc(subcollectionRef, product.id);
+
+    return from(setDoc(documentRef, product));
+  }
+
+  getUserFavoriteList(userId: string | null): Observable<Product[]> {
+    const userFavoriteCollection = collection(
+      this.firestore,
+      `favorite/${userId}/user-favorite`
+    );
+
+    return collectionData(userFavoriteCollection) as Observable<Product[]>;
+  }
+
+  removeFromUserFavorite(
+    userId: string | null,
+    productId: string
+  ): Observable<void> {
+    const userFavoriteCollection = collection(
+      this.firestore,
+      `favorite/${userId}/user-favorite`
+    );
+    const documentRef = doc(userFavoriteCollection, productId);
+
+    return from(deleteDoc(documentRef));
+  }
+
+  removeAllFromUserFavorite(userId: string): Observable<void> {
+    const userFavoriteCollection = collection(
+      this.firestore,
+      `favorite/${userId}/user-favorite`
+    );
+
+    // для избавления от эффекта домино при удаленни карточек
+    return from(getDocs(userFavoriteCollection)).pipe(
+      map((snapshot) => snapshot.docs.map((doc) => doc.ref)), // Сбор всех ссылок на документы
+      concatMap((docs) => {
+        const batch = writeBatch(this.firestore); // Создание батча
+        docs.forEach((doc) => batch.delete(doc)); // Добавление операций удаления в батч
+        return from(batch.commit()); // Коммит батча
+      })
+    );
   }
 }

@@ -1,10 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-import { UserInterface } from '../../core/interfaces/user.interface';
 import { CommonModule } from '@angular/common';
-import { RegisterComponent } from "./register/register.component";
-import { LoginComponent } from "./login/login.component";
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { UserDataService } from '../../core/services/user-data.service';
 
 @Component({
   selector: 'app-auth',
@@ -17,6 +23,7 @@ import { LoginComponent } from "./login/login.component";
 export class AuthComponent implements OnInit {
   authService = inject(AuthService);
   activeButton = signal<string>('signin');
+  userDataService = inject(UserDataService);
 
   ngOnInit() {
     this.authService.user$.subscribe((user: any) => {
@@ -24,6 +31,7 @@ export class AuthComponent implements OnInit {
         this.authService.currentUser_s.set({
           email: user.email,
           username: user.displayName,
+          userId: user.uid,
         });
       } else {
         this.authService.currentUser_s.set(null);
@@ -42,4 +50,3 @@ export class AuthComponent implements OnInit {
     this.activeButton.set('signup');
   }
 }
- 

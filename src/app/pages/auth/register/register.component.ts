@@ -9,6 +9,8 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
+import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
+import { User } from 'firebase/auth';
 
 @Component({
   selector: 'app-register',
@@ -20,9 +22,10 @@ import { CommonModule } from '@angular/common';
 })
 export class RegisterComponent {
   router = inject(Router);
-  http = inject(HttpClient);
   fb = inject(FormBuilder);
   authService = inject(AuthService);
+  firebaseService = inject(ProductFirebaseService);
+  userId_s = signal<string | null>(null);
 
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
@@ -50,11 +53,14 @@ export class RegisterComponent {
           this.authService.currentUser_s.set({
             email: rawForm.email,
             username: rawForm.username,
+            userId: this.userId_s(),
           });
+
+
+
           this.router.navigate(['/']);
         },
         error: (err) => {
-
           // Handle specific error codes
           switch (err.code) {
             case 'auth/invalid-email':
@@ -77,5 +83,16 @@ export class RegisterComponent {
           }
         },
       });
+
+    //zzz
+    this.authService.user$.subscribe((user: User) => {
+      if (user) {
+        this.userId_s.set(user.uid);
+
+        // this.firebaseService.createSubcollectionForUser(this.userId_s()!, 'user-favorite', {});
+      } else {
+        this.userId_s.set(null);
+      }
+    });
   }
 }

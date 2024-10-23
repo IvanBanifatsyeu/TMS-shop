@@ -1,4 +1,5 @@
 import {
+  APP_INITIALIZER,
   ApplicationConfig,
   importProvidersFrom,
   provideZoneChangeDetection,
@@ -12,6 +13,8 @@ import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { appInitializerFactory } from './core/initializers/appInitializer';
+import { AuthService } from './core/services/auth.service';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDDn_kO_3PhEIRjdgtkrmHlW7e3rFrM12c',
@@ -44,5 +47,11 @@ export const appConfig: ApplicationConfig = {
       }),
     ]),
     provideAnimationsAsync(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFactory, 
+      deps: [AuthService], 
+      multi: true, 
+    },
   ],
 };

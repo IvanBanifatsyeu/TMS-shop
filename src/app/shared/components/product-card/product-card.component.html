@@ -1,6 +1,6 @@
 <div
   class="product-card__img-conteiner img-conteiner"
-  (click)="goToProduct(productId)"
+  (click)="goToProduct(product!.id)"
 >
   <img
     class="img-conteiner__image"
@@ -12,7 +12,7 @@
     icon="favorit-icon"
     class="img-conteiner__favorit-icon"
     (click)="toggleFavorit(product, $event)"
-    [ngClass]="{ favorite: isFavorite() }"
+    [ngClass]="{ favorite: isFavorite_sc() }"
   ></svg>
 </div>
 <div class="product-card__info">

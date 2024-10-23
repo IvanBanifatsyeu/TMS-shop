@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { CategoryCardComponent } from '../../shared/components/category-card/category-card.component';
 import { CommonModule } from '@angular/common';
 import { UiDataService } from '../../core/services/uiData.service';
@@ -24,22 +24,23 @@ import { RouterModule } from '@angular/router';
 })
 export class HomePageComponent implements OnInit {
   uiDataService: UiDataService = inject(UiDataService);
-  categoryList = this.uiDataService.categoryList;
+  destroyRef = inject(DestroyRef);
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
-  featuredProducts: Product[] | null = null;
-  latestProducts: Product[] | null = null;
-  destroyRef = inject(DestroyRef);
+  categoryList = this.uiDataService.categoryList;
+  featuredProducts_s = signal<Product[] | null>(null);
+  latestProducts_s = signal<Product[] | null>(null);
 
   ngOnInit(): void {
     this.productsFirebaseService
       .getProducts()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
+      
         const sortedByRate = res.sort((a, b) => {
           return b.rating - a.rating;
         });
-        this.featuredProducts = sortedByRate.slice(0, 4);
+        this.featuredProducts_s.set(sortedByRate.slice(0, 4));
 
         const sortedByDate = res.sort((a, b) => {
           const [dayA, monthA, yearA] = a.addedAt.split('.');
@@ -50,7 +51,7 @@ export class HomePageComponent implements OnInit {
 
           return dateB.getTime() - dateA.getTime();
         });
-        this.latestProducts = sortedByDate.slice(0, 8);
+        this.latestProducts_s.set(sortedByDate.slice(0, 8));
       });
   }
 }

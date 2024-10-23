@@ -16,6 +16,8 @@ import { StarsGeneratorComponent } from '../../shared/components/stars-generator
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LogPipe } from '../../shared/pipes/log.pipe';
 import { ProductItemInCart } from '../../core/interfaces/productItemInCart.interface';
+import { AuthService } from '../../core/services/auth.service';
+import { UserInterface } from '../../core/interfaces/user.interface';
 
 @Component({
   selector: 'app-product-description-page',
@@ -34,13 +36,17 @@ import { ProductItemInCart } from '../../core/interfaces/productItemInCart.inter
 export class ProductDescriptionPageComponen implements OnInit {
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
-  product: Product | undefined = undefined;
-  imgUrl: string = '';
-  id: string | null = '';
   destroyRef = inject(DestroyRef);
   route = inject(ActivatedRoute);
-  listMyFavorite_s = signal<Product[] | []>([]);
-  isFavorite_s = signal<boolean>(false);
+  authService = inject(AuthService);
+  product: Product | undefined = undefined;
+  imgUrl: string = '';
+  idOfProduct: string | null = '';
+  currentUser = inject(AuthService).currentUser_s();
+  
+  listUserFavorite_s = signal<Product[] | []>([]);
+  isUserFavorite_s = signal<boolean>(false);
+
   listMyCart_s = signal<ProductItemInCart[]>([]);
   isAddedToCart_s = signal<boolean>(false);
   isAlreadyInCart_s = signal<boolean>(false);
@@ -53,44 +59,46 @@ export class ProductDescriptionPageComponen implements OnInit {
   });
 
   ngOnInit(): void {
+    console.log('user👽👽👽👽👽', this.currentUser);
+
     this.productsFirebaseService
       .getProducts()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
-        this.id = this.route.snapshot.paramMap.get('id');
+        this.idOfProduct = this.route.snapshot.paramMap.get('id');
         this.product = res.find((product) => {
-          return product.id === this.id;
+          return product.id === this.idOfProduct;
         });
         this.imgUrl = this.product!.imgUrl;
         this.selectedQuantity_s.set(1);
       });
-
-    this.productsFirebaseService
-      .getMyFavorite()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((res) => {
-        this.id = this.route.snapshot.paramMap.get('id');
-        this.listMyFavorite_s.set(res);
-        this.isFavorite_s.set(res.some((element) => element.id === this.id));
-      });
+   
+    this.productsFirebaseService.getUserFavoriteList(this.currentUser!.userId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res) => {
+      this.idOfProduct = this.route.snapshot.paramMap.get('id');
+      this.listUserFavorite_s.set(res);
+      this.isUserFavorite_s.set(
+        res.some((element) => element.id === this.idOfProduct)
+      );
+    })
 
     this.productsFirebaseService
       .getItemsFromMyCart()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
         this.isAddedToCart_s.set(
-          res.some((element) => element.idFromMainServer === this.id)
+          res.some((element) => element.idFromMainServer === this.idOfProduct)
         );
         this.listMyCart_s.set(res);
       });
   }
 
-  toggleFavorit(product: Product | undefined, event: Event) {
-    event.stopPropagation();
-    if (this.isFavorite_s()) {
-      this.productsFirebaseService.removeFromMyFavorite(this.id!);
+
+  toggleUserFavorite(product: Product | undefined) {
+   
+    if (this.isUserFavorite_s()) {
+      this.productsFirebaseService.removeFromUserFavorite(this.currentUser!.userId, this.idOfProduct!);
     } else {
-      this.productsFirebaseService.addItemToMyFavorite(product!);
+      this.productsFirebaseService.addToUserFavorite(this.currentUser!.userId, product!);
     }
   }
 
@@ -106,7 +114,7 @@ export class ProductDescriptionPageComponen implements OnInit {
       if (
         this.listMyCart_s().some(
           (element) =>
-            element.idFromMainServer === this.id &&
+            element.idFromMainServer === this.idOfProduct &&
             element.color[0] === this.selectedColor_s() &&
             element.sizes[0] === this.selectedSize_s()
         )
@@ -128,7 +136,7 @@ export class ProductDescriptionPageComponen implements OnInit {
       if (
         this.listMyCart_s().some(
           (element) =>
-            element.idFromMainServer === this.id &&
+            element.idFromMainServer === this.idOfProduct &&
             element.color[0] === this.selectedColor_s() &&
             element.sizes[0] === this.selectedSize_s()
         )
@@ -170,5 +178,42 @@ export class ProductDescriptionPageComponen implements OnInit {
     if (this.selectedQuantity_s() < 5) {
       this.selectedQuantity_s.update((prev) => prev + 1);
     }
+  }
+
+  // zzz
+  userShowInLog() {
+    console.log('currentUser😎😎😎😎', this.authService.currentUser_s());
+  }
+
+  addToUserFavorite() {
+    console.log(
+      '%c💡 addToUserFavorite',
+      'font-size: 16px; color: red; font-weight: bold;'
+    );
+    this.productsFirebaseService.addToUserFavorite(
+      this.authService.currentUser_s()!.userId,
+      this.product!
+    );
+  }
+
+  getFavoriteList() {
+    this.productsFirebaseService
+      .getUserFavoriteList(this.authService.currentUser_s()!.userId)
+      .subscribe((res) => {
+        console.log(res);
+      });
+  }
+
+  removeFromUserFavorite() {
+    this.productsFirebaseService.removeFromUserFavorite(
+      this.authService.currentUser_s()!.userId,
+      this.product!.id
+    );
+  }
+
+  removeAllFromUserFavorite() {
+    this.productsFirebaseService
+      .removeAllFromUserFavorite(this.authService.currentUser_s()!.userId!)
+      .subscribe();
   }
 }

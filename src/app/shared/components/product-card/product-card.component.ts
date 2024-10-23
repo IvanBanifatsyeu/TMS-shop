@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   inject,
   Input,
@@ -13,6 +14,8 @@ import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 import { Router } from '@angular/router';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { UserDataService } from '../../../core/services/user-data.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-product-card',
@@ -24,22 +27,31 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class ProductCardComponent implements OnInit {
   @Input() product: Product | null = null;
-  productId: string | undefined = '';
   router = inject(Router);
+  authService = inject(AuthService);
   productsFirebaseService = inject(ProductFirebaseService);
-  isFavorite = signal<boolean>(false);
+  // del todo
+  // isFavorite = signal<boolean>(false);
+
+  userDataService = inject(UserDataService);
+
+  isFavorite_sc = computed(() => {
+    return this.userDataService
+      .listUserFavorite_s()!
+      .some((element) => element.id === this.product!.id);
+  });
   destroyRef = inject(DestroyRef);
 
   ngOnInit(): void {
-    this.productId = this.product?.id;
-    this.productsFirebaseService
-      .getMyFavorite()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((res) => {
-        this.isFavorite.set(
-          res.some((element) => element.id === this.productId)
-        );
-      });
+    // this.productId = this.product?.id;
+    // this.productsFirebaseService
+    //   .getMyFavorite()
+    //   .pipe(takeUntilDestroyed(this.destroyRef))
+    //   .subscribe((res) => {
+    //     this.isFavorite.set(
+    //       res.some((element) => element.id === this.productId)
+    //     );
+    //   });
   }
 
   goToProduct(productId: string | undefined) {
@@ -48,10 +60,17 @@ export class ProductCardComponent implements OnInit {
 
   toggleFavorit(product: Product | null, event: Event) {
     event.stopPropagation();
-    if (this.isFavorite()) {
-      this.productsFirebaseService.removeFromMyFavorite(this.productId!);
+
+    if (this.isFavorite_sc()) {
+      this.productsFirebaseService.removeFromUserFavorite(
+        this.authService.currentUser_s()!.userId,
+        product!.id
+      );
     } else {
-      this.productsFirebaseService.addItemToMyFavorite(product!);
+      this.productsFirebaseService.addToUserFavorite(
+        this.authService.currentUser_s()!.userId,
+        product!
+      );
     }
   }
 }

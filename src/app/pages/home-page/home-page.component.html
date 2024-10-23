@@ -25,7 +25,7 @@
         {{ "HOME_PAGE.FEATURED_PRODUCTS" | translate }}
       </h3>
       <div class="featured__wrapper-cards wrapper-ftr_cards">
-        @for( item of featuredProducts; track item.id) {
+        @for( item of featuredProducts_s(); track item.id) {
         <app-product-card [product]="item"></app-product-card>
         }
       </div>
@@ -36,7 +36,7 @@
         {{ "HOME_PAGE.LATEST_PRODUCTS" | translate }}
       </h3>
       <div class="featured__wrapper-cards wrapper-lts_cards">
-        @for( item of latestProducts; track item.id) {
+        @for( item of latestProducts_s(); track item.id) {
         <app-product-card [product]="item" class="product-card--short"></app-product-card>
         }
       </div>
