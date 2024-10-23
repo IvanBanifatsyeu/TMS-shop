@@ -24,12 +24,19 @@
       formControlName="email"
       placeholder="Email"
     />
-    <input
-      class="form__input"
-      type="password"
-      formControlName="password"
-      placeholder="Password"
-    />
+    <div class="form__input-wrapper input-wrapper">
+      <input
+        class="input-wrapper__input-password"
+        [type]="passwordFieldType_s()"
+        formControlName="password"
+        placeholder="Password"
+      />
+      <svg
+        class="input-wrapper__eye"
+        icon="close_eye"
+        (click)="togglePasswordVisibility($event)"
+      ></svg>
+    </div>
 
     <button class="form__button" type="submit">Sign Up</button>
   </form>

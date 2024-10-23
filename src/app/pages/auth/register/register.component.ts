@@ -11,11 +11,12 @@ import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { User } from 'firebase/auth';
+import { SvgIconComponent } from '../../../shared/components/svg-icon/svg-icon.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, SvgIconComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,6 +27,7 @@ export class RegisterComponent {
   authService = inject(AuthService);
   firebaseService = inject(ProductFirebaseService);
   userId_s = signal<string | null>(null);
+  passwordFieldType_s = signal<string>('password');
 
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
@@ -55,8 +57,6 @@ export class RegisterComponent {
             username: rawForm.username,
             userId: this.userId_s(),
           });
-
-
 
           this.router.navigate(['/']);
         },
@@ -94,5 +94,13 @@ export class RegisterComponent {
         this.userId_s.set(null);
       }
     });
+  }
+
+  togglePasswordVisibility(event: Event) {
+    event.stopPropagation();
+
+    this.passwordFieldType_s() === 'password'
+      ? this.passwordFieldType_s.set('text')
+      : this.passwordFieldType_s.set('password');
   }
 }

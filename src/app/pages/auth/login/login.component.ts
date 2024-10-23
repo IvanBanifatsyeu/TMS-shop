@@ -12,11 +12,13 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { UserDataService } from '../../../core/services/user-data.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SvgIconComponent } from '../../../shared/components/svg-icon/svg-icon.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SvgIconComponent, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,7 +29,7 @@ export class LoginComponent {
   http = inject(HttpClient);
   formBuilder = inject(FormBuilder);
   authService = inject(AuthService);
-
+  passwordFieldType_s = signal<string>('password');
   form = this.formBuilder.nonNullable.group({
     email: ['', Validators.required],
     password: ['', Validators.required],
@@ -73,5 +75,11 @@ export class LoginComponent {
           }
         },
       });
+  }
+
+  togglePasswordVisibility(event: Event) {
+    event.stopPropagation();
+    
+      this.passwordFieldType_s() === 'password' ? this.passwordFieldType_s.set('text') : this.passwordFieldType_s.set('password');
   }
 }
