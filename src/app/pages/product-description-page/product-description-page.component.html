@@ -9,7 +9,7 @@
         <p class="model-curColor__curColor">({{ product?.curColor }})</p>
       </div>
       <div class="info__status-bar status-bar">
-        @if(isUserFavorite_s()) {
+        @if(isUserFavorite_sc()) {
         <svg class="status-bar__favorit-icon favorit-icon" icon="fav"></svg>
         } @else {
         <div class="status-bar__favorit-icon-dummy favorit-icon-dummy"></div>
@@ -100,7 +100,7 @@
           (click)="toggleUserFavorite(product)"
         >
           {{
-            (isUserFavorite_s()
+            (isUserFavorite_sc()
               ? "PRODUCT_DESCRIPTION_PAGE.REMOVE_FROM_WISHLIST"
               : "PRODUCT_DESCRIPTION_PAGE.ADD_TO_WISHLIST"
             ) | translate

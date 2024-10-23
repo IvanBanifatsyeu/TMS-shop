@@ -17,7 +17,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LogPipe } from '../../shared/pipes/log.pipe';
 import { ProductItemInCart } from '../../core/interfaces/productItemInCart.interface';
 import { AuthService } from '../../core/services/auth.service';
-import { UserInterface } from '../../core/interfaces/user.interface';
+import { UserDataService } from '../../core/services/user-data.service';
 
 @Component({
   selector: 'app-product-description-page',
@@ -43,9 +43,16 @@ export class ProductDescriptionPageComponen implements OnInit {
   imgUrl: string = '';
   idOfProduct: string | null = '';
   currentUser = inject(AuthService).currentUser_s();
-  
-  listUserFavorite_s = signal<Product[] | []>([]);
-  isUserFavorite_s = signal<boolean>(false);
+  userDataService = inject(UserDataService);
+  listUserFavorite_s = this.userDataService.listUserFavorite_s;
+  isUserFavorite_sc = computed(() => {
+    if(this.listUserFavorite_s() === null) {
+      return false
+    }
+    return this.listUserFavorite_s()!.some((element) => {
+      return element.id === this.idOfProduct;
+    })
+  })
 
   listMyCart_s = signal<ProductItemInCart[]>([]);
   isAddedToCart_s = signal<boolean>(false);
@@ -54,13 +61,13 @@ export class ProductDescriptionPageComponen implements OnInit {
   selectedSize_s = signal<string>('');
   selectedQuantity_s = signal<number>(0);
   showPopupAddToCart_s = signal<boolean>(false);
+
   orderSum_sc = computed(() => {
     return this.selectedQuantity_s() * this.product!?.price;
   });
 
   ngOnInit(): void {
-    console.log('user👽👽👽👽👽', this.currentUser);
-
+    this.idOfProduct = this.route.snapshot.paramMap.get('id');
     this.productsFirebaseService
       .getProducts()
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -72,14 +79,6 @@ export class ProductDescriptionPageComponen implements OnInit {
         this.imgUrl = this.product!.imgUrl;
         this.selectedQuantity_s.set(1);
       });
-   
-    this.productsFirebaseService.getUserFavoriteList(this.currentUser!.userId).pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res) => {
-      this.idOfProduct = this.route.snapshot.paramMap.get('id');
-      this.listUserFavorite_s.set(res);
-      this.isUserFavorite_s.set(
-        res.some((element) => element.id === this.idOfProduct)
-      );
-    })
 
     this.productsFirebaseService
       .getItemsFromMyCart()
@@ -92,13 +91,17 @@ export class ProductDescriptionPageComponen implements OnInit {
       });
   }
 
-
   toggleUserFavorite(product: Product | undefined) {
-   
-    if (this.isUserFavorite_s()) {
-      this.productsFirebaseService.removeFromUserFavorite(this.currentUser!.userId, this.idOfProduct!);
+    if (this.isUserFavorite_sc()) {
+      this.productsFirebaseService.removeFromUserFavorite(
+        this.currentUser!.userId,
+        this.idOfProduct!
+      );
     } else {
-      this.productsFirebaseService.addToUserFavorite(this.currentUser!.userId, product!);
+      this.productsFirebaseService.addToUserFavorite(
+        this.currentUser!.userId,
+        product!
+      );
     }
   }
 
@@ -179,6 +182,4 @@ export class ProductDescriptionPageComponen implements OnInit {
       this.selectedQuantity_s.update((prev) => prev + 1);
     }
   }
-
-  
 }
