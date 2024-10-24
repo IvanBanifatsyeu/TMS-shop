@@ -11,8 +11,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { SvgIconComponent } from '../../../shared/components/svg-icon/svg-icon.component';
-
-
+import { finalize, take } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -41,20 +40,21 @@ export class RegisterComponent {
 
   onSubmit() {
     const rawForm = this.form.getRawValue();
-    
+
     // 1. Client-Side Validation
     if (!rawForm.email || !rawForm.username || !rawForm.password) {
       // Display an error message to the user
       this.errorMessage.set('Please fill in all required fields.');
       return; // Stop the form submission
     }
-    
+
     // 2. Proceed with Firebase Authentication
     this.authService
       .register(rawForm.email, rawForm.username, rawForm.password)
+      .pipe(take(1))
       .subscribe({
         next: () => {
-           this.router.navigate(['/']);
+          this.router.navigate(['/']);
         },
         error: (err) => {
           switch (err.code) {

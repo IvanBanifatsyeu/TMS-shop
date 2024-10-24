@@ -53,7 +53,6 @@ export class ProductDescriptionPageComponen implements OnInit {
       return element.id === this.idOfProduct;
     });
   });
-
   listUserCart_s = this.userDataService.listUserCart_s;
   isAlreadyInCart_s = signal<boolean>(false);
   selectedColor_s = signal<string>('');
@@ -77,13 +76,6 @@ export class ProductDescriptionPageComponen implements OnInit {
         });
         this.imgUrl = this.product!.imgUrl;
         this.selectedQuantity_s.set(1);
-      });
-
-    this.productsFirebaseService
-      .getItemsFromUserCart(this.currentUser!.userId)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((res) => {
-        console.log('user cart ✨', res);
       });
   }
 

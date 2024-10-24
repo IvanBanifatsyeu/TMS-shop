@@ -74,7 +74,7 @@ export class HeaderComponent implements OnInit {
   listCart_s = signal<ProductItemInCart[]>([]);
 
   ngOnInit(): void {
-    this.subscription = this.router.events
+    this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
         takeUntilDestroyed(this.destroyRef)
@@ -83,8 +83,6 @@ export class HeaderComponent implements OnInit {
         this.currentRoute.set(event.url); // Обновляем сигнал при изменении маршрута
         this.handleRouteChange(event.url); // Обрабатываем изменение маршрута
       });
-
-    // zzz
 
     this.authService
       .getCurrentUser$()

@@ -7,6 +7,7 @@ import {
   updateProfile,
   User,
   user,
+  UserCredential,
 } from '@angular/fire/auth';
 import { catchError, from, Observable, of, switchMap } from 'rxjs';
 import { UserInterface } from '../interfaces/user.interface';
@@ -31,32 +32,34 @@ export class AuthService {
       this.firebaseAuth,
       email,
       password
-    ).then((response) => {
-      // Обновляем профиль с указанием displayName
-      return updateProfile(response.user, { displayName: username }).then(
-        () => {
-          // После обновления профиля вызываем reload(), чтобы убедиться, что обновления сохранены
-          return response.user.reload();
-        }
-      ).catch((error) => {
-        console.error('Error updating profile:', error);
-        throw error;
+    )
+      .then((response) => {
+        // Обновляем профиль с указанием displayName
+        return updateProfile(response.user, { displayName: username })
+          .then(() => {
+            // После обновления профиля вызываем reload(), чтобы убедиться, что обновления сохранены
+            return response.user.reload();
+          })
+          .catch((error) => {
+            console.error('Error updating profile:', error);
+            throw error;
+          });
       })
-    }).catch((error) => {
-      console.error('Error creating user:', error);
-      throw error;
-    });
+      .catch((error) => {
+        console.error('Error creating user:', error);
+        throw error;
+      });
 
     // Возвращаем Observable, который завершится, когда все асинхронные операции завершены
     return from(promise);
   }
 
-  login(email: string, password: string): Observable<void> {
+  login(email: string, password: string): Observable<UserCredential> {
     const promise = signInWithEmailAndPassword(
       this.firebaseAuth,
       email,
       password
-    ).then(() => {});
+    )
     return from(promise);
   }
 

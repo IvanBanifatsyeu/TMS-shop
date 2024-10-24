@@ -13,8 +13,4 @@ export class UserDataService {
   });
   listUserFavorite_s = signal<Product[] | null>(null);
   listUserCart_s = signal<ProductItemInCart[] | null>(null);
-
-  
-
-  
 }

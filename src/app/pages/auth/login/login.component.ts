@@ -9,8 +9,6 @@ import {
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
-import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
-import { UserDataService } from '../../../core/services/user-data.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SvgIconComponent } from '../../../shared/components/svg-icon/svg-icon.component';
 import { CommonModule } from '@angular/common';
