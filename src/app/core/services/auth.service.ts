@@ -21,7 +21,7 @@ export class AuthService {
   getCurrentUser$() {
     return user(this.firebaseAuth);
   }
-  
+
   register(
     email: string,
     username: string,
@@ -31,9 +31,23 @@ export class AuthService {
       this.firebaseAuth,
       email,
       password
-    ).then((response) =>
-      updateProfile(response.user, { displayName: username })
-    );
+    ).then((response) => {
+      // Обновляем профиль с указанием displayName
+      return updateProfile(response.user, { displayName: username }).then(
+        () => {
+          // После обновления профиля вызываем reload(), чтобы убедиться, что обновления сохранены
+          return response.user.reload();
+        }
+      ).catch((error) => {
+        console.error('Error updating profile:', error);
+        throw error;
+      })
+    }).catch((error) => {
+      console.error('Error creating user:', error);
+      throw error;
+    });
+
+    // Возвращаем Observable, который завершится, когда все асинхронные операции завершены
     return from(promise);
   }
 

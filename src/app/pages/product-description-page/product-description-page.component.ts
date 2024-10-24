@@ -46,16 +46,15 @@ export class ProductDescriptionPageComponen implements OnInit {
   userDataService = inject(UserDataService);
   listUserFavorite_s = this.userDataService.listUserFavorite_s;
   isUserFavorite_sc = computed(() => {
-    if(this.listUserFavorite_s() === null) {
-      return false
+    if (this.listUserFavorite_s() === null) {
+      return false;
     }
     return this.listUserFavorite_s()!.some((element) => {
       return element.id === this.idOfProduct;
-    })
-  })
+    });
+  });
 
-  listMyCart_s = signal<ProductItemInCart[]>([]);
-  isAddedToCart_s = signal<boolean>(false);
+  listUserCart_s = this.userDataService.listUserCart_s;
   isAlreadyInCart_s = signal<boolean>(false);
   selectedColor_s = signal<string>('');
   selectedSize_s = signal<string>('');
@@ -81,13 +80,10 @@ export class ProductDescriptionPageComponen implements OnInit {
       });
 
     this.productsFirebaseService
-      .getItemsFromMyCart()
+      .getItemsFromUserCart(this.currentUser!.userId)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
-        this.isAddedToCart_s.set(
-          res.some((element) => element.idFromMainServer === this.idOfProduct)
-        );
-        this.listMyCart_s.set(res);
+        console.log('user cart ✨', res);
       });
   }
 
@@ -115,7 +111,7 @@ export class ProductDescriptionPageComponen implements OnInit {
       this.selectedColor_s.set(color);
 
       if (
-        this.listMyCart_s().some(
+        this.listUserCart_s()!.some(
           (element) =>
             element.idFromMainServer === this.idOfProduct &&
             element.color[0] === this.selectedColor_s() &&
@@ -137,7 +133,7 @@ export class ProductDescriptionPageComponen implements OnInit {
       this.selectedSize_s.set(size);
 
       if (
-        this.listMyCart_s().some(
+        this.listUserCart_s()!.some(
           (element) =>
             element.idFromMainServer === this.idOfProduct &&
             element.color[0] === this.selectedColor_s() &&
@@ -147,24 +143,6 @@ export class ProductDescriptionPageComponen implements OnInit {
         this.isAlreadyInCart_s.set(true);
       }
     }
-  }
-
-  addToCart(product: Product, event: Event) {
-    event.stopPropagation();
-
-    const productForCart: ProductItemInCart = {
-      ...product,
-      color: [this.selectedColor_s()],
-      sizes: [this.selectedSize_s()],
-      quantity: this.selectedQuantity_s(),
-      idFromMainServer: product.id,
-    };
-
-    this.productsFirebaseService.addItemToMyCart(productForCart);
-    this.selectedColor_s.set('');
-    this.selectedSize_s.set('');
-    this.showPopupAddToCart_s.set(true);
-    this.selectedQuantity_s.set(1);
   }
 
   handleAnimationEnd() {
@@ -181,5 +159,24 @@ export class ProductDescriptionPageComponen implements OnInit {
     if (this.selectedQuantity_s() < 5) {
       this.selectedQuantity_s.update((prev) => prev + 1);
     }
+  }
+
+  addToUserCart(product: Product) {
+    const productForCart: ProductItemInCart = {
+      ...product,
+      color: [this.selectedColor_s()],
+      sizes: [this.selectedSize_s()],
+      quantity: this.selectedQuantity_s(),
+      idFromMainServer: product.id,
+    };
+
+    this.productsFirebaseService.addItemToUserCart(
+      this.currentUser!.userId,
+      productForCart
+    );
+    this.selectedColor_s.set('');
+    this.selectedSize_s.set('');
+    this.showPopupAddToCart_s.set(true);
+    this.selectedQuantity_s.set(1);
   }
 }

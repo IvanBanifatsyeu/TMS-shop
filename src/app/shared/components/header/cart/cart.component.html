@@ -7,12 +7,12 @@
   ></svg>
   <button
     class="shopping-cart__remove-all-btn remove-all-btn"
-    [class.showSwitcher]="this.listCart_s().length > 1"
-    (click)="removeAllFromCart($event)"
+    [class.showSwitcher]="this.listCart_s()!.length > 1"
+    (click)="removeAllFromCart()"
   >
     {{ "CART.REMOVE_ALL" | translate }}
   </button>
-  @if(!this.listCart_s().length) {
+  @if(!this.listCart_s()!.length) {
   <p class="shopping-cart__empty-cart">{{ "CART.YUOUR_SHOPPING_CART_IS_EMPTY" | translate}}</p>
   }
   <div class="shopping-cart__card-list card-list">
@@ -26,7 +26,7 @@
         <svg
           class="aside__remove-item-btn remove-item-btn"
           icon="cart-close"
-          (click)="removeFromCart(item, $event)"
+          (click)="removeFromCart(item)"
         ></svg>
         <div class="aside__quantity-control quantity-control">
           @if( !this.arrShowQuantityPanel_s().includes(item.id.toString()) ) {
@@ -83,7 +83,7 @@
     </div>
     }
   </div>
-  @if (this.listCart_s().length > 1){
+  @if (this.listCart_s()!.length > 1){
   <div class="shopping-cart__cart-summary cart-summary">
     <div class="cart-summary__content-summary content-summary">
       <div class="content-summary__summary-text summary-text">

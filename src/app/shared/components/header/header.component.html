@@ -35,9 +35,9 @@
     (click)="showCartPopup()"
   >
     <svg icon="cart" class="cart-icon-wrapper__img"></svg>
-    @if(listCart_s().length){
+    @if(userDataService.listUserCart_s()?.length) {
     <span class="cart-icon-wrapper__counter counter">{{
-      listCart_s().length
+      userDataService.listUserCart_s()?.length
     }}</span>
     } @if(isPopupCartVisible_s()) {
     <div class="cart-icon-wrapper__overlay">

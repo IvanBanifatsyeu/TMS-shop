@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,9 +10,9 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
-import { User } from 'firebase/auth';
 import { SvgIconComponent } from '../../../shared/components/svg-icon/svg-icon.component';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+
 
 @Component({
   selector: 'app-register',
@@ -42,24 +41,22 @@ export class RegisterComponent {
 
   onSubmit() {
     const rawForm = this.form.getRawValue();
-
+    
     // 1. Client-Side Validation
     if (!rawForm.email || !rawForm.username || !rawForm.password) {
       // Display an error message to the user
       this.errorMessage.set('Please fill in all required fields.');
       return; // Stop the form submission
     }
-
+    
     // 2. Proceed with Firebase Authentication
     this.authService
       .register(rawForm.email, rawForm.username, rawForm.password)
-      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: () => {
-          this.router.navigate(['/']);
+           this.router.navigate(['/']);
         },
         error: (err) => {
-          // Handle specific error codes
           switch (err.code) {
             case 'auth/invalid-email':
               this.errorMessage.set('Please enter a valid email address.');

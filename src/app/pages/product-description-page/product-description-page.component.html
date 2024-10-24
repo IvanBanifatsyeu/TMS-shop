@@ -13,9 +13,7 @@
         <svg class="status-bar__favorit-icon favorit-icon" icon="fav"></svg>
         } @else {
         <div class="status-bar__favorit-icon-dummy favorit-icon-dummy"></div>
-        } @if(isAddedToCart_s()) {
-        <svg class="status-bar__inCart-icon inCart-icon" icon="in-cart"></svg>
-        }
+        } 
       </div>
       <div class="info__rating-wrapper rating-wrapper">
         <p class="rating-wrapper__rating">{{ product?.rating }}</p>
@@ -113,7 +111,7 @@
             selectedSize_s() === '' ||
             isAlreadyInCart_s()
           "
-          (click)="product && addToCart(product, $event)"
+          (click)="product && addToUserCart(product)"
         >
           {{ "PRODUCT_DESCRIPTION_PAGE.ADD_TO_CART" | translate }}
         </button>
@@ -135,4 +133,9 @@
     </div>
   </section>
 </main>
+
+<!-- dddel -->
+ <button  (click)="addToUserCart(product!)">add to user cart</button>
+ <br>
+ <button>get userCartList</button>
 

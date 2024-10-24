@@ -13,7 +13,16 @@ import { LanguageSwitchComponent } from './language-switch/language-switch.compo
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { filter, map, of, Subscription, switchMap, tap } from 'rxjs';
+import {
+  combineLatest,
+  filter,
+  forkJoin,
+  map,
+  of,
+  Subscription,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { Product } from '../../../core/interfaces/product.interface';
@@ -75,24 +84,23 @@ export class HeaderComponent implements OnInit {
         this.handleRouteChange(event.url); // Обрабатываем изменение маршрута
       });
 
+    // zzz
 
     this.authService
       .getCurrentUser$()
       .pipe(
         switchMap((user: User | null) => {
           if (user) {
-            // Возвращаем как пользователя, так и список избранного
-            return this.productsFirebaseService
-              .getUserFavoriteList(user.uid)
-              .pipe(
-                map((favoriteProducts: Product[]) => ({
-                  user,
-                  favoriteProducts,
-                })) // Оборачиваем результат в объект
-              );
+            return combineLatest([
+              this.productsFirebaseService.getUserFavoriteList(user.uid),
+              this.productsFirebaseService.getItemsFromUserCart(user.uid),
+            ]).pipe(
+              map(([favoriteProducts, cartProducts]) => {
+                return { user, favoriteProducts, cartProducts };
+              })
+            );
           } else {
-            // this.authService.currentUser_s.set(null);
-            return of({ user: null, favoriteProducts: [] }); // Если нет пользователя, возвращаем пустые данные
+            return of({ user: null, favoriteProducts: [], cartProducts: [] });
           }
         }),
         takeUntilDestroyed(this.destroyRef)
@@ -101,11 +109,14 @@ export class HeaderComponent implements OnInit {
         ({
           user,
           favoriteProducts,
+          cartProducts,
         }: {
           user: User | null;
           favoriteProducts: Product[];
+          cartProducts: ProductItemInCart[];
         }) => {
           this.userDataService.listUserFavorite_s.set(favoriteProducts);
+          this.userDataService.listUserCart_s.set(cartProducts);
           if (user) {
             this.authService.currentUser_s.set({
               email: user.email!,
@@ -117,16 +128,9 @@ export class HeaderComponent implements OnInit {
           }
         }
       );
-
-    this.productsFirebaseService
-      .getItemsFromMyCart()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((res) => {
-        this.listCart_s.set(res);
-      });
   }
 
-   handleRouteChange(url: string): void {
+  handleRouteChange(url: string): void {
     // добавляем/удаляем класс в зависимости от текущего роута
     if (url === '/') {
       this.isAbsolute = true;
