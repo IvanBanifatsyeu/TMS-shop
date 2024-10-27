@@ -146,7 +146,11 @@ export class HeaderComponent implements OnInit {
   }
 
   showCartPopup() {
-    this.isPopupCartVisible_s.set(true);
+    if (!this.authService.currentUser_s()) {
+      this.router.navigate(['/auth']);
+    } else {
+      this.isPopupCartVisible_s.set(true);
+    }
   }
 
   hideCartPopup() {
