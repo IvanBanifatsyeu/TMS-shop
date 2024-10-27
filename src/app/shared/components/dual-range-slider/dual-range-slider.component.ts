@@ -29,24 +29,4 @@ export class DualRangeSliderComponent {
       return `${value}`;
     },
   };
-
-  onInputMinChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-
-    if (isNaN(Number(target.value))) {
-      target.value = '0';
-    }
-    this.value.set(Number(target.value));
-  }
-
-  onInputMaxChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-
-    if (isNaN(Number(target.value))) {
-      target.value = '200';
-    }
-    this.highValue.set(Number(target.value));
-  }
-
-  
 }

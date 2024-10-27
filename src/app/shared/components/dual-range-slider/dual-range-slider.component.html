@@ -12,10 +12,8 @@
       <input
         class="price-box"
         pattern="[0-9]*"
-        inputmode="numeric"
         type="text"
-        value="{{ value() > 1000 || value() < 0 ? 0 : value() }}"
-        (input)="onInputMinChange($event)"
+        [(ngModel)]="value"
       />
     </div>
 
@@ -23,10 +21,8 @@
       <input
         class="price-box"
         pattern="[0-9]*"
-        inputmode="numeric"
         type="text"
-        value="{{ highValue() > 1000 || highValue() < 0 ? 0 : highValue() }}"
-        (input)="onInputMaxChange($event)"
+        [(ngModel)]="highValue"
       />
     </div>
   </div>
