@@ -46,16 +46,20 @@ export class ProductCardComponent {
   toggleFavorit(product: Product | null, event: Event) {
     event.stopPropagation();
 
-    if (this.isFavorite_sc()) {
-      this.productsFirebaseService.removeFromUserFavorite(
-        this.authService.currentUser_s()!.userId,
-        product!.id
-      );
+    if (!this.authService.currentUser_s()) {
+      this.router.navigate(['/auth']);
     } else {
-      this.productsFirebaseService.addToUserFavorite(
-        this.authService.currentUser_s()!.userId,
-        product!
-      );
+      if (this.isFavorite_sc()) {
+        this.productsFirebaseService.removeFromUserFavorite(
+          this.authService.currentUser_s()!.userId,
+          product!.id
+        );
+      } else {
+        this.productsFirebaseService.addToUserFavorite(
+          this.authService.currentUser_s()!.userId,
+          product!
+        );
+      }
     }
   }
 }

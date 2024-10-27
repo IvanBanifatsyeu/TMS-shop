@@ -9,7 +9,7 @@ import {
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductFirebaseService } from '../../core/services/product-firebase.service';
 import { Product } from '../../core/interfaces/product.interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
 import { StarsGeneratorComponent } from '../../shared/components/stars-generator/stars-generator.component';
@@ -38,6 +38,7 @@ export class ProductDescriptionPageComponen implements OnInit {
   productsFirebaseService = inject(ProductFirebaseService);
   destroyRef = inject(DestroyRef);
   route = inject(ActivatedRoute);
+  router = inject(Router);
   authService = inject(AuthService);
   product: Product | undefined = undefined;
   imgUrl: string = '';
@@ -80,16 +81,20 @@ export class ProductDescriptionPageComponen implements OnInit {
   }
 
   toggleUserFavorite(product: Product | undefined) {
-    if (this.isUserFavorite_sc()) {
-      this.productsFirebaseService.removeFromUserFavorite(
-        this.currentUser!.userId,
-        this.idOfProduct!
-      );
+    if (!this.currentUser) {
+      this.router.navigate(['/auth']);
     } else {
-      this.productsFirebaseService.addToUserFavorite(
-        this.currentUser!.userId,
-        product!
-      );
+      if (this.isUserFavorite_sc()) {
+        this.productsFirebaseService.removeFromUserFavorite(
+          this.currentUser!.userId,
+          this.idOfProduct!
+        );
+      } else {
+        this.productsFirebaseService.addToUserFavorite(
+          this.currentUser!.userId,
+          product!
+        );
+      }
     }
   }
 
@@ -154,21 +159,25 @@ export class ProductDescriptionPageComponen implements OnInit {
   }
 
   addToUserCart(product: Product) {
-    const productForCart: ProductItemInCart = {
-      ...product,
-      color: [this.selectedColor_s()],
-      sizes: [this.selectedSize_s()],
-      quantity: this.selectedQuantity_s(),
-      idFromMainServer: product.id,
-    };
+    if (!this.currentUser) {
+      this.router.navigate(['/auth']);
+    } else {
+      const productForCart: ProductItemInCart = {
+        ...product,
+        color: [this.selectedColor_s()],
+        sizes: [this.selectedSize_s()],
+        quantity: this.selectedQuantity_s(),
+        idFromMainServer: product.id,
+      };
 
-    this.productsFirebaseService.addItemToUserCart(
-      this.currentUser!.userId,
-      productForCart
-    );
-    this.selectedColor_s.set('');
-    this.selectedSize_s.set('');
-    this.showPopupAddToCart_s.set(true);
-    this.selectedQuantity_s.set(1);
+      this.productsFirebaseService.addItemToUserCart(
+        this.currentUser!.userId,
+        productForCart
+      );
+      this.selectedColor_s.set('');
+      this.selectedSize_s.set('');
+      this.showPopupAddToCart_s.set(true);
+      this.selectedQuantity_s.set(1);
+    }
   }
 }
