@@ -55,14 +55,15 @@
       <div class="sidebar__filter-color-wr filter-color-wr">
         <p class="filter-color-wr__title">{{ "FILTER.COLOR" | translate }}</p>
         <div class="filter-color-wr__color-list color-list">
-          @for (color of colorList; track color.value) {
+          @for (color of colorSelectedList_s(); track color.title) {
           <div class="color-list__color-conteiner color-conteiner">
             <app-round-checkbox
-              [data]="color"
-              [(selectedArr)]="colorSelected_s"
+              [title]="color.title"
+              [selected]="color.selected"
+              (click)="toggleRoundCheckbox(color, 'color')"
             ></app-round-checkbox>
             <p class="color-conteiner__total-items total-items">
-              {{ calculateTotalItemsByColor(color.value) || "" }}
+              {{ calculateTotalItemsByColor(color.title) || "" }}
             </p>
           </div>
           }
@@ -72,14 +73,16 @@
       <div class="sidebar__filter-sizer-wr filter-size-wr">
         <p class="filter-size-wr__title">{{ "FILTER.SIZE" | translate }}</p>
         <div class="filter-size-wr__size-list size-list">
-          @for (size of sizeList; track size.value) {
+          @for (size of sizeSelectedList_s(); track size.title) {
           <app-round-checkbox
-            [data]="size"
-            [(selectedArr)]="sizeSelected_s"
+            [title]="size.title"
+            [selected]="size.selected"
+            (click)="toggleRoundCheckbox(size, 'size')"
           ></app-round-checkbox>
           }
         </div>
       </div>
+
       <div class="sidebar__filter-price-wr filter-price-wr">
         <p class="filter-size-wr__title">
           {{ "FILTER.FILTER_BY_PRICE" | translate }}
@@ -125,7 +128,8 @@
         ></app-product-card>
         }
       </div>
-      <app-pagination class="products-container__pagination"
+      <app-pagination
+        class="products-container__pagination"
         [totalItems]="afterAllFiltersData_sc().length"
         [itemsPerPage]="itemsPerPage_sc()"
         [(currentPage)]="currentPage_s"

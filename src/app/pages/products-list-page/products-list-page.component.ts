@@ -21,7 +21,7 @@ import {
 } from '../../core/constants/ui-constants';
 import { LogPipe } from '../../shared/pipes/log.pipe';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { combineLatest, debounceTime, map, startWith } from 'rxjs';
 import { noCyrillicValidator } from '../../core/validators/noCyrillicValidator';
 import { UiDataService } from '../../core/services/uiData.service';
@@ -42,6 +42,7 @@ import { DualRangeSliderComponent } from '../../shared/components/dual-range-sli
     ReactiveFormsModule,
     RoundCheckboxComponent,
     DualRangeSliderComponent,
+    FormsModule,
   ],
   templateUrl: './products-list-page.component.html',
   styleUrl: './products-list-page.component.scss',
@@ -49,9 +50,15 @@ import { DualRangeSliderComponent } from '../../shared/components/dual-range-sli
 })
 export class ProductsListPageComponent implements OnInit {
   uiDataService = inject(UiDataService);
-  colorList = this.uiDataService.colorList;
   categoryList = this.uiDataService.categoryList;
-  sizeList = this.uiDataService.sizeList;
+  colorList = this.uiDataService.colorList.map((color) => ({
+    ...color,
+    selected: false,
+  }));
+  sizeList = this.uiDataService.sizeList.map((size) => ({
+    ...size,
+    selected: false,
+  }));
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   afterSearchData_s = signal<Product[]>([]);
@@ -66,8 +73,12 @@ export class ProductsListPageComponent implements OnInit {
   search = new FormControl('', [noCyrillicValidator()]);
   route = inject(ActivatedRoute);
   categorySelected_s = signal<string[]>([]);
-  colorSelected_s = signal<string[]>([]);
-  sizeSelected_s = signal<string[]>([]);
+  colorSelectedList_s = signal<{ selected: boolean; title: string }[]>(
+    this.colorList
+  );
+  sizeSelectedList_s = signal<{ selected: boolean; title: string }[]>(
+    this.sizeList
+  );
   priceMinSelected_s = signal<number>(0);
   priceMaxSelected_s = signal<number>(150);
   isClicked = signal<boolean>(false);
@@ -129,8 +140,8 @@ export class ProductsListPageComponent implements OnInit {
 
     if (
       this.categorySelected_s().length > 0 ||
-      this.colorSelected_s().length > 0 ||
-      this.sizeSelected_s().length > 0
+      this.colorSelectedList_s().some((color) => color.selected) ||
+      this.sizeSelectedList_s().some((size) => size.selected)
     ) {
       dataAfterAllFilters = this.afterSearchData_s()
         .filter((item: any) =>
@@ -140,16 +151,32 @@ export class ProductsListPageComponent implements OnInit {
               )
             : true
         )
-        .filter((item: any) =>
-          this.colorSelected_s().length > 0
-            ? this.colorSelected_s().some((color) => item.color.includes(color))
-            : true
-        )
-        .filter((item: any) =>
-          this.sizeSelected_s().length > 0
-            ? this.sizeSelected_s().some((size) => item.sizes.includes(size))
-            : true
-        );
+        .filter((item: any) => {
+          if (this.colorSelectedList_s().some((color) => color.selected)) {
+            const arrayOfSelectedColor = this.colorSelectedList_s()
+              .filter((color) => color.selected)
+              .map((color) => color.title);
+
+            return arrayOfSelectedColor.some((color) =>
+              item.color.includes(color)
+            );
+          } else {
+            return true;
+          }
+        })
+        .filter((item: any) => {
+          if (this.sizeSelectedList_s().some((size) => size.selected)) {
+            const arrayOfSelectedSize = this.sizeSelectedList_s()
+              .filter((size) => size.selected)
+              .map((size) => size.title);
+
+            return arrayOfSelectedSize.some((size) =>
+              item.sizes.includes(size)
+            );
+          } else {
+            return true;
+          }
+        });
     }
 
     if (!this.isClicked()) {
@@ -238,9 +265,9 @@ export class ProductsListPageComponent implements OnInit {
     const isChecked = (event.target as HTMLInputElement).checked;
 
     if (isChecked) {
-      this.colorSelected_s.update((prev) => [...prev, color.value]);
+      this.colorSelectedList_s.update((prev) => [...prev, color.value]);
     } else {
-      this.colorSelected_s.update((prev) =>
+      this.colorSelectedList_s.update((prev) =>
         prev.filter((item) => item !== color.value)
       );
     }
@@ -254,5 +281,32 @@ export class ProductsListPageComponent implements OnInit {
 
   clickFilterByPrice() {
     this.isClicked.set(true);
+  }
+
+  toggleRoundCheckbox(
+    value: { title: string; selected: boolean },
+    type?: string
+  ) {
+    const isChecked = !value.selected;
+
+    if (type === 'size') {
+      const sizeSelectedList = this.sizeSelectedList_s().map((item) => {
+        if (item.title === value.title) {
+          return { ...item, selected: isChecked };
+        } else {
+          return item;
+        }
+      });
+      this.sizeSelectedList_s.set(sizeSelectedList);
+    } else if (type === 'color') {
+      const colorSelectedList = this.colorSelectedList_s().map((item) => {
+        if (item.title === value.title) {
+          return { ...item, selected: isChecked };
+        } else {
+          return item;
+        }
+      });
+      this.colorSelectedList_s.set(colorSelectedList);
+    }
   }
 }

@@ -34,22 +34,21 @@ export class UiDataService {
     },
   ];
 
-  colorList: { title: string; value: string; }[] = [
-   {title: 'FILTER.RED', value: "red"},
-   {title: 'FILTER.WHITE', value: "white"},
-   {title: 'FILTER.BLUE', value: "blue"},
-   {title: 'FILTER.GREY', value: "grey"},
-   {title: 'FILTER.YELLOW', value: "yellow"},
-   {title: 'FILTER.BLACK', value: "black"},
-   {title: 'FILTER.GREEN', value: "green"},
-   {title: 'FILTER.BROWN', value: "brown"},
+  colorList: { title: string}[] = [
+    { title: 'red' },
+    { title: 'white' },
+    { title: 'blue' },
+    { title: 'grey' },
+    { title: 'yellow'},
+    { title: 'black' },
+    { title: 'green' },
+    { title: 'brown' },
   ];
 
-  sizeList: { title: string; value: string; }[] = [
-    {title: 'FILTER.EXTRA_LARGE', value: "XL"},
-    {title: 'FILTER.LARGE', value: "L"},
-    {title: 'FILTER.MEDIUM', value: "M"},
-    {title: 'FILTER.SMALL', value: "S"},
-   ];
-
+  sizeList: { title: string }[] = [
+    { title: 'XL' },
+    { title: 'L' },
+    { title: 'M' },
+    { title: 'S' },
+  ];
 }

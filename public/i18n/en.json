@@ -62,10 +62,10 @@
     "BROWN": "Brown",
     "GREEN": "Green",
     "SIZE": "Size",
-    "EXTRA_LARGE": "Extra Large",
-    "LARGE": "Large",
-    "MEDIUM": "Medium",
-    "SMALL": "Small",
+    "XL": "Extra Large",
+    "L": "Large",
+    "M": "Medium",
+    "S": "Small",
     "FILTER_BY_PRICE": "Filter by price"
     
   },
