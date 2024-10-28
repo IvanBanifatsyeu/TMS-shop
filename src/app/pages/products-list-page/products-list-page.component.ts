@@ -7,6 +7,7 @@ import {
   OnInit,
   signal,
   effect,
+  OnChanges,
 } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
@@ -28,6 +29,7 @@ import { UiDataService } from '../../core/services/uiData.service';
 import { ActivatedRoute } from '@angular/router';
 import { RoundCheckboxComponent } from '../../shared/components/round-checkbox/round-checkbox.component';
 import { DualRangeSliderComponent } from '../../shared/components/dual-range-slider/dual-range-slider.component';
+import { MultiselectComponent } from '../../shared/components/multiselect/multiselect.component';
 
 @Component({
   selector: 'app-products-list-page',
@@ -38,11 +40,11 @@ import { DualRangeSliderComponent } from '../../shared/components/dual-range-sli
     CommonModule,
     ProductCardComponent,
     PaginationComponent,
-    LogPipe,
     ReactiveFormsModule,
     RoundCheckboxComponent,
     DualRangeSliderComponent,
     FormsModule,
+    MultiselectComponent,
   ],
   templateUrl: './products-list-page.component.html',
   styleUrl: './products-list-page.component.scss',
@@ -76,12 +78,12 @@ export class ProductsListPageComponent implements OnInit {
   colorSelectedList_s = signal<{ selected: boolean; title: string }[]>(
     this.colorList
   );
-  sizeSelectedList_s = signal<{ selected: boolean; title: string }[]>(
-    this.sizeList
-  );
+  sizeSelectedList_s = signal<string[]>([]);
   priceMinSelected_s = signal<number>(0);
   priceMaxSelected_s = signal<number>(150);
   isClicked = signal<boolean>(false);
+
+  arrayOfSelectedSizes: string[] = [];
 
   ngOnInit(): void {
     this.route.queryParams
@@ -141,7 +143,7 @@ export class ProductsListPageComponent implements OnInit {
     if (
       this.categorySelected_s().length > 0 ||
       this.colorSelectedList_s().some((color) => color.selected) ||
-      this.sizeSelectedList_s().some((size) => size.selected)
+      this.sizeSelectedList_s().length > 0
     ) {
       dataAfterAllFilters = this.afterSearchData_s()
         .filter((item: any) =>
@@ -164,19 +166,12 @@ export class ProductsListPageComponent implements OnInit {
             return true;
           }
         })
-        .filter((item: any) => {
-          if (this.sizeSelectedList_s().some((size) => size.selected)) {
-            const arrayOfSelectedSize = this.sizeSelectedList_s()
-              .filter((size) => size.selected)
-              .map((size) => size.title);
+        .filter((item: Product) => {
+          if (this.sizeSelectedList_s().length > 0) {
+            return this.sizeSelectedList_s().some( (size) => item.sizes.includes(size) )
+           } else {return true}
 
-            return arrayOfSelectedSize.some((size) =>
-              item.sizes.includes(size)
-            );
-          } else {
-            return true;
-          }
-        });
+      });
     }
 
     if (!this.isClicked()) {
@@ -285,33 +280,11 @@ export class ProductsListPageComponent implements OnInit {
 
   toggleRoundCheckbox(
     value: { title: string; selected: boolean },
-    type: string,
-    arr: any,
+    type: string
   ) {
-    console.log(
-      'toggleRoundCheckbox 💀',
-      'value = ',
-      value,
-      'type = ',
-      type,
-      'arr=',
-      arr
-    );
-
     const isChecked = value.selected;
-    console.log('toggleRoundCheckbox 💀2', 'isChecked = ', isChecked);
 
-    if (type === 'size') {
-      const sizeSelectedList = this.sizeSelectedList_s().map((item) => {
-        if (item.title === value.title) {
-          return { ...item, selected: isChecked };
-        } else {
-          return item;
-        }
-      });
-      this.sizeSelectedList_s.set(sizeSelectedList);
-      console.log('toggleRoundCheckbox 💀3', this.sizeSelectedList_s());
-    } else if (type === 'color') {
+   if (type === 'color') {
       const colorSelectedList = this.colorSelectedList_s().map((item) => {
         if (item.title === value.title) {
           return { ...item, selected: isChecked };
@@ -321,5 +294,9 @@ export class ProductsListPageComponent implements OnInit {
       });
       this.colorSelectedList_s.set(colorSelectedList);
     }
+  }
+
+  onMultiselectSizeChange(arrayOfSelectedSizes: string[]) {
+    this.sizeSelectedList_s.set(arrayOfSelectedSizes);
   }
 }

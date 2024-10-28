@@ -28,19 +28,17 @@ import {  ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/
 export class RoundCheckboxComponent implements ControlValueAccessor {
   translate = inject(TranslateService);
 
-  // private cdr = inject(ChangeDetectorRef); // dddel
+ 
   title = input('');
   value: boolean = false;
 
   onChange = (value: boolean) => {
-    console.log('onChange💛💛', value);
   };
   onTouched = () => {};
 
   writeValue(value: boolean): void {
     this.value = value;
-    // this.cdr.markForCheck(); // dddel
-    console.log('writeValue❤️', value);
+   
   }
 
   registerOnChange(fn: (value: boolean) => void): void {

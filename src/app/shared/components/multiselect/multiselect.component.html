@@ -1,0 +1,9 @@
+<div class="size-list">
+  @for ( field of fieldsArray(); track $index) {
+  <app-round-checkbox
+    [title]="field[key()]"
+    [(ngModel)]="field.selected"
+    (ngModelChange)="onCheckboxChange()"
+  ></app-round-checkbox>
+  }
+</div>
