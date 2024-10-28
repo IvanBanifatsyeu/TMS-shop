@@ -59,8 +59,8 @@
           <div class="color-list__color-conteiner color-conteiner">
             <app-round-checkbox
               [title]="color.title"
-              [selected]="color.selected"
-              (click)="toggleRoundCheckbox(color, 'color')"
+              [(ngModel)]="color.selected"
+              (ngModelChange)="toggleRoundCheckbox(color, 'color', colorSelectedList_s())"
             ></app-round-checkbox>
             <p class="color-conteiner__total-items total-items">
               {{ calculateTotalItemsByColor(color.title) || "" }}
@@ -76,8 +76,8 @@
           @for (size of sizeSelectedList_s(); track size.title) {
           <app-round-checkbox
             [title]="size.title"
-            [selected]="size.selected"
-            (click)="toggleRoundCheckbox(size, 'size')"
+            [(ngModel)]="size.selected"
+            (ngModelChange)="toggleRoundCheckbox(size, 'size', sizeSelectedList_s() )"
           ></app-round-checkbox>
           }
         </div>

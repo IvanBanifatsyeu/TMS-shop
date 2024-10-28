@@ -285,9 +285,21 @@ export class ProductsListPageComponent implements OnInit {
 
   toggleRoundCheckbox(
     value: { title: string; selected: boolean },
-    type?: string
+    type: string,
+    arr: any,
   ) {
-    const isChecked = !value.selected;
+    console.log(
+      'toggleRoundCheckbox 💀',
+      'value = ',
+      value,
+      'type = ',
+      type,
+      'arr=',
+      arr
+    );
+
+    const isChecked = value.selected;
+    console.log('toggleRoundCheckbox 💀2', 'isChecked = ', isChecked);
 
     if (type === 'size') {
       const sizeSelectedList = this.sizeSelectedList_s().map((item) => {
@@ -298,6 +310,7 @@ export class ProductsListPageComponent implements OnInit {
         }
       });
       this.sizeSelectedList_s.set(sizeSelectedList);
+      console.log('toggleRoundCheckbox 💀3', this.sizeSelectedList_s());
     } else if (type === 'color') {
       const colorSelectedList = this.colorSelectedList_s().map((item) => {
         if (item.title === value.title) {
