@@ -52,7 +52,7 @@
         }
       </div>
 
-      <div class="sidebar__filter-color-wr filter-color-wr">
+      <!-- <div class="sidebar__filter-color-wr filter-color-wr">
         <p class="filter-color-wr__title">{{ "FILTER.COLOR" | translate }}</p>
         <div class="filter-color-wr__color-list color-list">
           @for (color of colorList; track $index) {
@@ -68,7 +68,7 @@
           </div>
           }
         </div>
-      </div>
+      </div> -->
 
       <!-- <div class="sidebar__filter-sizer-wr filter-size-wr">
         <p class="filter-size-wr__title">{{ "FILTER.SIZE" | translate }}</p>
@@ -83,6 +83,16 @@
         </div>
       </div> -->
       <!-- zzz -->
+
+      <div class="sidebar__filter-sizer-wr filter-size-wr">
+        <p class="filter-size-wr__title">{{ "FILTER.COLOR" | translate }}</p>
+        <app-multiselect
+          [fieldsArray]="colorList"
+          key="title"
+          [(ngModel)]="arrayOfSelectedColors"
+          (ngModelChange)="onMultiselectColorChange(arrayOfSelectedColors)"
+        ></app-multiselect>
+      </div>
 
       <div class="sidebar__filter-sizer-wr filter-size-wr">
         <p class="filter-size-wr__title">{{ "FILTER.SIZE" | translate }}</p>

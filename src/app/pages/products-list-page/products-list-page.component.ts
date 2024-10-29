@@ -7,7 +7,6 @@ import {
   OnInit,
   signal,
   effect,
-  OnChanges,
 } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
@@ -20,7 +19,6 @@ import {
   ITEM_FOR_PAGE_COLUMN_LAYOUT,
   ITEM_FOR_PAGE_ROW_LAYOUT,
 } from '../../core/constants/ui-constants';
-import { LogPipe } from '../../shared/pipes/log.pipe';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { combineLatest, debounceTime, map, startWith } from 'rxjs';
@@ -75,15 +73,14 @@ export class ProductsListPageComponent implements OnInit {
   search = new FormControl('', [noCyrillicValidator()]);
   route = inject(ActivatedRoute);
   categorySelected_s = signal<string[]>([]);
-  colorSelectedList_s = signal<{ selected: boolean; title: string }[]>(
-    this.colorList
-  );
+  colorSelectedList_s = signal<string[]>([]);
   sizeSelectedList_s = signal<string[]>([]);
   priceMinSelected_s = signal<number>(0);
   priceMaxSelected_s = signal<number>(150);
   isClicked = signal<boolean>(false);
 
   arrayOfSelectedSizes: string[] = [];
+  arrayOfSelectedColors: string[] = [];
 
   ngOnInit(): void {
     this.route.queryParams
@@ -142,7 +139,7 @@ export class ProductsListPageComponent implements OnInit {
 
     if (
       this.categorySelected_s().length > 0 ||
-      this.colorSelectedList_s().some((color) => color.selected) ||
+      this.colorSelectedList_s().length > 0 ||
       this.sizeSelectedList_s().length > 0
     ) {
       dataAfterAllFilters = this.afterSearchData_s()
@@ -153,25 +150,23 @@ export class ProductsListPageComponent implements OnInit {
               )
             : true
         )
-        .filter((item: any) => {
-          if (this.colorSelectedList_s().some((color) => color.selected)) {
-            const arrayOfSelectedColor = this.colorSelectedList_s()
-              .filter((color) => color.selected)
-              .map((color) => color.title);
-
-            return arrayOfSelectedColor.some((color) =>
-              item.color.includes(color)
-            );
+        .filter((item: Product) => {
+          if (this.colorSelectedList_s().length > 0) {
+         return this.colorSelectedList_s().some((color) => 
+              item.color.includes(color))
           } else {
             return true;
           }
         })
         .filter((item: Product) => {
           if (this.sizeSelectedList_s().length > 0) {
-            return this.sizeSelectedList_s().some( (size) => item.sizes.includes(size) )
-           } else {return true}
-
-      });
+            return this.sizeSelectedList_s().some((size) =>
+              item.sizes.includes(size)
+            );
+          } else {
+            return true;
+          }
+        });
     }
 
     if (!this.isClicked()) {
@@ -268,32 +263,18 @@ export class ProductsListPageComponent implements OnInit {
     }
   }
 
-  calculateTotalItemsByColor(TargetColor: string) {
-    return this.afterAllFiltersData_sc().filter((item: any) =>
-      item.color.includes(TargetColor)
-    ).length;
-  }
+  // calculateTotalItemsByColor(TargetColor: string) {
+  //   return this.afterAllFiltersData_sc().filter((item: any) =>
+  //     item.color.includes(TargetColor)
+  //   ).length;
+  // }
 
   clickFilterByPrice() {
     this.isClicked.set(true);
   }
 
-  toggleRoundCheckbox(
-    value: { title: string; selected: boolean },
-    type: string
-  ) {
-    const isChecked = value.selected;
-
-   if (type === 'color') {
-      const colorSelectedList = this.colorSelectedList_s().map((item) => {
-        if (item.title === value.title) {
-          return { ...item, selected: isChecked };
-        } else {
-          return item;
-        }
-      });
-      this.colorSelectedList_s.set(colorSelectedList);
-    }
+  onMultiselectColorChange(arrayOfSelectedColors: string[]) {
+    this.colorSelectedList_s.set(arrayOfSelectedColors);
   }
 
   onMultiselectSizeChange(arrayOfSelectedSizes: string[]) {

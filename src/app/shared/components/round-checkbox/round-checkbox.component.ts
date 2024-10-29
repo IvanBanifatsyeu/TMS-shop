@@ -31,6 +31,7 @@ export class RoundCheckboxComponent implements ControlValueAccessor {
  
   title = input('');
   value: boolean = false;
+  counter = input<boolean>(false);
 
   onChange = (value: boolean) => {
   };
