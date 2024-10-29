@@ -51,14 +51,8 @@ import { MultiselectComponent } from '../../shared/components/multiselect/multis
 export class ProductsListPageComponent implements OnInit {
   uiDataService = inject(UiDataService);
   categoryList = this.uiDataService.categoryList;
-  colorList = this.uiDataService.colorList.map((color) => ({
-    ...color,
-    selected: false,
-  }));
-  sizeList = this.uiDataService.sizeList.map((size) => ({
-    ...size,
-    selected: false,
-  }));
+  colorList = this.uiDataService.colorList
+  sizeList = this.uiDataService.sizeList
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   afterSearchData_s = signal<Product[]>([]);
@@ -250,24 +244,6 @@ export class ProductsListPageComponent implements OnInit {
       );
     }
   }
-
-  toggleColorCheckbox(event: Event, color: any) {
-    const isChecked = (event.target as HTMLInputElement).checked;
-
-    if (isChecked) {
-      this.colorSelectedList_s.update((prev) => [...prev, color.value]);
-    } else {
-      this.colorSelectedList_s.update((prev) =>
-        prev.filter((item) => item !== color.value)
-      );
-    }
-  }
-
-  // calculateTotalItemsByColor(TargetColor: string) {
-  //   return this.afterAllFiltersData_sc().filter((item: any) =>
-  //     item.color.includes(TargetColor)
-  //   ).length;
-  // }
 
   clickFilterByPrice() {
     this.isClicked.set(true);

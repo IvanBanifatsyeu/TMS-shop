@@ -1,9 +1,8 @@
-<div class="size-list">
+<form class="size-list" [formGroup]="form()">
   @for ( field of fieldsArray(); track $index) {
-  <app-round-checkbox
-    [title]="field[key()]"
-    [(ngModel)]="field.selected"
-    (ngModelChange)="onCheckboxChange()"
+  <app-round-checkbox 
+  [title]="field[key()]"
+  [formControlName] = "field[key()]"
   ></app-round-checkbox>
   }
-</div>
+</form>

@@ -1,18 +1,36 @@
-import { ChangeDetectionStrategy, Component, forwardRef, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  forwardRef,
+  input,
+  computed,
+  effect,
+} from '@angular/core';
 import { RoundCheckboxComponent } from '../round-checkbox/round-checkbox.component';
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
-type Field = {
-  [key: string]: any; 
-  title: string;
-  selected: boolean;
-};
+
+type OnlyStringTypes<T> = {
+  [K in keyof T]: T[K] extends string ? K : never;
+}[keyof T];
 
 @Component({
   selector: 'app-multiselect',
   standalone: true,
-  imports: [RoundCheckboxComponent, CommonModule, FormsModule],
+  imports: [
+    RoundCheckboxComponent,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './multiselect.component.html',
   styleUrl: './multiselect.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,19 +42,59 @@ type Field = {
     },
   ],
 })
-export class MultiselectComponent implements ControlValueAccessor {
-  fieldsArray = input<Field[]>([]);
-  key = input<string>('');
+export class MultiselectComponent<T extends Record<string, any>>
+  implements ControlValueAccessor
+{
+  
+  fieldsArray = input<T[]>([]);
+  key = input.required<OnlyStringTypes<T>>();
 
   private onChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
 
-  // Вызывается Angular для установки значения
-  writeValue(selectedValues: string[]): void { 
-    if (selectedValues) {
-      this.fieldsArray().forEach((field) => {
-        field.selected = selectedValues.includes(field[this.key()]);
+  form = computed(() => {
+    const controls = this.fieldsArray().reduce((acc, field) => {
+      return {
+        ...acc,
+        [field[this.key()]]: new FormControl(false),
+      };
+    }, {} as { [key: string]: FormControl });
+
+    return new FormGroup(controls);
+  });
+
+  constructor() {
+    effect((onCleanup) => {
+     const subscription = this.form().valueChanges.subscribe((valueObject) => {
+        console.log('Значение поля Multiselect изменилось:', valueObject);
+        const resultArr: string[] = [];
+        Object.keys(valueObject).forEach((key) => {
+          if (valueObject[key]) {
+            resultArr.push(key);
+          }
+        });
+        this.onChange(resultArr);
       });
+
+       onCleanup(() => {
+         subscription.unsubscribe();
+       });
+    });
+  }
+
+  // Вызывается Angular для установки значения
+  writeValue(value: string[]): void {
+    if (value) {
+      const newSet = new Set(value);
+
+      const newControls = this.fieldsArray().reduce((acc, field) => {
+        return {
+          ...acc,
+          [field[this.key()]]: newSet.has(field[this.key()]),
+        };
+      }, {} as { [key: string]: boolean });
+
+      this.form().setValue(newControls, { emitEvent: false });
     }
   }
 
@@ -48,19 +106,5 @@ export class MultiselectComponent implements ControlValueAccessor {
   // Регистрируем функцию для уведомления Angular о взаимодействии с компонентом
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
-  }
-
-  // Функция вызывается при изменении значений в чекбоксах
-  onCheckboxChange(): void {
-    const selectedValues = this.fieldsArray()
-      .filter((field) => field.selected)
-      .map((field) => field[this.key()]);
-
-    this.onChange(selectedValues); // Уведомляем Angular об изменении
-  }
-
-  // Метод для установки состояния "disabled"
-  setDisabledState(isDisabled: boolean): void {
-    // Логика для управления disabled состоянием
   }
 }
