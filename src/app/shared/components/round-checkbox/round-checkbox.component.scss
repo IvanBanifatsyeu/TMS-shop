@@ -10,7 +10,7 @@
     .checkbox-container__input:checked+.label-wr .label-wr__title,
     .checkbox-container__input:checked+.label-wr .label-wr__svg-icon {
         color: var(--blue-active-color);
-
+        --stroke-width-color-item:4;
     }
 
     .checkbox-container__input {
@@ -29,19 +29,20 @@
 
 
         .svg-icon {
-            width: 26px;
-            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
             color: #DCDCDC;
         }
 
         .label-wr__title {
             color: var(--medium-grey-color);
             font-weight: 600;
-
             font-size: 14px;
             line-height: 28px;
             letter-spacing: 0.2px;
-
         }
     }
 

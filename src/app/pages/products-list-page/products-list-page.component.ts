@@ -20,14 +20,21 @@ import {
   ITEM_FOR_PAGE_ROW_LAYOUT,
 } from '../../core/constants/ui-constants';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { combineLatest, debounceTime, map, startWith } from 'rxjs';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { combineLatest, debounceTime, map, startWith, tap } from 'rxjs';
 import { noCyrillicValidator } from '../../core/validators/noCyrillicValidator';
 import { UiDataService } from '../../core/services/uiData.service';
 import { ActivatedRoute } from '@angular/router';
 import { RoundCheckboxComponent } from '../../shared/components/round-checkbox/round-checkbox.component';
 import { DualRangeSliderComponent } from '../../shared/components/dual-range-slider/dual-range-slider.component';
 import { MultiselectComponent } from '../../shared/components/multiselect/multiselect.component';
+import { MultiselectBoldComponent } from '../../shared/components/multiselect-bold/multiselect-bold.component';
 
 @Component({
   selector: 'app-products-list-page',
@@ -43,6 +50,7 @@ import { MultiselectComponent } from '../../shared/components/multiselect/multis
     DualRangeSliderComponent,
     FormsModule,
     MultiselectComponent,
+    MultiselectBoldComponent,
   ],
   templateUrl: './products-list-page.component.html',
   styleUrl: './products-list-page.component.scss',
@@ -50,12 +58,14 @@ import { MultiselectComponent } from '../../shared/components/multiselect/multis
 })
 export class ProductsListPageComponent implements OnInit {
   uiDataService = inject(UiDataService);
-  categoryList = this.uiDataService.categoryList;
-  colorList = this.uiDataService.colorList
-  sizeList = this.uiDataService.sizeList
+
+  productsList_s = signal<Product[]>([]);
+  categoryList = this.uiDataService.categoriesList;
+  colorList = this.uiDataService.colorList;
+  sizeList = this.uiDataService.sizeList;
   translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
-  afterSearchData_s = signal<Product[]>([]);
+  afterFiltersData_s = signal<Product[]>([]);
   layoutColumn_s = signal(true); // selected layout (rows or columns)
   currentPage_s = signal(1);
   itemsPerPage_sc = computed(() =>
@@ -75,15 +85,30 @@ export class ProductsListPageComponent implements OnInit {
 
   arrayOfSelectedSizes: string[] = [];
   arrayOfSelectedColors: string[] = [];
+  arrayOfSelectedCategorys: string[] = [];
+  formFilter!: FormGroup;
 
   ngOnInit(): void {
+    let initialCategoryValue: string[] = [];
+
     this.route.queryParams
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((params) => {
         if (params['button']) {
-          this.categorySelected_s.set([params['button']]);
+          initialCategoryValue = [params['button']];
         }
       });
+
+    this.formFilter = new FormGroup({
+      category: new FormControl<string[]>(initialCategoryValue),
+      color: new FormControl<string[]>([]),
+      size: new FormControl<string[]>([]),
+    });
+
+    const formFilter$ = this.formFilter.valueChanges.pipe(
+      startWith(this.formFilter.value),
+      takeUntilDestroyed(this.destroyRef)
+    );
 
     const firebaseData$ = this.productsFirebaseService
       .getProducts()
@@ -96,27 +121,17 @@ export class ProductsListPageComponent implements OnInit {
       takeUntilDestroyed(this.destroyRef)
     );
 
-    combineLatest([firebaseData$, searchTerm$])
-      .pipe(
-        map(([firebaseData, searchTerm]) => {
-          if (!searchTerm) {
-            return firebaseData;
-          }
-          return firebaseData.filter((item: any) =>
-            item.model.toLowerCase().includes(searchTerm)
-          );
-        })
-      )
+    combineLatest([firebaseData$, searchTerm$, formFilter$])
       .subscribe((data) => {
-        this.afterSearchData_s.set(data);
-        if (!this.isClicked()) {
-          this.priceMaxSelected_s.set(
-            this.productsFirebaseService.getMaxPrice(data)
-          );
-          this.priceMinSelected_s.set(
-            this.productsFirebaseService.getMinPrice(data)
-          );
-        }
+        console.log('data',data);
+        this.afterFiltersData_s.set(
+          data[0].filter(
+            (item: any) => item.model.toLowerCase().includes(data[1])
+            && (data[2].category.length > 0 ? data[2].category.includes(item.category.toLocaleLowerCase()) : true) 
+            && (data[2].color.length > 0 ? data[2].color.some((color: string) => item.color.includes(color)) : true) && 
+            (data[2].size.length > 0 ? data[2].size.some((size: string) => item.sizes.includes(size)) : true) 
+          )
+        );
       });
   }
 
@@ -129,39 +144,7 @@ export class ProductsListPageComponent implements OnInit {
   });
 
   afterAllFiltersData_sc = computed(() => {
-    let dataAfterAllFilters: Product[] = this.afterSearchData_s();
-
-    if (
-      this.categorySelected_s().length > 0 ||
-      this.colorSelectedList_s().length > 0 ||
-      this.sizeSelectedList_s().length > 0
-    ) {
-      dataAfterAllFilters = this.afterSearchData_s()
-        .filter((item: any) =>
-          this.categorySelected_s().length > 0
-            ? this.categorySelected_s().includes(
-                item.category.toLocaleLowerCase()
-              )
-            : true
-        )
-        .filter((item: Product) => {
-          if (this.colorSelectedList_s().length > 0) {
-         return this.colorSelectedList_s().some((color) => 
-              item.color.includes(color))
-          } else {
-            return true;
-          }
-        })
-        .filter((item: Product) => {
-          if (this.sizeSelectedList_s().length > 0) {
-            return this.sizeSelectedList_s().some((size) =>
-              item.sizes.includes(size)
-            );
-          } else {
-            return true;
-          }
-        });
-    }
+    let dataAfterAllFilters: Product[] = this.afterFiltersData_s();
 
     if (!this.isClicked()) {
       let minPrice = Math.min(...dataAfterAllFilters.map((item) => item.price));
@@ -231,22 +214,13 @@ export class ProductsListPageComponent implements OnInit {
     return this.layoutColumn_s();
   }
 
-  toggleCategoryCheckbox(event: Event, categoryItem: any) {
-    const isChecked = (event.target as HTMLInputElement).checked;
-    if (isChecked) {
-      this.categorySelected_s.update((prev) => [
-        ...prev,
-        categoryItem.category,
-      ]);
-    } else {
-      this.categorySelected_s.update((prev) =>
-        prev.filter((item) => item !== categoryItem.category)
-      );
-    }
-  }
-
   clickFilterByPrice() {
     this.isClicked.set(true);
+  }
+
+  onMultiselectCategoryChange(arrayOfSelectedCategorys: string[]) {
+    console.log('arrayOfSelectedCategorys', arrayOfSelectedCategorys);
+    this.categorySelected_s.set(arrayOfSelectedCategorys);
   }
 
   onMultiselectColorChange(arrayOfSelectedColors: string[]) {

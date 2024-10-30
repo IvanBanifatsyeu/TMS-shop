@@ -34,12 +34,16 @@ export class UiDataService {
     },
   ];
 
-  colorList: { title: string}[] = [
+  categoriesList: { title: string }[] = this.categoryList.map(item => {
+    return { title: item.category };
+  })
+
+  colorList: { title: string }[] = [
     { title: 'red' },
     { title: 'white' },
     { title: 'blue' },
     { title: 'grey' },
-    { title: 'yellow'},
+    { title: 'yellow' },
     { title: 'black' },
     { title: 'green' },
     { title: 'brown' },

@@ -1,51 +1,37 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  forwardRef,
-  input,
-  computed,
-  effect,
-} from '@angular/core';
-import { RoundCheckboxComponent } from '../round-checkbox/round-checkbox.component';
 import { CommonModule } from '@angular/common';
-import {
-  ControlValueAccessor,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-} from '@angular/forms';
-
+import { ChangeDetectionStrategy, Component, computed, effect, forwardRef, inject, input } from '@angular/core';
+import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 
 type OnlyStringTypes<T> = {
   [K in keyof T]: T[K] extends string ? K : never;
 }[keyof T];
 
 @Component({
-  selector: 'app-multiselect',
+  selector: 'app-multiselect-bold',
   standalone: true,
   imports: [
-    RoundCheckboxComponent,
     CommonModule,
-    FormsModule,
+    TranslateModule,
+    SvgIconComponent,
     ReactiveFormsModule,
   ],
-  templateUrl: './multiselect.component.html',
-  styleUrl: './multiselect.component.scss',
+  templateUrl: './multiselect-bold.component.html',
+  styleUrl: './multiselect-bold.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => MultiselectComponent),
+      useExisting: forwardRef(() => MultiselectBoldComponent),
       multi: true,
     },
   ],
 })
-export class MultiselectComponent<T extends Record<string, any>>
+export class MultiselectBoldComponent<T extends Record<string, any>>
   implements ControlValueAccessor
 {
-  
+  translate = inject(TranslateService);
   fieldsArray = input<T[]>([]);
   key = input.required<OnlyStringTypes<T>>();
 
@@ -65,23 +51,22 @@ export class MultiselectComponent<T extends Record<string, any>>
 
   constructor() {
     effect((onCleanup) => {
-     const subscription = this.form().valueChanges.subscribe((valueObject) => {
+      const subscription = this.form().valueChanges.subscribe((valueObject) => {
         const resultArr: string[] = [];
         Object.keys(valueObject).forEach((key) => {
           if (valueObject[key]) {
             resultArr.push(key);
           }
         });
+
         this.onChange(resultArr);
       });
-
-       onCleanup(() => {
-         subscription.unsubscribe();
-       });
+      onCleanup(() => {
+        subscription.unsubscribe();
+      });
     });
   }
 
-  // Вызывается Angular для установки значения
   writeValue(value: string[]): void {
     if (value) {
       const newSet = new Set(value);
@@ -92,18 +77,23 @@ export class MultiselectComponent<T extends Record<string, any>>
           [field[this.key()]]: newSet.has(field[this.key()]),
         };
       }, {} as { [key: string]: boolean });
-
       this.form().setValue(newControls, { emitEvent: false });
+     
     }
   }
 
-  // Регистрируем функцию для уведомления Angular об изменении значений
-  registerOnChange(fn: (value: any) => void): void {
+  // Метод, который регистрирует функцию изменения значения
+  registerOnChange(fn: (value: boolean) => void): void {
     this.onChange = fn;
   }
 
-  // Регистрируем функцию для уведомления Angular о взаимодействии с компонентом
+  // Метод, который регистрирует функцию touched
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  // Активирует или деактивирует компонент
+  setDisabledState(isDisabled: boolean): void {
+    // Логика для отключения компонента
   }
 }

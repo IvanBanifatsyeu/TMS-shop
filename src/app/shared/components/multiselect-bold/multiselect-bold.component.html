@@ -1,0 +1,22 @@
+<form class="sidebar__filter-category-wr filter-category-wr" [formGroup]="form()">
+  @for (categoryItem of fieldsArray(); track $index) {
+  <div class="filter-category-wr__input-container-cat input-container-cat">
+    <input
+      [id]="categoryItem[key()]"
+      type="checkbox"
+      class="input-container-cat__checkbox-cat"
+      [formControlName] = "categoryItem[key()]"
+    />
+    <label
+      [for]="categoryItem[key()]"
+      class="input-container-cat__label-cat label-cat"
+    >
+      <p class="label-cat__text">{{ categoryItem[key()] | translate }}</p>
+      <svg icon="plus" class="label-cat__plus-icon"></svg>
+    </label>
+  </div>
+  }
+</form>
+
+<!--  [checked]="categorySelected_s().includes(categoryItem.category)"
+            (change)="toggleCategoryCheckbox($event, categoryItem)" -->

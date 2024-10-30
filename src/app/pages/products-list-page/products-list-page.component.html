@@ -28,54 +28,33 @@
           {{ "PRODUCTS_LIST_PAGE.DONT_USE_CYRILLIC" | translate }}
         </div>
       </div>
+      <!-- zzz -->
+      <form class="sidebar__formFilter formFilter" [formGroup]="formFilter">
+        <app-multiselect-bold
+          formControlName="category"
+          [fieldsArray]="categoryList"
+          key="title"
+        ></app-multiselect-bold>
 
-      <div class="sidebar__filter-category-wr filter-category-wr">
-        @for (categoryItem of categoryList; track categoryItem.name) {
-        <div
-          class="filter-category-wr__input-container-cat input-container-cat"
-        >
-          <input
-            [id]="categoryItem.name"
-            type="checkbox"
-            class="input-container-cat__checkbox-cat"
-            [checked]="categorySelected_s().includes(categoryItem.category)"
-            (change)="toggleCategoryCheckbox($event, categoryItem)"
-          />
-          <label
-            [for]="categoryItem.name"
-            class="input-container-cat__label-cat label-cat"
-          >
-            <p class="label-cat__text">{{ categoryItem.name | translate }}</p>
-            <svg icon="plus" class="label-cat__plus-icon"></svg>
-          </label>
+        <div class="sidebar__filter-sizer-wr filter-size-wr">
+          <p class="filter-size-wr__title">{{ "FILTER.COLOR" | translate }}</p>
+          <app-multiselect
+            formControlName="color"
+            [fieldsArray]="colorList"
+            key="title"
+          ></app-multiselect>
         </div>
-        }
-      </div>
-      
+
+        <div class="sidebar__filter-sizer-wr filter-size-wr">
+          <p class="filter-size-wr__title">{{ "FILTER.SIZE" | translate }}</p>
+          <app-multiselect
+            formControlName="size"
+            [fieldsArray]="sizeList"
+            key="title"
+          ></app-multiselect>
+        </div>
+      </form>
       <!-- zzz -->
-
-      <div class="sidebar__filter-sizer-wr filter-size-wr">
-        <p class="filter-size-wr__title">{{ "FILTER.COLOR" | translate }}</p>
-        <app-multiselect
-          [fieldsArray]="colorList"
-          key="title"
-          [(ngModel)]="arrayOfSelectedColors"
-          (ngModelChange)="onMultiselectColorChange(arrayOfSelectedColors)"
-        ></app-multiselect>
-      </div>
-
-      <div class="sidebar__filter-sizer-wr filter-size-wr">
-        <p class="filter-size-wr__title">{{ "FILTER.SIZE" | translate }}</p>
-        <app-multiselect
-          [fieldsArray]="sizeList"
-          key="title"
-          [(ngModel)]="arrayOfSelectedSizes"
-          (ngModelChange)="onMultiselectSizeChange(arrayOfSelectedSizes)"
-        ></app-multiselect>
-      </div>
-
-      <!-- zzz -->
-
       <div class="sidebar__filter-price-wr filter-price-wr">
         <p class="filter-size-wr__title">
           {{ "FILTER.FILTER_BY_PRICE" | translate }}
