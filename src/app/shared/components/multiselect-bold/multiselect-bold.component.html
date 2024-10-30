@@ -11,12 +11,10 @@
       [for]="categoryItem[key()]"
       class="input-container-cat__label-cat label-cat"
     >
-      <p class="label-cat__text">{{ categoryItem[key()] | translate }}</p>
+      <p class="label-cat__text">{{ ("CATEGORY_CARD." + categoryItem[key()].toUpperCase()) | translate }}</p>
       <svg icon="plus" class="label-cat__plus-icon"></svg>
     </label>
   </div>
   }
 </form>
 
-<!--  [checked]="categorySelected_s().includes(categoryItem.category)"
-            (change)="toggleCategoryCheckbox($event, categoryItem)" -->
