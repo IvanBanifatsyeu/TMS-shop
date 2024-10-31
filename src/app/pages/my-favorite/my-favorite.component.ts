@@ -5,12 +5,9 @@ import {
   computed,
   DestroyRef,
   inject,
-  OnInit,
-  signal,
 } from '@angular/core';
 import { ProductFirebaseService } from '../../core/services/product-firebase.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Product } from '../../core/interfaces/product.interface';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserDataService } from '../../core/services/user-data.service';
@@ -33,8 +30,6 @@ export class MyFavoriteComponent  {
   listUserFavorite_s = computed(() => {
    return this.userDataService.listUserFavorite_s();
   })
-
- 
 
   removeAll() {
      this.productsFirebaseService

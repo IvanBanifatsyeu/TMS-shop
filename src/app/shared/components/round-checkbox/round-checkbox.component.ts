@@ -39,7 +39,6 @@ export class RoundCheckboxComponent implements ControlValueAccessor {
 
   writeValue(value: boolean): void {
     this.value = value;
-   
   }
 
   registerOnChange(fn: (value: boolean) => void): void {

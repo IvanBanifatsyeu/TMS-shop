@@ -14,7 +14,6 @@ import {
 import { concatMap, from, map, mergeMap, Observable, toArray } from 'rxjs';
 import { Product } from '../interfaces/product.interface';
 import { ProductItemInCart } from '../interfaces/productItemInCart.interface';
-import { UserInterface } from '../interfaces/user.interface';
 
 @Injectable({
   providedIn: 'root',

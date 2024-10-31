@@ -28,7 +28,7 @@
           {{ "PRODUCTS_LIST_PAGE.DONT_USE_CYRILLIC" | translate }}
         </div>
       </div>
-      <!-- zzz -->
+    
       <form class="sidebar__formFilter formFilter" [formGroup]="formFilter">
         <app-multiselect-bold
           formControlName="category"
@@ -54,7 +54,7 @@
           ></app-multiselect>
         </div>
       </form>
-      <!-- zzz -->
+   
       <div class="sidebar__filter-price-wr filter-price-wr">
         <p class="filter-size-wr__title">
           {{ "FILTER.FILTER_BY_PRICE" | translate }}
@@ -68,13 +68,14 @@
     </aside>
 
     <section class="product-wrapper__products-container products-container">
+      @let isColumn = layoutColumn_s();
       <div class="products-container__layout-switcher layout-switcher">
         <a
           ><svg
             icon="column-icon"
             class="layout-switcher__view-icon view-icon"
             (click)="toggleLayoutToColumn()"
-            [ngClass]="{ active: isColumnLayout() }"
+            [ngClass]="{ active: isColumn }"
           ></svg>
         </a>
         <a
@@ -82,20 +83,20 @@
             icon="row-icon"
             class="layout-switcher__view-icon view-icon"
             (click)="toggleLayoutToRow()"
-            [ngClass]="{ active: !isColumnLayout() }"
+            [ngClass]="{ active: !isColumn }"
           ></svg
         ></a>
       </div>
       <div
         class="products-container__product-gallery product-gallery"
-        [ngClass]="isColumnLayout() ? 'column-layout' : 'row-layout'"
+        [ngClass]="isColumn ? 'column-layout' : 'row-layout'"
       >
         @for (item of displayedItems_sc(); track item.id) {
 
         <app-product-card
           [product]="item"
           [ngClass]="
-            isColumnLayout() ? 'product-card--mini' : 'product-card--row'
+            isColumn ? 'product-card--mini' : 'product-card--row'
           "
         ></app-product-card>
         }

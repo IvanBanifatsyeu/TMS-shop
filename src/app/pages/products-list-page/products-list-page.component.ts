@@ -21,13 +21,12 @@ import {
 } from '../../core/constants/ui-constants';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { combineLatest, debounceTime, map, startWith, tap } from 'rxjs';
+import { combineLatest, debounceTime, map, startWith } from 'rxjs';
 import { noCyrillicValidator } from '../../core/validators/noCyrillicValidator';
 import { UiDataService } from '../../core/services/uiData.service';
 import { ActivatedRoute } from '@angular/router';
@@ -58,24 +57,19 @@ import { MultiselectBoldComponent } from '../../shared/components/multiselect-bo
 })
 export class ProductsListPageComponent implements OnInit {
   uiDataService = inject(UiDataService);
+  translate = inject(TranslateService);
+  productsFirebaseService = inject(ProductFirebaseService);
+  destroyRef = inject(DestroyRef);
+  route = inject(ActivatedRoute);
 
-  productsList_s = signal<Product[]>([]);
   categoryList = this.uiDataService.categoriesList;
   colorList = this.uiDataService.colorList;
   sizeList = this.uiDataService.sizeList;
-  translate = inject(TranslateService);
-  productsFirebaseService = inject(ProductFirebaseService);
+
+  productsList_s = signal<Product[]>([]);
   afterFiltersData_s = signal<Product[]>([]);
-  layoutColumn_s = signal(true); // selected layout (rows or columns)
+  layoutColumn_s = signal(true); 
   currentPage_s = signal(1);
-  itemsPerPage_sc = computed(() =>
-    this.layoutColumn_s()
-      ? ITEM_FOR_PAGE_COLUMN_LAYOUT
-      : ITEM_FOR_PAGE_ROW_LAYOUT
-  );
-  destroyRef = inject(DestroyRef);
-  search = new FormControl('', [noCyrillicValidator()]);
-  route = inject(ActivatedRoute);
   categorySelected_s = signal<string[]>([]);
   colorSelectedList_s = signal<string[]>([]);
   sizeSelectedList_s = signal<string[]>([]);
@@ -83,9 +77,13 @@ export class ProductsListPageComponent implements OnInit {
   priceMaxSelected_s = signal<number>(150);
   isClicked = signal<boolean>(false);
 
-  arrayOfSelectedSizes: string[] = [];
-  arrayOfSelectedColors: string[] = [];
-  arrayOfSelectedCategorys: string[] = [];
+  itemsPerPage_sc = computed(() =>
+    this.layoutColumn_s()
+      ? ITEM_FOR_PAGE_COLUMN_LAYOUT
+      : ITEM_FOR_PAGE_ROW_LAYOUT
+  );
+
+  search = new FormControl('', [noCyrillicValidator()]);
   formFilter!: FormGroup;
 
   ngOnInit(): void {
@@ -97,42 +95,46 @@ export class ProductsListPageComponent implements OnInit {
         if (params['button']) {
           initialCategoryValue = [params['button']];
         }
+        this.formFilter = new FormGroup({
+          category: new FormControl<string[]>(initialCategoryValue),
+          color: new FormControl<string[]>([]),
+          size: new FormControl<string[]>([]),
+        });
       });
 
-    this.formFilter = new FormGroup({
-      category: new FormControl<string[]>(initialCategoryValue),
-      color: new FormControl<string[]>([]),
-      size: new FormControl<string[]>([]),
-    });
-
-    const formFilter$ = this.formFilter.valueChanges.pipe(
-      startWith(this.formFilter.value),
-      takeUntilDestroyed(this.destroyRef)
-    );
-
-    const firebaseData$ = this.productsFirebaseService
-      .getProducts()
-      .pipe(takeUntilDestroyed(this.destroyRef));
-
+    const firebaseData$ = this.productsFirebaseService.getProducts()
+    
     const searchTerm$ = this.search.valueChanges.pipe(
       startWith(''),
       map((value) => value!.trim().toLowerCase()),
-      debounceTime(300),
-      takeUntilDestroyed(this.destroyRef)
-    );
+      debounceTime(300),);
 
-    combineLatest([firebaseData$, searchTerm$, formFilter$])
-      .subscribe((data) => {
-        console.log('data',data);
-        this.afterFiltersData_s.set(
-          data[0].filter(
-            (item: any) => item.model.toLowerCase().includes(data[1])
-            && (data[2].category.length > 0 ? data[2].category.includes(item.category.toLocaleLowerCase()) : true) 
-            && (data[2].color.length > 0 ? data[2].color.some((color: string) => item.color.includes(color)) : true) && 
-            (data[2].size.length > 0 ? data[2].size.some((size: string) => item.sizes.includes(size)) : true) 
-          )
-        );
-      });
+    const formFilter$ = this.formFilter.valueChanges.pipe(
+      startWith(this.formFilter.value),);
+
+    combineLatest([firebaseData$, searchTerm$, formFilter$]).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
+      ([data, search, { category, color, size }]) => {
+        const categorySet = new Set(category);
+        const colorSet = new Set(color);
+        const sizeSet = new Set(size);
+
+        const filteredData = data.filter((item: Product) => {
+          const includesSearch = item.model.toLowerCase().includes(search);
+          const matchCategory =
+            !categorySet.size ||
+            categorySet.has(item.category.toLocaleLowerCase());
+          const matchColor =
+            !color.length ||
+            item.color.some((color: string) => colorSet.has(color));
+          const matchSize =
+            !size.length ||
+            item.sizes.some((size: string) => sizeSet.has(size));
+
+          return includesSearch && matchCategory && matchColor && matchSize;
+        });
+        this.afterFiltersData_s.set(filteredData);
+      }
+    );
   }
 
   displayedItems_sc = computed(() => {
@@ -144,83 +146,65 @@ export class ProductsListPageComponent implements OnInit {
   });
 
   afterAllFiltersData_sc = computed(() => {
-    let dataAfterAllFilters: Product[] = this.afterFiltersData_s();
+    const dataAfterAllFilters: Product[] = this.afterFiltersData_s();
 
     if (!this.isClicked()) {
-      let minPrice = Math.min(...dataAfterAllFilters.map((item) => item.price));
-      let maxPrice = Math.max(...dataAfterAllFilters.map((item) => item.price));
+      const prices = dataAfterAllFilters.map((item) => item.price);
 
-      dataAfterAllFilters = dataAfterAllFilters.filter((item: any) => {
-        return item.price >= minPrice && item.price <= maxPrice;
-      });
-    } else {
-      dataAfterAllFilters = dataAfterAllFilters.filter((item: any) => {
-        return (
-          item.price >= this.priceMinSelected_s() &&
-          item.price <= this.priceMaxSelected_s()
-        );
-      });
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
+
+      return dataAfterAllFilters.filter(
+        (item: any) => item.price >= minPrice && item.price <= maxPrice
+      );
     }
 
-    return dataAfterAllFilters;
+    return dataAfterAllFilters.filter((item: any) => {
+      return (
+        item.price >= this.priceMinSelected_s() &&
+        item.price <= this.priceMaxSelected_s()
+      );
+    });
   });
 
   trackForMinMaxPrice = effect(
     (): void => {
       if (!this.isClicked()) {
-        this.priceMaxSelected_s.set(
-          this.productsFirebaseService.getMaxPrice(
-            this.afterAllFiltersData_sc()
-          )
-        );
-        this.priceMinSelected_s.set(
-          this.productsFirebaseService.getMinPrice(
-            this.afterAllFiltersData_sc()
-          )
-        );
+        const filteredData = this.afterAllFiltersData_sc();
+        const maxPrice = this.productsFirebaseService.getMaxPrice(filteredData);
+        const minPrice = this.productsFirebaseService.getMinPrice(filteredData);
+
+        this.priceMaxSelected_s.set(maxPrice);
+        this.priceMinSelected_s.set(minPrice);
       }
     },
     { allowSignalWrites: true }
   );
 
-  // to reset the page when filters are applied
   resetcurrentPage = effect(
     () => {
-      const filteredData = this.afterAllFiltersData_sc();
+      this.afterAllFiltersData_sc();
       this.currentPage_s.set(1);
     },
     { allowSignalWrites: true }
   );
 
-  // listening to pagination event and updating current page
-  onPageChange(page: number) {
-    this.currentPage_s.set(page);
-  }
-
-  // Switching layout to column
   toggleLayoutToColumn() {
     this.layoutColumn_s.set(true);
     this.currentPage_s.set(1);
   }
 
-  // Switching layout to row
   toggleLayoutToRow() {
     this.layoutColumn_s.set(false);
     this.currentPage_s.set(1);
-  }
-
-  // Returns true if layout is column
-  isColumnLayout() {
-    return this.layoutColumn_s();
   }
 
   clickFilterByPrice() {
     this.isClicked.set(true);
   }
 
-  onMultiselectCategoryChange(arrayOfSelectedCategorys: string[]) {
-    console.log('arrayOfSelectedCategorys', arrayOfSelectedCategorys);
-    this.categorySelected_s.set(arrayOfSelectedCategorys);
+  xx() {
+    
   }
 
   onMultiselectColorChange(arrayOfSelectedColors: string[]) {

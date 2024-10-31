@@ -11,7 +11,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
 import { SvgIconComponent } from '../../../shared/components/svg-icon/svg-icon.component';
-import { finalize, take } from 'rxjs';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-register',

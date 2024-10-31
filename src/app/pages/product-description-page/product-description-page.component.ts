@@ -40,12 +40,21 @@ export class ProductDescriptionPageComponen implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
   authService = inject(AuthService);
+  currentUser = inject(AuthService).currentUser_s();
+  userDataService = inject(UserDataService);
+
   product: Product | undefined = undefined;
   imgUrl: string = '';
   idOfProduct: string | null = '';
-  currentUser = inject(AuthService).currentUser_s();
-  userDataService = inject(UserDataService);
+  
   listUserFavorite_s = this.userDataService.listUserFavorite_s;
+  listUserCart_s = this.userDataService.listUserCart_s;
+  isAlreadyInCart_s = signal<boolean>(false);
+  selectedColor_s = signal<string>('');
+  selectedSize_s = signal<string>('');
+  selectedQuantity_s = signal<number>(0);
+  showPopupAddToCart_s = signal<boolean>(false);
+
   isUserFavorite_sc = computed(() => {
     if (this.listUserFavorite_s() === null) {
       return false;
@@ -54,13 +63,6 @@ export class ProductDescriptionPageComponen implements OnInit {
       return element.id === this.idOfProduct;
     });
   });
-  listUserCart_s = this.userDataService.listUserCart_s;
-  isAlreadyInCart_s = signal<boolean>(false);
-  selectedColor_s = signal<string>('');
-  selectedSize_s = signal<string>('');
-  selectedQuantity_s = signal<number>(0);
-  showPopupAddToCart_s = signal<boolean>(false);
-
   orderSum_sc = computed(() => {
     return this.selectedQuantity_s() * this.product!?.price;
   });
@@ -99,7 +101,6 @@ export class ProductDescriptionPageComponen implements OnInit {
   }
 
   setSelectedColor(color: string, event: Event) {
-    event.stopPropagation();
     this.isAlreadyInCart_s.set(false);
 
     if (this.selectedColor_s() === color) {
