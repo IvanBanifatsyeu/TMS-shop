@@ -66,12 +66,10 @@ export class HeaderComponent implements OnInit {
   destroyRef = inject(DestroyRef);
   authService = inject(AuthService);
   userDataService = inject(UserDataService);
-  subscription!: Subscription;
   isPopupLanguageVisible = false;
   currentRoute = signal<string>('');
 
   isPopupCartVisible_s = signal<boolean>(false);
-  listCart_s = signal<ProductItemInCart[]>([]);
 
   ngOnInit(): void {
     this.router.events
@@ -151,9 +149,5 @@ export class HeaderComponent implements OnInit {
     } else {
       this.isPopupCartVisible_s.set(true);
     }
-  }
-
-  hideCartPopup() {
-    this.isPopupCartVisible_s.set(false);
   }
 }

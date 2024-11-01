@@ -51,22 +51,6 @@ export class CartComponent {
     );
   });
 
-  updateQuantity(
-    product: ProductItemInCart,
-    quantityNum: number,
-    event: Event
-  ) {
-    event.stopPropagation();
-
-    this.productsFirebaseService
-      .updateQuantityOfItemInUserCart(
-        this.authService.currentUser_s()!.userId,
-        product.id,
-        { quantity: quantityNum }
-      )
-      .subscribe();
-  }
-
   removeFromCart(product: ProductItemInCart) {
     this.productsFirebaseService.removeFromUserCart(
       this.authService.currentUser_s()!.userId,
@@ -116,7 +100,7 @@ export class CartComponent {
         {
           quantity: this.counterQuantity_s(),
         }
-      )
+      ).pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe();
 
     this.arrShowQuantityPanel_s.update((prev) =>
