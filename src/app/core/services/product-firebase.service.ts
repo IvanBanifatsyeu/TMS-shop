@@ -19,12 +19,8 @@ import { ProductItemInCart } from '../interfaces/productItemInCart.interface';
   providedIn: 'root',
 })
 export class ProductFirebaseService {
-  destroyRef = inject(DestroyRef);
   firestore = inject(Firestore);
   productCollection = collection(this.firestore, 'products');
-  FavoriteCollection = collection(this.firestore, 'favorite');
-  CartCollection = collection(this.firestore, 'cart');
-  currentUserCollection = collection(this.firestore, 'current-user');
 
   // User CART Collection 🛒🛒💲💲💰💰
   getItemsFromUserCart(userId: string | null): Observable<ProductItemInCart[]> {

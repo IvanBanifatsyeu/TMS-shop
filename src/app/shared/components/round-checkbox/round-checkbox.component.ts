@@ -1,12 +1,11 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   forwardRef,
   inject,
   input,
 } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 import {  ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
@@ -26,12 +25,8 @@ import {  ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/
   ],
 })
 export class RoundCheckboxComponent implements ControlValueAccessor {
-  translate = inject(TranslateService);
-
- 
   title = input('');
   value: boolean = false;
-  counter = input<boolean>(false);
 
   onChange = (value: boolean) => {
   };
@@ -46,11 +41,9 @@ export class RoundCheckboxComponent implements ControlValueAccessor {
   }
 
   registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
+    this.onTouched = fn
   }
 
-  setDisabledState(isDisabled: boolean): void {
-    // Реализация для отключения компонента
-  }
+ 
   
 }

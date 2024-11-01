@@ -18,22 +18,34 @@ import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 })
 export class StarsGeneratorComponent implements OnChanges {
   rating = input<number | undefined>(0);
-  arrStars:string[] = [];
+  arrStars: string[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['rating'].currentValue > 0) {
-    let num = changes['rating'].currentValue;
-    this.arrStars = [];
-    for (let i = 1; i <= 5; i++) {
-     if(num >=0.9) {
-       this.arrStars.push('star_fill');
-     } else if (num >= 0.4) {
-      this.arrStars.push('star_half');
-     } else {
-      this.arrStars.push('star-empty');
-     }
-     num--;
+    const newRating = changes['rating']?.currentValue;
+
+    if (newRating && newRating > 0) {
+      this.arrStars = this.createStarArray(newRating);
     }
+  }
+
+  private createStarArray(rating: number): string[] {
+    const stars = [];
+
+    for (let i = 0; i < 5; i++) {
+      stars.push(this.getStarType(rating));
+      rating--;
+    }
+
+    return stars;
+  }
+
+  private getStarType(rating: number): string {
+    if (rating >= 0.9) {
+      return 'star_fill';
+    } else if (rating >= 0.4) {
+      return 'star_half';
+    } else {
+      return 'star-empty';
     }
   }
 }

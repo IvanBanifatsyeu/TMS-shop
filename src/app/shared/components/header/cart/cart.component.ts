@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { ProductCardComponent } from '../../product-card/product-card.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule} from '@ngx-translate/core';
 import { ProductFirebaseService } from '../../../../core/services/product-firebase.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
@@ -31,7 +31,6 @@ import { AuthService } from '../../../../core/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartComponent {
-  translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   userDataService = inject(UserDataService);
   destroyRef = inject(DestroyRef);

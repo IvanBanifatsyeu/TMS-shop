@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule} from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -16,5 +16,4 @@ export class NavigationComponent {
     { text: 'NAVIGATION.HOME', path: '' },
     { text: 'NAVIGATION.SHOP', path: 'shop' },
   ];
-  translate = inject(TranslateService);
 }

@@ -1,7 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, effect, forwardRef, inject, input } from '@angular/core';
-import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  forwardRef,
+  input,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 
 type OnlyStringTypes<T> = {
@@ -31,7 +44,6 @@ type OnlyStringTypes<T> = {
 export class MultiselectBoldComponent<T extends Record<string, any>>
   implements ControlValueAccessor
 {
-  translate = inject(TranslateService);
   fieldsArray = input<T[]>([]);
   key = input.required<OnlyStringTypes<T>>();
 
@@ -78,7 +90,6 @@ export class MultiselectBoldComponent<T extends Record<string, any>>
         };
       }, {} as { [key: string]: boolean });
       this.form().setValue(newControls, { emitEvent: false });
-     
     }
   }
 

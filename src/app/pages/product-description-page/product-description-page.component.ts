@@ -6,7 +6,7 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule} from '@ngx-translate/core';
 import { ProductFirebaseService } from '../../core/services/product-firebase.service';
 import { Product } from '../../core/interfaces/product.interface';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -34,12 +34,10 @@ import { UserDataService } from '../../core/services/user-data.service';
   styleUrl: './product-description-page.component.scss',
 })
 export class ProductDescriptionPageComponen implements OnInit {
-  translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   destroyRef = inject(DestroyRef);
   route = inject(ActivatedRoute);
   router = inject(Router);
-  authService = inject(AuthService);
   currentUser = inject(AuthService).currentUser_s();
   userDataService = inject(UserDataService);
 
@@ -100,7 +98,7 @@ export class ProductDescriptionPageComponen implements OnInit {
     }
   }
 
-  setSelectedColor(color: string, event: Event) {
+  setSelectedColor(color: string) {
     this.isAlreadyInCart_s.set(false);
 
     if (this.selectedColor_s() === color) {

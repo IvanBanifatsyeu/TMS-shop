@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
   inject,
   Input,
 } from '@angular/core';
@@ -37,7 +36,6 @@ export class ProductCardComponent {
         .some((element) => element.id === this.product!.id);
     }
   });
-  destroyRef = inject(DestroyRef);
 
   goToProduct(productId: string | undefined) {
     this.router.navigate(['/shop', productId]);

@@ -22,12 +22,10 @@ import { take } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
-  destroyRef = inject(DestroyRef);
   router = inject(Router);
   fb = inject(FormBuilder);
   authService = inject(AuthService);
-  firebaseService = inject(ProductFirebaseService);
-  userId_s = signal<string | null>(null);
+
   passwordFieldType_s = signal<string>('password');
 
   form = this.fb.nonNullable.group({
@@ -80,11 +78,10 @@ export class RegisterComponent {
       });
   }
 
-  togglePasswordVisibility(event: Event) {
-    event.stopPropagation();
+  togglePasswordVisibility() {
+    const currentFieldType = this.passwordFieldType_s();
+    const newFieldType = currentFieldType === 'password' ? 'text' : 'password';
 
-    this.passwordFieldType_s() === 'password'
-      ? this.passwordFieldType_s.set('text')
-      : this.passwordFieldType_s.set('password');
+    this.passwordFieldType_s.set(newFieldType);
   }
 }

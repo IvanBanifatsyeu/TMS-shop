@@ -32,7 +32,7 @@
             icon="color"
             class="colors-list__color-icon color-icon"
             [style.color]="'var(--svg-' + color + ')'"
-            (click)="setSelectedColor(color, $event)"
+            (click)="setSelectedColor(color)"
             [ngClass]="{ selectedColor: selectedColor_s() === color }"
           ></svg>
           }

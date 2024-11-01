@@ -4,8 +4,6 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthService } from './core/services/auth.service';
-
 
 @Component({
   selector: 'app-root',
@@ -16,8 +14,7 @@ import { AuthService } from './core/services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent  {
-
-  authService = inject(AuthService);
+  
   constructor(private translate: TranslateService) {
     this.translate.addLangs(['en', 'ru']);
     this.translate.setDefaultLang('en');

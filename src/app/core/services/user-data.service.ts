@@ -7,10 +7,6 @@ import { ProductItemInCart } from '../interfaces/productItemInCart.interface';
   providedIn: 'root',
 })
 export class UserDataService {
-  AuthService = inject(AuthService);
-  currentUser = computed(() => {
-    return this.AuthService.currentUser_s();
-  });
   listUserFavorite_s = signal<Product[] | null>(null);
   listUserCart_s = signal<ProductItemInCart[] | null>(null);
 }

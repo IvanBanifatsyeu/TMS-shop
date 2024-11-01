@@ -8,7 +8,7 @@ import {
   signal,
   effect,
 } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule} from '@ngx-translate/core';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
 import { CommonModule } from '@angular/common';
 import { ProductFirebaseService } from '../../core/services/product-firebase.service';
@@ -57,7 +57,6 @@ import { MultiselectBoldComponent } from '../../shared/components/multiselect-bo
 })
 export class ProductsListPageComponent implements OnInit {
   uiDataService = inject(UiDataService);
-  translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   destroyRef = inject(DestroyRef);
   route = inject(ActivatedRoute);
@@ -66,13 +65,9 @@ export class ProductsListPageComponent implements OnInit {
   colorList = this.uiDataService.colorList;
   sizeList = this.uiDataService.sizeList;
 
-  productsList_s = signal<Product[]>([]);
   afterFiltersData_s = signal<Product[]>([]);
-  layoutColumn_s = signal(true); 
+  layoutColumn_s = signal(true);
   currentPage_s = signal(1);
-  categorySelected_s = signal<string[]>([]);
-  colorSelectedList_s = signal<string[]>([]);
-  sizeSelectedList_s = signal<string[]>([]);
   priceMinSelected_s = signal<number>(0);
   priceMaxSelected_s = signal<number>(150);
   isClicked = signal<boolean>(false);
@@ -102,18 +97,21 @@ export class ProductsListPageComponent implements OnInit {
         });
       });
 
-    const firebaseData$ = this.productsFirebaseService.getProducts()
-    
+    const firebaseData$ = this.productsFirebaseService.getProducts();
+
     const searchTerm$ = this.search.valueChanges.pipe(
       startWith(''),
       map((value) => value!.trim().toLowerCase()),
-      debounceTime(300),);
+      debounceTime(300)
+    );
 
     const formFilter$ = this.formFilter.valueChanges.pipe(
-      startWith(this.formFilter.value),);
+      startWith(this.formFilter.value)
+    );
 
-    combineLatest([firebaseData$, searchTerm$, formFilter$]).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(
-      ([data, search, { category, color, size }]) => {
+    combineLatest([firebaseData$, searchTerm$, formFilter$])
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(([data, search, { category, color, size }]) => {
         const categorySet = new Set(category);
         const colorSet = new Set(color);
         const sizeSet = new Set(size);
@@ -133,8 +131,7 @@ export class ProductsListPageComponent implements OnInit {
           return includesSearch && matchCategory && matchColor && matchSize;
         });
         this.afterFiltersData_s.set(filteredData);
-      }
-    );
+      });
   }
 
   displayedItems_sc = computed(() => {
@@ -155,11 +152,11 @@ export class ProductsListPageComponent implements OnInit {
       const maxPrice = Math.max(...prices);
 
       return dataAfterAllFilters.filter(
-        (item: any) => item.price >= minPrice && item.price <= maxPrice
+        (item: Product) => item.price >= minPrice && item.price <= maxPrice
       );
     }
 
-    return dataAfterAllFilters.filter((item: any) => {
+    return dataAfterAllFilters.filter((item: Product) => {
       return (
         item.price >= this.priceMinSelected_s() &&
         item.price <= this.priceMaxSelected_s()
@@ -201,17 +198,5 @@ export class ProductsListPageComponent implements OnInit {
 
   clickFilterByPrice() {
     this.isClicked.set(true);
-  }
-
-  xx() {
-    
-  }
-
-  onMultiselectColorChange(arrayOfSelectedColors: string[]) {
-    this.colorSelectedList_s.set(arrayOfSelectedColors);
-  }
-
-  onMultiselectSizeChange(arrayOfSelectedSizes: string[]) {
-    this.sizeSelectedList_s.set(arrayOfSelectedSizes);
   }
 }

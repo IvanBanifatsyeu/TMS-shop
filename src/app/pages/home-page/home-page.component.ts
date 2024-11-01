@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { CategoryCardComponent } from '../../shared/components/category-card/category-card.component';
 import { CommonModule } from '@angular/common';
 import { UiDataService } from '../../core/services/uiData.service';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
 import { ProductFirebaseService } from '../../core/services/product-firebase.service';
 import { Product } from '../../core/interfaces/product.interface';
@@ -25,7 +25,6 @@ import { RouterModule } from '@angular/router';
 export class HomePageComponent implements OnInit {
   uiDataService: UiDataService = inject(UiDataService);
   destroyRef = inject(DestroyRef);
-  translate = inject(TranslateService);
   productsFirebaseService = inject(ProductFirebaseService);
   categoryList = this.uiDataService.categoryList;
   featuredProducts_s = signal<Product[] | null>(null);

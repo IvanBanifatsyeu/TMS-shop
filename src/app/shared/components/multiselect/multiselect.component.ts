@@ -45,7 +45,6 @@ type OnlyStringTypes<T> = {
 export class MultiselectComponent<T extends Record<string, any>>
   implements ControlValueAccessor
 {
-  
   fieldsArray = input<T[]>([]);
   key = input.required<OnlyStringTypes<T>>();
 

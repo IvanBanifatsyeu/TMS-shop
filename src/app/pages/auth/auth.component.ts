@@ -9,7 +9,6 @@ import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
-import { UserDataService } from '../../core/services/user-data.service';
 
 @Component({
   selector: 'app-auth',
@@ -22,8 +21,6 @@ import { UserDataService } from '../../core/services/user-data.service';
 export class AuthComponent  {
   authService = inject(AuthService);
   activeButton = signal<string>('signin');
-  userDataService = inject(UserDataService);
-
 
   logout() {
     this.authService.logout();

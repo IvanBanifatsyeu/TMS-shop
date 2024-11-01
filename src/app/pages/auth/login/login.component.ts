@@ -24,7 +24,6 @@ import { CommonModule } from '@angular/common';
 export class LoginComponent {
   destroyRef = inject(DestroyRef);
   router = inject(Router);
-  http = inject(HttpClient);
   formBuilder = inject(FormBuilder);
   authService = inject(AuthService);
   passwordFieldType_s = signal<string>('password');
@@ -75,9 +74,9 @@ export class LoginComponent {
       });
   }
 
-  togglePasswordVisibility(event: Event) {
-    event.stopPropagation();
-    
-      this.passwordFieldType_s() === 'password' ? this.passwordFieldType_s.set('text') : this.passwordFieldType_s.set('password');
+  togglePasswordVisibility() {
+    const newType =
+      this.passwordFieldType_s() === 'password' ? 'text' : 'password';
+    this.passwordFieldType_s.set(newType);
   }
 }
