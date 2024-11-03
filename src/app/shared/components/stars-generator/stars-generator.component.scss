@@ -4,6 +4,11 @@
     align-items: center;
     justify-content: start;
     column-gap: 2px;
+
+    .stars-generator__text {
+        color: var(--medium-grey-color);
+        margin-left: 3px;
+    }
 }
 
 .star {

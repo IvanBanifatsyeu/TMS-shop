@@ -2,4 +2,5 @@
     @for (item of arrStars; track $index) {
         <svg [icon]="item" class="star"></svg>
     }
+    <p class="stars-generator__text" data-testid="stars-generator__text">{{title()}}</p>
 </div>

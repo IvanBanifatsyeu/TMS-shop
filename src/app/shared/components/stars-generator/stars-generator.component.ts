@@ -17,6 +17,7 @@ import { SvgIconComponent } from '../svg-icon/svg-icon.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StarsGeneratorComponent implements OnChanges {
+  title = input<string>('no data');
   rating = input<number | undefined>(0);
   arrStars: string[] = [];
 
