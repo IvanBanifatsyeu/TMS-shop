@@ -1,20 +1,28 @@
 {
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "ng serve",
-      "type": "chrome",
+      "type": "firefox",
       "request": "launch",
-      "preLaunchTask": "npm: start",
-      "url": "http://localhost:4200/"
+      "reAttach": true,
+      "name": "firefox Launch localhost",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}"
+    },
+
+    {
+      "name": "on Launched chrome server ",
+      "request": "launch",
+      "type": "chrome",
+      "url": "http://localhost:4200",
+     "webRoot": "${workspaceFolder}"
     },
     {
-      "name": "ng test",
-      "type": "chrome",
+      "name": "Launch server chrome yourself",
       "request": "launch",
-      "preLaunchTask": "npm: test",
-      "url": "http://localhost:9876/debug.html"
-    }
+      "type": "chrome",
+       "preLaunchTask": "npm: start",
+      "url": "http://localhost:4200",
+    },
   ]
 }
