@@ -4,7 +4,7 @@
     </button>
     @for(page of pagesArray() ; track page) {
 
-    <button [ngClass]="{ active: page === currentPage() }" class="pagination__button-page pagination__button" (click)="goToPage(page)">
+    <button [ngClass]="{ active: page === currentPage() }" class="pagination__button-page pagination__button" (click)="goToPage(page)" data-testid="pagination__page-container">
       {{ page }}
     </button>
     }

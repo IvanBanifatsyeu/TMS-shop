@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { NavigationComponent } from '../navigation/navigation.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { LanguageSwitchComponent } from './language-switch/language-switch.component';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
@@ -16,12 +16,9 @@ import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import {
   combineLatest,
   filter,
-  forkJoin,
   map,
   of,
-  Subscription,
   switchMap,
-  tap,
 } from 'rxjs';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 import { ProductFirebaseService } from '../../../core/services/product-firebase.service';
@@ -60,7 +57,6 @@ import { User } from 'firebase/auth';
 })
 export class HeaderComponent implements OnInit {
   @HostBinding('class.position-absolute') isAbsolute = true;
-  translate = inject(TranslateService);
   router = inject(Router);
   productsFirebaseService = inject(ProductFirebaseService);
   destroyRef = inject(DestroyRef);

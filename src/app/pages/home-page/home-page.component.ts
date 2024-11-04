@@ -35,7 +35,6 @@ export class HomePageComponent implements OnInit {
       .getProducts()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
-      
         const sortedByRate = res.sort((a, b) => {
           return b.rating - a.rating;
         });
