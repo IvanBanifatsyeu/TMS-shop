@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { CategoryItem } from '../interfaces/categoryItem.interface';
+import { UtilsService } from './utils.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UiDataService {
+   utilsService = inject(UtilsService);
+
   categoryList: CategoryItem[] = [
     {
       name: 'CATEGORY_CARD.HAT',
@@ -55,4 +58,24 @@ export class UiDataService {
     { title: 'M' },
     { title: 'S' },
   ];
+
+  addColor(color: string) {
+    this.colorList.push({ title: color });
+  }
+
+  addSize(size: string) {
+    this.sizeList.push({ title: size });
+  }
+
+  removeColor(color: string) {
+    this.colorList = this.colorList.filter((item) => item.title !== color);
+  }
+
+  removeSize(size: string) {
+    this.sizeList = this.sizeList.filter((item) => item.title !== size);
+  }
+
+  getColorsArray(): string[] {
+    return this.utilsService.pluck(this.colorList, 'title');
+  }
 }
