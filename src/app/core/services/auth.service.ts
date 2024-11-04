@@ -70,7 +70,7 @@ export class AuthService {
 
   loadUser(): Observable<void> {
     return this.getCurrentUser$().pipe(
-      switchMap((firebaseUser: User) => {
+      switchMap((firebaseUser: User | null) => {
         if (firebaseUser) {
           this.currentUser_s.set({
             email: firebaseUser.email ?? '',
