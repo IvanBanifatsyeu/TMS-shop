@@ -1,13 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import { CategoryItem } from '../interfaces/categoryItem.interface';
 import { UtilsService } from './utils.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UiDataService {
-   utilsService = inject(UtilsService);
-
+  utilsService = inject(UtilsService);
+  fakeUsers$ = new BehaviorSubject<string[]>([]);
+   
   categoryList: CategoryItem[] = [
     {
       name: 'CATEGORY_CARD.HAT',
@@ -37,9 +39,9 @@ export class UiDataService {
     },
   ];
 
-  categoriesList: { title: string }[] = this.categoryList.map(item => {
+  categoriesList: { title: string }[] = this.categoryList.map((item) => {
     return { title: item.category };
-  })
+  });
 
   colorList: { title: string }[] = [
     { title: 'red' },
@@ -78,4 +80,15 @@ export class UiDataService {
   getColorsArray(): string[] {
     return this.utilsService.pluck(this.colorList, 'title');
   }
+
+ 
+
+  addFakedUser(user: string) {
+    this.fakeUsers$.next([...this.fakeUsers$.getValue(), user]);
+  }
+
+  removeFakedUser(user: string) {
+  const  updatedFakedUser = this.fakeUsers$.getValue().filter((item) => { return  item !== user })
+    this.fakeUsers$.next(updatedFakedUser);
+   }
 }
