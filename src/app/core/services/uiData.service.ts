@@ -86,7 +86,7 @@ export class UiDataService {
   addFakedUser(user: string) {
     this.fakeUsers$.next([...this.fakeUsers$.getValue(), user]);
   }
-
+ 
   removeFakedUser(user: string) {
   const  updatedFakedUser = this.fakeUsers$.getValue().filter((item) => { return  item !== user })
     this.fakeUsers$.next(updatedFakedUser);
