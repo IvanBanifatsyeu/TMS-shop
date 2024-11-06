@@ -2,7 +2,7 @@ import { ApiService } from './api.service';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { TagInterface } from './tag.interface';
 
 describe('ApiService', () => {
@@ -37,30 +37,45 @@ describe('ApiService', () => {
       expect(req.request.method).toEqual('GET');
     });
   });
-    
-    describe('createTag', () => {
-        it('should create tag', () => { 
-            let tag: TagInterface | undefined;
-            apiService.createTag('foo').subscribe((res) => {
-                tag = res;
-            });
-            const req = httpTestingController.expectOne(`${apiService.apiUrl}/tags`);
-            req.flush({ id: '1', name: 'foo' });
-            expect(tag).toEqual({ id: '1', name: 'foo' });
-          
-        })
 
-        it('passes the correct body ', () => {
-            let tag: TagInterface | undefined;
-            apiService.createTag('foo').subscribe((res) => {
-              tag = res;
-            });
-            const req = httpTestingController.expectOne(
-              `${apiService.apiUrl}/tags`
-            );
-            req.flush({ id: '1', name: 'foo' });
-              expect(req.request.method).toEqual('POST');
-            expect(req.request.body).toEqual({ name: 'foo' });
-        });
-    })
+  describe('createTag', () => {
+    it('should create tag', () => {
+      let tag: TagInterface | undefined;
+      apiService.createTag('foo').subscribe((res) => {
+        tag = res;
+      });
+      const req = httpTestingController.expectOne(`${apiService.apiUrl}/tags`);
+      req.flush({ id: '1', name: 'foo' });
+      expect(tag).toEqual({ id: '1', name: 'foo' });
+    });
+
+    it('passes the correct body ', () => {
+      let tag: TagInterface | undefined;
+      apiService.createTag('foo').subscribe((res) => {
+        tag = res;
+      });
+      const req = httpTestingController.expectOne(`${apiService.apiUrl}/tags`);
+      req.flush({ id: '1', name: 'foo' });
+      expect(req.request.method).toEqual('POST');
+      expect(req.request.body).toEqual({ name: 'foo' });
+    });
+
+    it('throws an error if request fails ', () => {
+      let actualError: HttpErrorResponse | undefined;
+      apiService.createTag('foo').subscribe({
+        next: () => {
+          fail('Success should not be called');
+        },
+        error: (error) => {
+          actualError = error;
+        },
+      });
+
+        const req = httpTestingController.expectOne(`${apiService.apiUrl}/tags`);
+        req.flush("Server error", { status: 422, statusText: 'Unprocessable Entity' });
+
+        expect(actualError?.status).toBe(422);
+        expect(actualError?.statusText).toBe('Unprocessable Entity');
+    });
+  });
 });
