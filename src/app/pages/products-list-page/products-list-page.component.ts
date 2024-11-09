@@ -45,7 +45,6 @@ import { MultiselectBoldComponent } from '../../shared/components/multiselect-bo
     ProductCardComponent,
     PaginationComponent,
     ReactiveFormsModule,
-    RoundCheckboxComponent,
     DualRangeSliderComponent,
     FormsModule,
     MultiselectComponent,

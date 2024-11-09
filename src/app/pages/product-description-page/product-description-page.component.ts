@@ -14,7 +14,6 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { SvgIconComponent } from '../../shared/components/svg-icon/svg-icon.component';
 import { StarsGeneratorComponent } from '../../shared/components/stars-generator/stars-generator.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LogPipe } from '../../shared/pipes/log.pipe';
 import { ProductItemInCart } from '../../core/interfaces/productItemInCart.interface';
 import { AuthService } from '../../core/services/auth.service';
 import { UserDataService } from '../../core/services/user-data.service';
@@ -28,7 +27,6 @@ import { UserDataService } from '../../core/services/user-data.service';
     StarsGeneratorComponent,
     TranslateModule,
     CommonModule,
-    LogPipe,
   ],
   templateUrl: './product-description-page.component.html',
   styleUrl: './product-description-page.component.scss',
@@ -44,7 +42,7 @@ export class ProductDescriptionPageComponen implements OnInit {
   product: Product | undefined = undefined;
   imgUrl: string = '';
   idOfProduct: string | null = '';
-  
+
   listUserFavorite_s = this.userDataService.listUserFavorite_s;
   listUserCart_s = this.userDataService.listUserCart_s;
   isAlreadyInCart_s = signal<boolean>(false);
