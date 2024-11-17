@@ -42,4 +42,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v4
       with:
         personal_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist/my-app-TMS-SHOP  # Замените на имя вашего проекта
+        publish_dir: ./dist/TMS-SHOP  # Замените на имя вашего проекта
