@@ -43,7 +43,7 @@ jobs:
       - name: Create .nojekyll
         run: echo > ./dist/TMS-SHOP/.nojekyll
 
-      # 8. Deploy to GitHub Pages
+      # 8. Deploy to GitHub Pagess
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
