@@ -39,6 +39,7 @@
           },
           "configurations": {
             "production": {
+               "outputPath": "dist/TMS-SHOP",
               "budgets": [
                 {
                   "type": "initial",
