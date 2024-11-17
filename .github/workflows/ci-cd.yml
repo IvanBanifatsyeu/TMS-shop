@@ -1,0 +1,45 @@
+name: Angular CI/CD
+
+# Триггер на события в репозитории
+on:
+  push:
+    branches:
+      - main  # Запуск при пуше в ветку main
+  pull_request:
+    branches:
+      - main  # Запуск при открытии/обновлении pull request в main
+
+# Задачи CI/CD
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest  # ОС, на которой будет выполняться pipeline
+
+    steps:
+    # 1. Клонирование репозитория
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # 2. Установка Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'  # Версия Node.js
+
+    # 3. Установка зависимостей
+    - name: Install dependencies
+      run: npm ci  # Устанавливаем зависимости
+
+    # 4. Запуск тестов
+    - name: Run tests
+      run: npm run test -- --watch=false --code-coverage
+
+    # 5. Сборка Angular приложения
+    - name: Build project
+      run: npm run build -- --prod
+
+    # 6. Деплой на GitHub Pages (опционально)
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        personal_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist/my-app-TMS-SHOP  # Замените на имя вашего проекта
