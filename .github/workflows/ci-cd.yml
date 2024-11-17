@@ -1,45 +1,52 @@
 name: Angular CI/CD
 
-# Триггер на события в репозитории
 on:
   push:
     branches:
-      - main  # Запуск при пуше в ветку main
+      - main  # Trigger on push to main
   pull_request:
     branches:
-      - main  # Запуск при открытии/обновлении pull request в main
+      - main  # Trigger on PR updates to main
 
-# Задачи CI/CD
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest  # ОС, на которой будет выполняться pipeline
+    runs-on: ubuntu-latest  # OS for the CI/CD pipeline
 
     steps:
-    # 1. Клонирование репозитория
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # 1. Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    # 2. Установка Node.js
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'  # Версия Node.js
+      # 2. Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
-    # 3. Установка зависимостей
-    - name: Install dependencies
-      run: npm ci  # Устанавливаем зависимости
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm ci
 
-    # 4. Запуск тестов
-    - name: Run tests
-      run: npm run test -- --watch=false --coverage
+      # 4. Run tests
+      - name: Run tests
+        run: npm run test -- --watch=false --coverage
 
-    # 5. Сборка Angular приложения
-    - name: Build project
-      run: npm run build -- --configuration=production
+      # 5. Build Angular project
+      - name: Build project
+        run: npm run build -- --configuration=production
 
-    # 6. Деплой на GitHub Pages (опционально)
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        personal_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist/TMS-SHOP  # Замените на имя вашего проекта
+      # 6. List build output directory to check files
+      - name: List build output directory
+        run: ls -R ./dist/TMS-SHOP
+
+      # 7. Create .nojekyll to prevent Jekyll processing
+      - name: Create .nojekyll
+        run: echo > ./dist/TMS-SHOP/.nojekyll
+
+      # 8. Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/TMS-SHOP
+          force_orphan: true
