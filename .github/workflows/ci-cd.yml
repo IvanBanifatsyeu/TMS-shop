@@ -35,7 +35,7 @@ jobs:
 
     # 5. Сборка Angular приложения
     - name: Build project
-      run: npm run build -- --prod
+      run: npm run build -- --configuration=production
 
     # 6. Деплой на GitHub Pages (опционально)
     - name: Deploy to GitHub Pages
