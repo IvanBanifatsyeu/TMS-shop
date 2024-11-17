@@ -40,6 +40,7 @@
           "configurations": {
             "production": {
                "outputPath": "dist/TMS-SHOP",
+               "baseHref": "/TMS-shop/",
               "budgets": [
                 {
                   "type": "initial",
