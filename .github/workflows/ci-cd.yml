@@ -31,7 +31,7 @@ jobs:
 
     # 4. Запуск тестов
     - name: Run tests
-      run: npm run test -- --watch=false --code-coverage
+      run: npm run test -- --watch=false --coverage
 
     # 5. Сборка Angular приложения
     - name: Build project
