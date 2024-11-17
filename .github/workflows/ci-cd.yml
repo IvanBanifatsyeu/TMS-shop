@@ -23,7 +23,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '18'  # Версия Node.js
+        node-version: '20'  # Версия Node.js
 
     # 3. Установка зависимостей
     - name: Install dependencies
