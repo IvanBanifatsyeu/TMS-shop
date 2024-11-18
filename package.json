@@ -39,6 +39,7 @@
     "@rxjs-insights/devtools": "^0.5.1",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^29.5.14",
+    "angular-cli-ghpages": "^2.0.3",
     "angular-eslint": "18.4.0",
     "eslint": "^9.13.0",
     "eslint-define-config": "^2.1.0",
